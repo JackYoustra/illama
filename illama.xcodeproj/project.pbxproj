@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
 		04C9C69F2A7A619B00A6B66B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Item.swift */; };
@@ -15,6 +16,12 @@
 		04C9C6B02A7A619E00A6B66B /* illamaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6AF2A7A619E00A6B66B /* illamaTests.swift */; };
 		04C9C6BA2A7A619E00A6B66B /* illamaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6B92A7A619E00A6B66B /* illamaUITests.swift */; };
 		04C9C6BC2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6BB2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift */; };
+		04C9C6CA2A7A627100A6B66B /* ggml-model-q6k.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */; };
+		04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */; };
+		04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6CE2A7A640B00A6B66B /* llama */; };
+		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
+		04C9C6D52A7A656700A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D42A7A656700A6B66B /* llama */; };
+		04C9C6D72A7A75A600A6B66B /* main in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6D62A7A75A600A6B66B /* main */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
 		04C9C69C2A7A619B00A6B66B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +56,9 @@
 		04C9C6B52A7A619E00A6B66B /* illamaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = illamaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C6B92A7A619E00A6B66B /* illamaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaUITests.swift; sourceTree = "<group>"; };
 		04C9C6BB2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q6k.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q6k.bin"; sourceTree = "<group>"; };
+		04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-vocab.bin"; path = "../../../../llm/llama.cpp/models/ggml-vocab.bin"; sourceTree = "<group>"; };
+		04C9C6D62A7A75A600A6B66B /* main */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = main; path = "../../../../llm/llama.cpp/build-metal/bin/main"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +66,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C9C6D52A7A656700A6B66B /* llama in Frameworks */,
+				04C9C6D22A7A64B300A6B66B /* llama in Frameworks */,
+				04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,8 +112,10 @@
 		04C9C6992A7A619B00A6B66B /* illama */ = {
 			isa = PBXGroup;
 			children = (
+				04C9C6C82A7A622100A6B66B /* models */,
 				04C9C69A2A7A619B00A6B66B /* illamaApp.swift */,
 				04C9C69C2A7A619B00A6B66B /* ContentView.swift */,
+				04BEE5A92A7B658A000EB9E6 /* Driver.swift */,
 				04C9C69E2A7A619B00A6B66B /* Item.swift */,
 				04C9C6A02A7A619E00A6B66B /* Assets.xcassets */,
 				04C9C6A22A7A619E00A6B66B /* illama.entitlements */,
@@ -134,6 +150,16 @@
 			path = illamaUITests;
 			sourceTree = "<group>";
 		};
+		04C9C6C82A7A622100A6B66B /* models */ = {
+			isa = PBXGroup;
+			children = (
+				04C9C6D62A7A75A600A6B66B /* main */,
+				04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */,
+				04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -150,6 +176,11 @@
 			dependencies = (
 			);
 			name = illama;
+			packageProductDependencies = (
+				04C9C6CE2A7A640B00A6B66B /* llama */,
+				04C9C6D12A7A64B300A6B66B /* llama */,
+				04C9C6D42A7A656700A6B66B /* llama */,
+			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
 			productType = "com.apple.product-type.application";
@@ -202,6 +233,7 @@
 				TargetAttributes = {
 					04C9C6962A7A619B00A6B66B = {
 						CreatedOnToolsVersion = 15.0;
+						LastSwiftMigration = 1500;
 					};
 					04C9C6AA2A7A619E00A6B66B = {
 						CreatedOnToolsVersion = 15.0;
@@ -222,6 +254,9 @@
 				Base,
 			);
 			mainGroup = 04C9C68E2A7A619B00A6B66B;
+			packageReferences = (
+				04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */,
+			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -238,8 +273,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C9C6D72A7A75A600A6B66B /* main in Resources */,
+				04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */,
 				04C9C6A52A7A619E00A6B66B /* Preview Assets.xcassets in Resources */,
 				04C9C6A12A7A619E00A6B66B /* Assets.xcassets in Resources */,
+				04C9C6CA2A7A627100A6B66B /* ggml-model-q6k.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +305,7 @@
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Item.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
+				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +399,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -414,6 +454,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 			};
 			name = Release;
 		};
@@ -422,6 +463,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = illama/illama.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -451,6 +493,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -461,6 +504,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = illama/illama.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -625,6 +669,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
+			requirement = {
+				kind = revision;
+				revision = ada3e25f2850df5f2a72ab8fdb73aad8efb72e13;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		04C9C6CE2A7A640B00A6B66B /* llama */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = llama;
+		};
+		04C9C6D12A7A64B300A6B66B /* llama */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = llama;
+		};
+		04C9C6D42A7A656700A6B66B /* llama */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */;
+			productName = llama;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04C9C68F2A7A619B00A6B66B /* Project object */;
 }

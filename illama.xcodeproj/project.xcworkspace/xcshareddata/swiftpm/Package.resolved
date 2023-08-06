@@ -1,0 +1,13 @@
+{
+  "pins" : [
+    {
+      "identity" : "llama.cpp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JackYoustra/llama.cpp",
+      "state" : {
+        "revision" : "ada3e25f2850df5f2a72ab8fdb73aad8efb72e13"
+      }
+    }
+  ],
+  "version" : 2
+}

@@ -11,9 +11,16 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @State private var thing: String? = nil
 
     var body: some View {
         NavigationSplitView {
+            Text(thing ?? "Loading")
+                .task {
+                    try! await run_llama()
+                    print("Model loaded")
+                    thing = "Model loaded"
+                }
             List {
                 ForEach(items) { item in
                     NavigationLink {
