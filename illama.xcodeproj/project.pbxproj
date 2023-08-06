@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -42,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "illama-Bridging-Header.h"; sourceTree = "<group>"; };
+		0436D58D2A7F828F0091D9CF /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
+		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 		04C9C6992A7A619B00A6B66B /* illama */ = {
 			isa = PBXGroup;
 			children = (
+				04A6C9052A7F833A003C4586 /* server_header.h */,
+				0436D58D2A7F828F0091D9CF /* server.cpp */,
 				04C9C6C82A7A622100A6B66B /* models */,
 				04C9C69A2A7A619B00A6B66B /* illamaApp.swift */,
 				04C9C69C2A7A619B00A6B66B /* ContentView.swift */,
@@ -121,6 +127,7 @@
 				04C9C6A22A7A619E00A6B66B /* illama.entitlements */,
 				04C9C6A62A7A619E00A6B66B /* Info.plist */,
 				04C9C6A32A7A619E00A6B66B /* Preview Content */,
+				0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -305,6 +312,7 @@
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Item.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
+				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +501,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -534,6 +543,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -676,7 +686,7 @@
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
 			requirement = {
 				kind = revision;
-				revision = ada3e25f2850df5f2a72ab8fdb73aad8efb72e13;
+				revision = 8756308e4b38acdac0ed9c04318ec7c451e860bf;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
