@@ -33,19 +33,6 @@ struct server_params
     int32_t write_timeout = 600;
 };
 
-// completion token output with probabilities
-struct completion_token_output
-{
-    struct token_prob
-    {
-        llama_token tok;
-        float prob;
-    };
-
-    std::vector<token_prob> probs;
-    llama_token tok;
-};
-
 static size_t common_part(const std::vector<llama_token> &a, const std::vector<llama_token> &b)
 {
     size_t i;
@@ -54,12 +41,6 @@ static size_t common_part(const std::vector<llama_token> &a, const std::vector<l
     }
     return i;
 }
-
-enum stop_type
-{
-    STOP_FULL,
-    STOP_PARTIAL,
-};
 
 static bool ends_with(const std::string &str, const std::string &suffix)
 {
@@ -178,427 +159,399 @@ static bool server_verbose = false;
 #define LOG_WARNING(MSG, ...) server_log("WARNING", __func__, __LINE__, MSG, __VA_ARGS__)
 #define LOG_INFO(MSG, ...) server_log("INFO", __func__, __LINE__, MSG, __VA_ARGS__)
 
-struct llama_server_context
+
+std::unique_lock<std::mutex> llama_server_context::lock()
 {
-    bool stream = false;
-    bool has_next_token = false;
-    std::string generated_text;
-    std::vector<completion_token_output> generated_token_probs;
+    return std::unique_lock<std::mutex>(mutex);
+}
 
-    size_t num_prompt_tokens = 0;
-    size_t num_tokens_predicted = 0;
-    size_t n_past = 0;
-    size_t n_remain = 0;
-
-    std::vector<llama_token> embd;
-    std::vector<llama_token> last_n_tokens;
-
-    llama_model *model = nullptr;
-    llama_context *ctx = nullptr;
-    gpt_params params;
-
-    bool truncated = false;
-    bool stopped_eos = false;
-    bool stopped_word = false;
-    bool stopped_limit = false;
-    std::string stopping_word;
-    int32_t multibyte_pending = 0;
-
-    std::mutex mutex;
-
-    std::unique_lock<std::mutex> lock()
+llama_server_context::~llama_server_context()
+{
+    if (ctx)
     {
-        return std::unique_lock<std::mutex>(mutex);
+        llama_free(ctx);
+        ctx = nullptr;
+    }
+    if (model)
+    {
+        llama_free_model(model);
+        model = nullptr;
+    }
+}
+
+void llama_server_context::rewind()
+{
+    params.antiprompt.clear();
+    num_prompt_tokens = 0;
+    num_tokens_predicted = 0;
+    generated_text = "";
+    generated_text.reserve(params.n_ctx);
+    generated_token_probs.clear();
+    truncated = false;
+    stopped_eos = false;
+    stopped_word = false;
+    stopped_limit = false;
+    stopping_word = "";
+    multibyte_pending = 0;
+
+    n_remain = 0;
+    n_past = 0;
+}
+
+bool llama_server_context::loadModel(const gpt_params &params_)
+{
+    params = params_;
+    std::tie(model, ctx) = llama_init_from_gpt_params(params);
+    if (model == nullptr)
+    {
+        LOG_ERROR("unable to load model", {{"model", params_.model}});
+        return false;
     }
 
-    ~llama_server_context()
+    last_n_tokens.resize(params.n_ctx);
+    std::fill(last_n_tokens.begin(), last_n_tokens.end(), 0);
+    return true;
+}
+
+void llama_server_context::loadPrompt()
+{
+    params.prompt.insert(0, 1, ' '); // always add a first space
+    std::vector<llama_token> prompt_tokens = ::llama_tokenize(ctx, params.prompt, true);
+    num_prompt_tokens = prompt_tokens.size();
+
+    if (params.n_keep < 0)
     {
-        if (ctx)
-        {
-            llama_free(ctx);
-            ctx = nullptr;
-        }
-        if (model)
-        {
-            llama_free_model(model);
-            model = nullptr;
-        }
+        params.n_keep = (int)num_prompt_tokens;
     }
+    params.n_keep = std::min(params.n_ctx - 4, params.n_keep);
 
-    void rewind()
+    // if input prompt is too big, truncate like normal
+    if (num_prompt_tokens >= (size_t)params.n_ctx)
     {
-        params.antiprompt.clear();
-        num_prompt_tokens = 0;
-        num_tokens_predicted = 0;
-        generated_text = "";
-        generated_text.reserve(params.n_ctx);
-        generated_token_probs.clear();
-        truncated = false;
-        stopped_eos = false;
-        stopped_word = false;
-        stopped_limit = false;
-        stopping_word = "";
-        multibyte_pending = 0;
+        const int n_left = (params.n_ctx - params.n_keep) / 2;
+        std::vector<llama_token> new_tokens(prompt_tokens.begin(), prompt_tokens.begin() + params.n_keep);
+        const int erased_blocks = (num_prompt_tokens - params.n_keep - n_left - 1) / n_left;
+        new_tokens.insert(new_tokens.end(), prompt_tokens.begin() + params.n_keep + erased_blocks * n_left, prompt_tokens.end());
+        std::copy(prompt_tokens.end() - params.n_ctx, prompt_tokens.end(), last_n_tokens.begin());
 
-        n_remain = 0;
-        n_past = 0;
-    }
-
-    bool loadModel(const gpt_params &params_)
-    {
-        params = params_;
-        std::tie(model, ctx) = llama_init_from_gpt_params(params);
-        if (model == nullptr)
-        {
-            LOG_ERROR("unable to load model", {{"model", params_.model}});
-            return false;
-        }
-
-        last_n_tokens.resize(params.n_ctx);
-        std::fill(last_n_tokens.begin(), last_n_tokens.end(), 0);
-        return true;
-    }
-
-    void loadPrompt()
-    {
-        params.prompt.insert(0, 1, ' '); // always add a first space
-        std::vector<llama_token> prompt_tokens = ::llama_tokenize(ctx, params.prompt, true);
-        num_prompt_tokens = prompt_tokens.size();
-
-        if (params.n_keep < 0)
-        {
-            params.n_keep = (int)num_prompt_tokens;
-        }
-        params.n_keep = std::min(params.n_ctx - 4, params.n_keep);
-
-        // if input prompt is too big, truncate like normal
-        if (num_prompt_tokens >= (size_t)params.n_ctx)
-        {
-            const int n_left = (params.n_ctx - params.n_keep) / 2;
-            std::vector<llama_token> new_tokens(prompt_tokens.begin(), prompt_tokens.begin() + params.n_keep);
-            const int erased_blocks = (num_prompt_tokens - params.n_keep - n_left - 1) / n_left;
-            new_tokens.insert(new_tokens.end(), prompt_tokens.begin() + params.n_keep + erased_blocks * n_left, prompt_tokens.end());
-            std::copy(prompt_tokens.end() - params.n_ctx, prompt_tokens.end(), last_n_tokens.begin());
-
-            LOG_VERBOSE("input truncated", {
-                                               {"n_ctx", params.n_ctx},
-                                               {"n_keep", params.n_keep},
-                                               {"n_left", n_left},
-                                               {"new_tokens", tokens_to_str(ctx, new_tokens.cbegin(), new_tokens.cend())},
-                                           });
-
-            truncated = true;
-            prompt_tokens = new_tokens;
-        }
-        else
-        {
-            const size_t ps = num_prompt_tokens;
-            std::fill(last_n_tokens.begin(), last_n_tokens.end() - ps, 0);
-            std::copy(prompt_tokens.begin(), prompt_tokens.end(), last_n_tokens.end() - ps);
-        }
-
-        // compare the evaluated prompt with the new prompt
-        n_past = common_part(embd, prompt_tokens);
-        embd = prompt_tokens;
-        if (n_past == num_prompt_tokens)
-        {
-            // we have to evaluate at least 1 token to generate logits.
-            n_past--;
-        }
-
-        LOG_VERBOSE("prompt ingested", {
-                                           {"n_past", n_past},
-                                           {"cached", tokens_to_str(ctx, embd.cbegin(), embd.cbegin() + n_past)},
-                                           {"to_eval", tokens_to_str(ctx, embd.cbegin() + n_past, embd.cend())},
+        LOG_VERBOSE("input truncated", {
+                                           {"n_ctx", params.n_ctx},
+                                           {"n_keep", params.n_keep},
+                                           {"n_left", n_left},
+                                           {"new_tokens", tokens_to_str(ctx, new_tokens.cbegin(), new_tokens.cend())},
                                        });
 
-        has_next_token = true;
+        truncated = true;
+        prompt_tokens = new_tokens;
+    }
+    else
+    {
+        const size_t ps = num_prompt_tokens;
+        std::fill(last_n_tokens.begin(), last_n_tokens.end() - ps, 0);
+        std::copy(prompt_tokens.begin(), prompt_tokens.end(), last_n_tokens.end() - ps);
     }
 
-    void beginCompletion()
+    // compare the evaluated prompt with the new prompt
+    n_past = common_part(embd, prompt_tokens);
+    embd = prompt_tokens;
+    if (n_past == num_prompt_tokens)
     {
-        // number of tokens to keep when resetting context
-        n_remain = params.n_predict;
-        llama_set_rng_seed(ctx, params.seed);
+        // we have to evaluate at least 1 token to generate logits.
+        n_past--;
     }
 
-    completion_token_output nextToken()
+    LOG_VERBOSE("prompt ingested", {
+                                       {"n_past", n_past},
+                                       {"cached", tokens_to_str(ctx, embd.cbegin(), embd.cbegin() + n_past)},
+                                       {"to_eval", tokens_to_str(ctx, embd.cbegin() + n_past, embd.cend())},
+                                   });
+
+    has_next_token = true;
+}
+
+void llama_server_context::beginCompletion()
+{
+    // number of tokens to keep when resetting context
+    n_remain = params.n_predict;
+    llama_set_rng_seed(ctx, params.seed);
+}
+
+completion_token_output llama_server_context::nextToken()
+{
+    completion_token_output result;
+    result.tok = -1;
+
+    if (embd.size() >= (size_t)params.n_ctx)
     {
-        completion_token_output result;
-        result.tok = -1;
+        // Reset context
+        const int n_left = (params.n_ctx - params.n_keep) / 2;
 
-        if (embd.size() >= (size_t)params.n_ctx)
+        std::vector<llama_token> new_tokens(embd.begin(), embd.begin() + params.n_keep);
+        new_tokens.insert(new_tokens.end(), embd.end() - n_left, embd.end());
+        embd = new_tokens;
+        n_past = params.n_keep;
+        truncated = true;
+        LOG_VERBOSE("input truncated", {
+                                           {"n_ctx", params.n_ctx},
+                                           {"n_keep", params.n_keep},
+                                           {"n_left", n_left},
+                                           {"new_tokens", tokens_to_str(ctx, new_tokens.cbegin(), new_tokens.cend())},
+                                       });
+    }
+
+    while (n_past < embd.size())
+    {
+        int n_eval = (int)embd.size() - n_past;
+        if (n_eval > params.n_batch)
         {
-            // Reset context
-            const int n_left = (params.n_ctx - params.n_keep) / 2;
-
-            std::vector<llama_token> new_tokens(embd.begin(), embd.begin() + params.n_keep);
-            new_tokens.insert(new_tokens.end(), embd.end() - n_left, embd.end());
-            embd = new_tokens;
-            n_past = params.n_keep;
-            truncated = true;
-            LOG_VERBOSE("input truncated", {
-                                               {"n_ctx", params.n_ctx},
-                                               {"n_keep", params.n_keep},
-                                               {"n_left", n_left},
-                                               {"new_tokens", tokens_to_str(ctx, new_tokens.cbegin(), new_tokens.cend())},
-                                           });
+            n_eval = params.n_batch;
         }
-
-        while (n_past < embd.size())
+        if (llama_eval(ctx, &embd[n_past], n_eval, n_past, params.n_threads))
         {
-            int n_eval = (int)embd.size() - n_past;
-            if (n_eval > params.n_batch)
-            {
-                n_eval = params.n_batch;
-            }
-            if (llama_eval(ctx, &embd[n_past], n_eval, n_past, params.n_threads))
-            {
-                LOG_ERROR("failed to eval", {
-                                                {"n_eval", n_eval},
-                                                {"n_past", n_past},
-                                                {"n_threads", params.n_threads},
-                                                {"embd", tokens_to_str(ctx, embd.cbegin() + n_past, embd.cend())},
-                                            });
-                has_next_token = false;
-                return result;
-            }
-            n_past += n_eval;
-        }
-
-        if (params.n_predict == 0)
-        {
+            LOG_ERROR("failed to eval", {
+                                            {"n_eval", n_eval},
+                                            {"n_past", n_past},
+                                            {"n_threads", params.n_threads},
+                                            {"embd", tokens_to_str(ctx, embd.cbegin() + n_past, embd.cend())},
+                                        });
             has_next_token = false;
-            result.tok = llama_token_eos();
             return result;
         }
+        n_past += n_eval;
+    }
 
-        // out of user input, sample next token
-        const float temp = params.temp;
-        const int32_t top_k = params.top_k <= 0 ? llama_n_vocab(ctx) : params.top_k;
-        const float top_p = params.top_p;
-        const float tfs_z = params.tfs_z;
-        const float typical_p = params.typical_p;
-        const int32_t repeat_last_n = params.repeat_last_n < 0 ? params.n_ctx : params.repeat_last_n;
-        const float repeat_penalty = params.repeat_penalty;
-        const float alpha_presence = params.presence_penalty;
-        const float alpha_frequency = params.frequency_penalty;
-        const int mirostat = params.mirostat;
-        const float mirostat_tau = params.mirostat_tau;
-        const float mirostat_eta = params.mirostat_eta;
-        const bool penalize_nl = params.penalize_nl;
-        const int32_t n_probs = params.n_probs;
-
-        {
-            auto *logits = llama_get_logits(ctx);
-            auto n_vocab = llama_n_vocab(ctx);
-
-            // Apply params.logit_bias map
-            for (const auto &it : params.logit_bias)
-            {
-                logits[it.first] += it.second;
-            }
-
-            std::vector<llama_token_data> candidates;
-            candidates.reserve(n_vocab);
-            for (llama_token token_id = 0; token_id < n_vocab; token_id++)
-            {
-                candidates.emplace_back(llama_token_data{token_id, logits[token_id], 0.0f});
-            }
-
-            llama_token_data_array candidates_p = {candidates.data(), candidates.size(), false};
-
-            // Apply penalties
-            float nl_logit = logits[llama_token_nl()];
-            auto last_n_repeat = std::min(std::min((int)last_n_tokens.size(), repeat_last_n), params.n_ctx);
-            llama_sample_repetition_penalty(ctx, &candidates_p,
-                                            last_n_tokens.data() + last_n_tokens.size() - last_n_repeat,
-                                            last_n_repeat, repeat_penalty);
-            llama_sample_frequency_and_presence_penalties(ctx, &candidates_p,
-                                                          last_n_tokens.data() + last_n_tokens.size() - last_n_repeat,
-                                                          last_n_repeat, alpha_frequency, alpha_presence);
-            if (!penalize_nl)
-            {
-                logits[llama_token_nl()] = nl_logit;
-            }
-
-            if (temp <= 0)
-            {
-                // Greedy sampling
-                result.tok = llama_sample_token_greedy(ctx, &candidates_p);
-                if (n_probs > 0)
-                {
-                    llama_sample_softmax(ctx, &candidates_p);
-                }
-            }
-            else
-            {
-                if (mirostat == 1)
-                {
-                    static float mirostat_mu = 2.0f * mirostat_tau;
-                    const int mirostat_m = 100;
-                    llama_sample_temperature(ctx, &candidates_p, temp);
-                    result.tok = llama_sample_token_mirostat(ctx, &candidates_p, mirostat_tau, mirostat_eta, mirostat_m, &mirostat_mu);
-                }
-                else if (mirostat == 2)
-                {
-                    static float mirostat_mu = 2.0f * mirostat_tau;
-                    llama_sample_temperature(ctx, &candidates_p, temp);
-                    result.tok = llama_sample_token_mirostat_v2(ctx, &candidates_p, mirostat_tau, mirostat_eta, &mirostat_mu);
-                }
-                else
-                {
-                    // Temperature sampling
-                    size_t min_keep = std::max(1, n_probs);
-                    llama_sample_top_k(ctx, &candidates_p, top_k, min_keep);
-                    llama_sample_tail_free(ctx, &candidates_p, tfs_z, min_keep);
-                    llama_sample_typical(ctx, &candidates_p, typical_p, min_keep);
-                    llama_sample_top_p(ctx, &candidates_p, top_p, min_keep);
-                    llama_sample_temperature(ctx, &candidates_p, temp);
-                    result.tok = llama_sample_token(ctx, &candidates_p);
-                }
-            }
-
-            for (size_t i = 0; i < std::min(candidates_p.size, (size_t)n_probs); ++i)
-            {
-                result.probs.push_back({candidates_p.data[i].id, candidates_p.data[i].p});
-            }
-            last_n_tokens.erase(last_n_tokens.begin());
-            last_n_tokens.push_back(result.tok);
-            num_tokens_predicted++;
-        }
-
-        // add it to the context
-        embd.push_back(result.tok);
-        // decrement remaining sampling budget
-        --n_remain;
-
-        if (!embd.empty() && embd.back() == llama_token_eos())
-        {
-            // stopping_word = llama_token_to_str(ctx, embd.back());
-            has_next_token = false;
-            stopped_eos = true;
-            LOG_VERBOSE("eos token found", {});
-            return result;
-        }
-
-        has_next_token = params.n_predict == -1 || n_remain != 0;
+    if (params.n_predict == 0)
+    {
+        has_next_token = false;
+        result.tok = llama_token_eos();
         return result;
     }
 
-    size_t findStoppingStrings(const std::string &text, const size_t last_token_size,
-                               const stop_type type)
+    // out of user input, sample next token
+    const float temp = params.temp;
+    const int32_t top_k = params.top_k <= 0 ? llama_n_vocab(ctx) : params.top_k;
+    const float top_p = params.top_p;
+    const float tfs_z = params.tfs_z;
+    const float typical_p = params.typical_p;
+    const int32_t repeat_last_n = params.repeat_last_n < 0 ? params.n_ctx : params.repeat_last_n;
+    const float repeat_penalty = params.repeat_penalty;
+    const float alpha_presence = params.presence_penalty;
+    const float alpha_frequency = params.frequency_penalty;
+    const int mirostat = params.mirostat;
+    const float mirostat_tau = params.mirostat_tau;
+    const float mirostat_eta = params.mirostat_eta;
+    const bool penalize_nl = params.penalize_nl;
+    const int32_t n_probs = params.n_probs;
+
     {
-        size_t stop_pos = std::string::npos;
-        for (const std::string &word : params.antiprompt)
+        auto *logits = llama_get_logits(ctx);
+        auto n_vocab = llama_n_vocab(ctx);
+
+        // Apply params.logit_bias map
+        for (const auto &it : params.logit_bias)
         {
-            size_t pos;
+            logits[it.first] += it.second;
+        }
+
+        std::vector<llama_token_data> candidates;
+        candidates.reserve(n_vocab);
+        for (llama_token token_id = 0; token_id < n_vocab; token_id++)
+        {
+            candidates.emplace_back(llama_token_data{token_id, logits[token_id], 0.0f});
+        }
+
+        llama_token_data_array candidates_p = {candidates.data(), candidates.size(), false};
+
+        // Apply penalties
+        float nl_logit = logits[llama_token_nl()];
+        auto last_n_repeat = std::min(std::min((int)last_n_tokens.size(), repeat_last_n), params.n_ctx);
+        llama_sample_repetition_penalty(ctx, &candidates_p,
+                                        last_n_tokens.data() + last_n_tokens.size() - last_n_repeat,
+                                        last_n_repeat, repeat_penalty);
+        llama_sample_frequency_and_presence_penalties(ctx, &candidates_p,
+                                                      last_n_tokens.data() + last_n_tokens.size() - last_n_repeat,
+                                                      last_n_repeat, alpha_frequency, alpha_presence);
+        if (!penalize_nl)
+        {
+            logits[llama_token_nl()] = nl_logit;
+        }
+
+        if (temp <= 0)
+        {
+            // Greedy sampling
+            result.tok = llama_sample_token_greedy(ctx, &candidates_p);
+            if (n_probs > 0)
+            {
+                llama_sample_softmax(ctx, &candidates_p);
+            }
+        }
+        else
+        {
+            if (mirostat == 1)
+            {
+                static float mirostat_mu = 2.0f * mirostat_tau;
+                const int mirostat_m = 100;
+                llama_sample_temperature(ctx, &candidates_p, temp);
+                result.tok = llama_sample_token_mirostat(ctx, &candidates_p, mirostat_tau, mirostat_eta, mirostat_m, &mirostat_mu);
+            }
+            else if (mirostat == 2)
+            {
+                static float mirostat_mu = 2.0f * mirostat_tau;
+                llama_sample_temperature(ctx, &candidates_p, temp);
+                result.tok = llama_sample_token_mirostat_v2(ctx, &candidates_p, mirostat_tau, mirostat_eta, &mirostat_mu);
+            }
+            else
+            {
+                // Temperature sampling
+                size_t min_keep = std::max(1, n_probs);
+                llama_sample_top_k(ctx, &candidates_p, top_k, min_keep);
+                llama_sample_tail_free(ctx, &candidates_p, tfs_z, min_keep);
+                llama_sample_typical(ctx, &candidates_p, typical_p, min_keep);
+                llama_sample_top_p(ctx, &candidates_p, top_p, min_keep);
+                llama_sample_temperature(ctx, &candidates_p, temp);
+                result.tok = llama_sample_token(ctx, &candidates_p);
+            }
+        }
+
+        for (size_t i = 0; i < std::min(candidates_p.size, (size_t)n_probs); ++i)
+        {
+            result.probs.push_back({candidates_p.data[i].id, candidates_p.data[i].p});
+        }
+        last_n_tokens.erase(last_n_tokens.begin());
+        last_n_tokens.push_back(result.tok);
+        num_tokens_predicted++;
+    }
+
+    // add it to the context
+    embd.push_back(result.tok);
+    // decrement remaining sampling budget
+    --n_remain;
+
+    if (!embd.empty() && embd.back() == llama_token_eos())
+    {
+        // stopping_word = llama_token_to_str(ctx, embd.back());
+        has_next_token = false;
+        stopped_eos = true;
+        LOG_VERBOSE("eos token found", {});
+        return result;
+    }
+
+    has_next_token = params.n_predict == -1 || n_remain != 0;
+    return result;
+}
+
+size_t llama_server_context::findStoppingStrings(const std::string &text, const size_t last_token_size,
+                           const stop_type type)
+{
+    size_t stop_pos = std::string::npos;
+    for (const std::string &word : params.antiprompt)
+    {
+        size_t pos;
+        if (type == STOP_FULL)
+        {
+            const size_t tmp = word.size() + last_token_size;
+            const size_t from_pos = text.size() > tmp ? text.size() - tmp : 0;
+            pos = text.find(word, from_pos);
+        }
+        else
+        {
+            pos = find_partial_stop_string(word, text);
+        }
+        if (pos != std::string::npos &&
+            (stop_pos == std::string::npos || pos < stop_pos))
+        {
             if (type == STOP_FULL)
             {
-                const size_t tmp = word.size() + last_token_size;
-                const size_t from_pos = text.size() > tmp ? text.size() - tmp : 0;
-                pos = text.find(word, from_pos);
+                stopping_word = word;
+                stopped_word = true;
+                has_next_token = false;
             }
-            else
-            {
-                pos = find_partial_stop_string(word, text);
-            }
-            if (pos != std::string::npos &&
-                (stop_pos == std::string::npos || pos < stop_pos))
-            {
-                if (type == STOP_FULL)
-                {
-                    stopping_word = word;
-                    stopped_word = true;
-                    has_next_token = false;
-                }
-                stop_pos = pos;
-            }
+            stop_pos = pos;
         }
-        return stop_pos;
     }
+    return stop_pos;
+}
 
-    completion_token_output doCompletion()
+completion_token_output llama_server_context::doCompletion()
+{
+    const completion_token_output token_with_probs = nextToken();
+
+    const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(ctx, token_with_probs.tok);
+    generated_text += token_text;
+
+    if (params.n_probs > 0)
     {
-        const completion_token_output token_with_probs = nextToken();
-
-        const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(ctx, token_with_probs.tok);
-        generated_text += token_text;
-
-        if (params.n_probs > 0)
-        {
-            generated_token_probs.push_back(token_with_probs);
-        }
-
-        if (multibyte_pending > 0)
-        {
-            multibyte_pending -= token_text.size();
-        }
-        else if (token_text.size() == 1)
-        {
-            const char c = token_text[0];
-            // 2-byte characters: 110xxxxx 10xxxxxx
-            if ((c & 0xE0) == 0xC0)
-            {
-                multibyte_pending = 1;
-                // 3-byte characters: 1110xxxx 10xxxxxx 10xxxxxx
-            }
-            else if ((c & 0xF0) == 0xE0)
-            {
-                multibyte_pending = 2;
-                // 4-byte characters: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-            }
-            else if ((c & 0xF8) == 0xF0)
-            {
-                multibyte_pending = 3;
-            }
-            else
-            {
-                multibyte_pending = 0;
-            }
-        }
-
-        if (multibyte_pending > 0 && !has_next_token)
-        {
-            has_next_token = true;
-            n_remain++;
-        }
-
-        if (!has_next_token && n_remain == 0)
-        {
-            stopped_limit = true;
-        }
-
-        LOG_VERBOSE("next token", {
-                                      {"token", token_with_probs.tok},
-                                      {"token_text", tokens_to_output_formatted_string(ctx, token_with_probs.tok)},
-                                      {"has_next_token", has_next_token},
-                                      {"n_remain", n_remain},
-                                      {"num_tokens_predicted", num_tokens_predicted},
-                                      {"stopped_eos", stopped_eos},
-                                      {"stopped_word", stopped_word},
-                                      {"stopped_limit", stopped_limit},
-                                      {"stopping_word", stopping_word},
-                                  });
-
-        return token_with_probs;
+        generated_token_probs.push_back(token_with_probs);
     }
 
-    std::vector<float> getEmbedding()
+    if (multibyte_pending > 0)
     {
-        static const int n_embd = llama_n_embd(ctx);
-        if (!params.embedding)
-        {
-            LOG_WARNING("embedding disabled", {
-                                                  {"params.embedding", params.embedding},
-                                              });
-            return std::vector<float>(n_embd, 0.0f);
-        }
-        const float *data = llama_get_embeddings(ctx);
-        std::vector<float> embedding(data, data + n_embd);
-        return embedding;
+        multibyte_pending -= token_text.size();
     }
-};
+    else if (token_text.size() == 1)
+    {
+        const char c = token_text[0];
+        // 2-byte characters: 110xxxxx 10xxxxxx
+        if ((c & 0xE0) == 0xC0)
+        {
+            multibyte_pending = 1;
+            // 3-byte characters: 1110xxxx 10xxxxxx 10xxxxxx
+        }
+        else if ((c & 0xF0) == 0xE0)
+        {
+            multibyte_pending = 2;
+            // 4-byte characters: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+        }
+        else if ((c & 0xF8) == 0xF0)
+        {
+            multibyte_pending = 3;
+        }
+        else
+        {
+            multibyte_pending = 0;
+        }
+    }
+
+    if (multibyte_pending > 0 && !has_next_token)
+    {
+        has_next_token = true;
+        n_remain++;
+    }
+
+    if (!has_next_token && n_remain == 0)
+    {
+        stopped_limit = true;
+    }
+
+    LOG_VERBOSE("next token", {
+                                  {"token", token_with_probs.tok},
+                                  {"token_text", tokens_to_output_formatted_string(ctx, token_with_probs.tok)},
+                                  {"has_next_token", has_next_token},
+                                  {"n_remain", n_remain},
+                                  {"num_tokens_predicted", num_tokens_predicted},
+                                  {"stopped_eos", stopped_eos},
+                                  {"stopped_word", stopped_word},
+                                  {"stopped_limit", stopped_limit},
+                                  {"stopping_word", stopping_word},
+                              });
+
+    return token_with_probs;
+}
+
+std::vector<float> llama_server_context::getEmbedding()
+{
+    static const int n_embd = llama_n_embd(ctx);
+    if (!params.embedding)
+    {
+        LOG_WARNING("embedding disabled", {
+                                              {"params.embedding", params.embedding},
+                                          });
+        return std::vector<float>(n_embd, 0.0f);
+    }
+    const float *data = llama_get_embeddings(ctx);
+    std::vector<float> embedding(data, data + n_embd);
+    return embedding;
+}
 
 static void server_print_usage(const char *argv0, const gpt_params &params,
                                const server_params &sparams)
@@ -1364,4 +1317,152 @@ int runServer(int argc, char **argv)
     llama_backend_free();
 
     return 0;
+}
+
+RunContext::RunContext() : llama() {}
+
+RunContext::~RunContext() {
+    llama_backend_free();
+}
+
+void RunContext::completion(const std::string &json_params, Response &res) {
+    llama_server_context& llama = this->llama;
+    auto lock = llama.lock();
+
+    llama.rewind();
+
+    llama_reset_timings(llama.ctx);
+
+    parse_options_completion(json_params, llama);
+
+    llama.loadPrompt();
+    llama.beginCompletion();
+
+    if (!llama.stream) {
+       size_t stop_pos = std::string::npos;
+
+       while (llama.has_next_token) {
+           const completion_token_output token_with_probs = llama.doCompletion();
+           const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(llama.ctx, token_with_probs.tok);
+
+           stop_pos = llama.findStoppingStrings(llama.generated_text,
+               token_text.size(), STOP_FULL);
+       }
+
+       if (stop_pos == std::string::npos) {
+           stop_pos = llama.findStoppingStrings(llama.generated_text, 0, STOP_PARTIAL);
+       }
+       if (stop_pos != std::string::npos) {
+           llama.generated_text.erase(llama.generated_text.begin() + stop_pos,
+               llama.generated_text.end());
+       }
+
+       const json data = format_final_response(llama, llama.generated_text, llama.generated_token_probs);
+
+       llama_print_timings(llama.ctx);
+
+       res.set_content(data.dump(-1, ' ', false, json::error_handler_t::replace),
+                       "application/json");
+    } else {
+        const auto chunked_content_provider = [&](size_t, DataSink & sink) {
+            size_t sent_count = 0;
+            size_t sent_token_probs_index = 0;
+            
+            while (llama.has_next_token) {
+                const completion_token_output token_with_probs = llama.doCompletion();
+                const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(llama.ctx, token_with_probs.tok);
+                if (llama.multibyte_pending > 0) {
+                    continue;
+                }
+                
+                size_t pos = std::min(sent_count, llama.generated_text.size());
+                
+                const std::string str_test = llama.generated_text.substr(pos);
+                size_t stop_pos =
+                llama.findStoppingStrings(str_test, token_text.size(), STOP_FULL);
+                if (stop_pos != std::string::npos) {
+                    llama.generated_text.erase(
+                                               llama.generated_text.begin() + pos + stop_pos,
+                                               llama.generated_text.end());
+                    pos = std::min(sent_count, llama.generated_text.size());
+                } else {
+                    stop_pos = llama.findStoppingStrings(str_test, token_text.size(),
+                                                         STOP_PARTIAL);
+                }
+                
+                const std::string to_send = llama.generated_text.substr(pos, stop_pos);
+                sent_count += to_send.size();
+                
+                std::vector<completion_token_output> probs_output = {};
+                
+                if (llama.params.n_probs > 0) {
+                    const std::vector<llama_token> to_send_toks = llama_tokenize(llama.ctx, to_send, false);
+                    size_t probs_pos = std::min(sent_token_probs_index, llama.generated_token_probs.size());
+                    size_t probs_stop_pos = std::min(sent_token_probs_index + to_send_toks.size(), llama.generated_token_probs.size());
+                    if (probs_pos < probs_stop_pos) {
+                        probs_output = std::vector<completion_token_output>(llama.generated_token_probs.begin() + probs_pos, llama.generated_token_probs.begin() + probs_stop_pos);
+                    }
+                    sent_token_probs_index = probs_stop_pos;
+                }
+                
+                const json data = llama.has_next_token
+                ? format_partial_response(llama, to_send, probs_output)
+                // Generation is done, send extra information.
+                : format_final_response(llama, to_send, llama.generated_token_probs);
+                
+                const std::string str =
+                "data: " +
+                data.dump(-1, ' ', false, json::error_handler_t::replace) +
+                "\n\n";
+                
+                LOG_VERBOSE("data stream", {
+                    { "to_send", str }
+                });
+                
+                if (!sink.write(str.data(), str.size())) {
+                    LOG_VERBOSE("stream closed", {});
+                    llama_print_timings(llama.ctx);
+                    return false;
+                }
+            }
+            
+            llama_print_timings(llama.ctx);
+            sink.done();
+            return true;
+        };
+        res.set_chunked_content_provider("text/event-stream", chunked_content_provider);
+    }
+}
+
+std::variant<int, RunContext> RunContext::runServer(int argc, char **argv) {
+    auto context = RunContext();
+
+    // own arguments required by this example
+    gpt_params params;
+    server_params sparams;
+
+    server_params_parse(argc, argv, sparams, params);
+
+    if (params.model_alias == "unknown")
+    {
+        params.model_alias = params.model;
+    }
+
+    llama_backend_init(params.numa);
+
+    LOG_INFO("build info", {{"build", BUILD_NUMBER},
+                            {"commit", BUILD_COMMIT}});
+    LOG_INFO("system info", {
+                                {"n_threads", params.n_threads},
+                                {"total_threads", std::thread::hardware_concurrency()},
+                                {"system_info", llama_print_system_info()},
+                            });
+
+    // load the model
+    if (!context.llama.loadModel(params))
+    {
+        return 1;
+    }
+    
+    return context;
 }
