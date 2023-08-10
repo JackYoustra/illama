@@ -1322,18 +1322,30 @@ int runServer(int argc, char **argv)
     return 0;
 }
 
-RunContext::RunContext() : llama() {}
+int getInt(const std::variant<int, RunContext>& v) {
+    if (std::holds_alternative<int>(v)) {
+        return std::get<int>(v);
+    }
+    return 0;
+}
+
+RunContext getRunContext(const std::variant<int, RunContext>& v) {
+    return std::get<RunContext>(v);
+}
+
+#include<memory>
+
+RunContext::RunContext() : llama(std::make_shared<llama_server_context>()) {}
 
 void RunContext::completion(const std::string &json_params, Response &res) {
     llama_server_context& llama = *this->llama;
-    assert((void*)&llama == (void*)&this->llama);
     auto lock = llama.lock();
 
     llama.rewind();
 
     llama_reset_timings(llama.ctx);
 
-    parse_options_completion(json_params, llama);
+    parse_options_completion(json::parse(json_params), llama);
 
     llama.loadPrompt();
     llama.beginCompletion();

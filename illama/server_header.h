@@ -85,6 +85,8 @@ struct llama_server_context
 
 struct ResultRunContext;
 
+#include<iostream>
+
 class RunContext {
     RunContext();
 public:
@@ -102,16 +104,8 @@ public:
     static std::variant<int, RunContext> runServer(int argc, char **argv);
 };
 
+int getInt(const std::variant<int, RunContext>& v);
 
-int getInt(const std::variant<int, RunContext>& v) {
-    if (std::holds_alternative<int>(v)) {
-        return std::get<int>(v);
-    }
-    return 0;
-}
-
-RunContext getRunContext(const std::variant<int, RunContext>& v) {
-    return std::get<RunContext>(v);
-}
+RunContext getRunContext(const std::variant<int, RunContext>& v);
 
 #endif /* server_header_h */
