@@ -24,7 +24,7 @@ let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
      // Create [UnsafeMutablePointer<Int8>]:
      var cargs = args.map { strdup($0) }
      // Call C function:
-     let result = runServer(Int32(args.count), &cargs)
+     let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
      assert(result == 0)
      // free dups
      for ptr in cargs { free(ptr) }

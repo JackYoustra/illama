@@ -10,6 +10,8 @@
 
 #include <functional>
 #include <string>
+#include "llama_header.h"
+#include "/Users/jack/Documents/llm/llama.cpp/examples/server/httplib.h"
 
 // completion token output with probabilities
 struct completion_token_output
@@ -81,15 +83,47 @@ struct llama_server_context
 
 };
 
+struct ResultRunContext;
+
 class RunContext {
     RunContext();
-    ~RunContext();
 public:
-    llama_server_context llama;
-
+    // dumb thing: just shared ptr and do the normal ctors
+    std::shared_ptr<llama_server_context> llama;
+    
+    // copy ctor
+    RunContext(const RunContext &other) : llama(other.llama) {}
+    
+    // move ctor
+    RunContext(RunContext &&other) : llama(std::move(other.llama)) {}
+    
     void completion(const std::string &json_params, httplib::Response &res);
     
     static std::variant<int, RunContext> runServer(int argc, char **argv);
+    
+    static ResultRunContext runServerC(int argc, char **argv);
+};
+
+struct ResultRunContext {
+    int error;
+    union Tagged {
+        RunContext result;
+        int8_t garbage[sizeof(RunContext)];
+        
+        Tagged() {}
+        
+        Tagged(RunContext &&success) {
+            result = success;
+        }
+    };
+    Tagged result;
+    
+    ResultRunContext(int error) : error(error), result() {
+        assert(error != 0);
+    }
+    
+    ResultRunContext(RunContext &&success) : error(0), result(success) {}
+    
 };
 
 #endif /* server_header_h */

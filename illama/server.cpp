@@ -177,6 +177,9 @@ llama_server_context::~llama_server_context()
         llama_free_model(model);
         model = nullptr;
     }
+    
+    // perhaps not in the right spot? easier with the shared ptr driving it
+    llama_backend_free();
 }
 
 void llama_server_context::rewind()
@@ -1321,12 +1324,9 @@ int runServer(int argc, char **argv)
 
 RunContext::RunContext() : llama() {}
 
-RunContext::~RunContext() {
-    llama_backend_free();
-}
-
 void RunContext::completion(const std::string &json_params, Response &res) {
-    llama_server_context& llama = this->llama;
+    llama_server_context& llama = *this->llama;
+    assert((void*)&llama == (void*)&this->llama);
     auto lock = llama.lock();
 
     llama.rewind();
@@ -1459,10 +1459,21 @@ std::variant<int, RunContext> RunContext::runServer(int argc, char **argv) {
                             });
 
     // load the model
-    if (!context.llama.loadModel(params))
+    if (!context.llama->loadModel(params))
     {
         return 1;
     }
     
     return context;
 }
+
+ResultRunContext RunContext::runServerC(int argc, char **argv) {
+    const auto& variant = runServer(argc, argv);
+    ResultRunContext result;
+    if (const int* intValue = std::get_if<int>(&variant)) {
+        result.error = intValue;
+    } else {
+        result.result =
+    }
+}
+

@@ -686,7 +686,7 @@
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
 			requirement = {
 				kind = revision;
-				revision = 8756308e4b38acdac0ed9c04318ec7c451e860bf;
+				revision = 3e4e5d700d2cd2896433ae13dc78277f8f56a1b7;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
