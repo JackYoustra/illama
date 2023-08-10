@@ -25,7 +25,10 @@ let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
      var cargs = args.map { strdup($0) }
      // Call C function:
      let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
+     let normieResult = getInt(result)
      assert(result == 0)
+     var rc = getRunContext(result)
      // free dups
      for ptr in cargs { free(ptr) }
+     
  }

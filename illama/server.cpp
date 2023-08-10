@@ -1467,13 +1467,4 @@ std::variant<int, RunContext> RunContext::runServer(int argc, char **argv) {
     return context;
 }
 
-ResultRunContext RunContext::runServerC(int argc, char **argv) {
-    const auto& variant = runServer(argc, argv);
-    ResultRunContext result;
-    if (const int* intValue = std::get_if<int>(&variant)) {
-        result.error = intValue;
-    } else {
-        result.result =
-    }
-}
 

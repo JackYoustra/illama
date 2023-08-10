@@ -100,30 +100,18 @@ public:
     void completion(const std::string &json_params, httplib::Response &res);
     
     static std::variant<int, RunContext> runServer(int argc, char **argv);
-    
-    static ResultRunContext runServerC(int argc, char **argv);
 };
 
-struct ResultRunContext {
-    int error;
-    union Tagged {
-        RunContext result;
-        int8_t garbage[sizeof(RunContext)];
-        
-        Tagged() {}
-        
-        Tagged(RunContext &&success) {
-            result = success;
-        }
-    };
-    Tagged result;
-    
-    ResultRunContext(int error) : error(error), result() {
-        assert(error != 0);
+
+int getInt(const std::variant<int, RunContext>& v) {
+    if (std::holds_alternative<int>(v)) {
+        return std::get<int>(v);
     }
-    
-    ResultRunContext(RunContext &&success) : error(0), result(success) {}
-    
-};
+    return 0;
+}
+
+RunContext getRunContext(const std::variant<int, RunContext>& v) {
+    return std::get<RunContext>(v);
+}
 
 #endif /* server_header_h */
