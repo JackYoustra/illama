@@ -99,7 +99,7 @@ public:
     // move ctor
     RunContext(RunContext &&other) : llama(std::move(other.llama)) {}
     
-    void completion(const std::string &json_params, httplib::Response &res);
+    void completion(const std::string &json_params, httplib::Response &res, void callback(httplib::Response&));
     
     static std::variant<int, RunContext> runServer(int argc, char **argv);
 };

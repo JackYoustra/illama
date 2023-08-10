@@ -35,10 +35,20 @@ let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
      var rc = getRunContext(result)
      // free dups
      for ptr in cargs { free(ptr) }
+     CCompletion.shared = .init()
      var response = httplib.Response()
      let coder = JSONEncoder()
      let jsonData = try coder.encode(JsonInput())
      let json = String(data: jsonData, encoding: .utf8)!
      let cppString = CxxStdlib.std.string(json)
-     rc.completion(cppString, &response)
+     rc.completion(cppString, &response) { midThing in
+         CCompletion.shared.continuation.yield(midThing.pointee)
+     }
+     CCompletion.shared.continuation.yield(with: .success(response))
  }
+
+final class CCompletion {
+    static var shared: CCompletion = CCompletion()
+    
+    let (eventStream, continuation) = AsyncStream<httplib.Response>.makeStream()
+}
