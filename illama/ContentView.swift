@@ -8,6 +8,18 @@
 import SwiftUI
 import SwiftData
 
+actor ThingyThing {
+    var thing: ()? = nil
+    
+    static let shared = ThingyThing()
+    
+    func initialize() async throws {
+        if thing != nil {
+            thing = try await run_llama()
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
@@ -17,7 +29,7 @@ struct ContentView: View {
         NavigationSplitView {
             Text(thing ?? "Loading")
                 .task {
-                    try! await run_llama()
+                    try! await ThingyThing.shared.initialize()
                     print("Model loaded")
                     thing = "Model loaded"
                 }
