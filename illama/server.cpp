@@ -1337,7 +1337,7 @@ RunContext getRunContext(const std::variant<int, RunContext>& v) {
 
 RunContext::RunContext() : llama(std::make_shared<llama_server_context>()) {}
 
-void RunContext::completion(const std::string &json_params, httplib::Response &res, void callback(httplib::Response&)) {
+void RunContext::completion(const std::string &json_params, httplib::Response &res, CompletionCallback callback) {
     llama_server_context& llama = *this->llama;
     auto lock = llama.lock();
 
@@ -1430,6 +1430,7 @@ void RunContext::completion(const std::string &json_params, httplib::Response &r
                     { "to_send", str }
                 });
                 
+                callback(str);
                 if (!sink.write(str.data(), str.size())) {
                     LOG_VERBOSE("stream closed", {});
                     llama_print_timings(llama.ctx);

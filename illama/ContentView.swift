@@ -9,14 +9,15 @@ import SwiftUI
 import SwiftData
 
 actor ThingyThing {
-    var thing: ()? = nil
+    var thing: AsyncStream<String>? = nil
     
     static let shared = ThingyThing()
     
-    func initialize() async throws {
-        if thing != nil {
+    func initialize() async throws -> AsyncStream<String> {
+        if thing == nil {
             thing = try await run_llama()
         }
+        return thing!
     }
 }
 
@@ -29,9 +30,11 @@ struct ContentView: View {
         NavigationSplitView {
             Text(thing ?? "Loading")
                 .task {
-                    try! await ThingyThing.shared.initialize()
-                    print("Model loaded")
-                    thing = "Model loaded"
+                    for await string in try! await ThingyThing.shared.initialize() {
+                        print("string is \(string)")
+                        thing = string
+                    }
+                    print("Done listening")
                 }
             List {
                 ForEach(items) { item in

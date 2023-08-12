@@ -14,7 +14,7 @@ struct JsonInput: Codable {
 
 let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
 
- func run_llama() async throws {
+ func run_llama() async throws -> AsyncStream<String> {
      // run main
  //                    gpt_params.init()
 //     let server_context = ServerContext()
@@ -41,21 +41,10 @@ let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
      let jsonData = try coder.encode(JsonInput())
      let json = String(data: jsonData, encoding: .utf8)!
      let cppString = CxxStdlib.std.string(json)
-     rc.completion(cppString, &response) { midThing in
-         CCompletion.shared.continuation.yield(String(midThing.pointee.body))
+     return AsyncStream { continuation in
+         rc.completion(cppString, &response) { midThing in
+             continuation.yield(String(midThing.pointee.body))
+         }
+         continuation.yield(with: .success(String(response.body)))
      }
-     CCompletion.shared.continuation.yield(with: .success(String(response.body)))
  }
-
-final class CCompletion {
-    static var shared: CCompletion = CCompletion()
-    
-    let eventStream: AsyncStream<String>
-    let continuation: AsyncStream<String>.Continuation
-    
-    init() {
-        let (eventStream, continuation) = AsyncStream<String>.makeStream()
-        self.eventStream = eventStream
-        self.continuation = continuation
-    }
-}
