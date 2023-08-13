@@ -13,6 +13,8 @@
 #include "llama_header.h"
 #include "/Users/jack/Documents/llm/llama.cpp/examples/server/httplib.h"
 
+#define LLAMA_SUPPORTS_GPU_OFFLOAD
+
 // completion token output with probabilities
 struct completion_token_output
 {
@@ -87,7 +89,7 @@ struct ResultRunContext;
 
 #include<iostream>
 
-typedef void (^CompletionCallback)(httplib::Response&);
+typedef void (^CompletionCallback)(const std::string&);
 
 class RunContext {
     RunContext();
@@ -101,7 +103,7 @@ public:
     // move ctor
     RunContext(RunContext &&other) : llama(std::move(other.llama)) {}
     
-    void completion(const std::string &json_params, httplib::Response &res, CompletionCallback callback);
+    void completion(const std::string &json_params, CompletionCallback callback);
     
     static std::variant<int, RunContext> runServer(int argc, char **argv);
 };

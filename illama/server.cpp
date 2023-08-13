@@ -755,6 +755,7 @@ static void server_params_parse(int argc, char **argv, server_params &sparams,
 #ifdef LLAMA_SUPPORTS_GPU_OFFLOAD
             params.n_gpu_layers = std::stoi(argv[i]);
 #else
+#error we need gpu offload
             LOG_WARNING("Not compiled with GPU offload support, --n-gpu-layers option will be ignored. "
                         "See main README.md for information on enabling GPU BLAS support",
                         {{"n_gpu_layers", params.n_gpu_layers}});
@@ -1337,7 +1338,7 @@ RunContext getRunContext(const std::variant<int, RunContext>& v) {
 
 RunContext::RunContext() : llama(std::make_shared<llama_server_context>()) {}
 
-void RunContext::completion(const std::string &json_params, httplib::Response &res, CompletionCallback callback) {
+void RunContext::completion(const std::string &json_params, CompletionCallback callback) {
     llama_server_context& llama = *this->llama;
     auto lock = llama.lock();
 
@@ -1373,76 +1374,68 @@ void RunContext::completion(const std::string &json_params, httplib::Response &r
 
        llama_print_timings(llama.ctx);
 
-        callback(res);
+        callback(data);
     } else {
-        const auto chunked_content_provider = [&](size_t, DataSink & sink) {
-            size_t sent_count = 0;
-            size_t sent_token_probs_index = 0;
-            
-            while (llama.has_next_token) {
-                const completion_token_output token_with_probs = llama.doCompletion();
-                const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(llama.ctx, token_with_probs.tok);
-                if (llama.multibyte_pending > 0) {
-                    continue;
-                }
-                
-                size_t pos = std::min(sent_count, llama.generated_text.size());
-                
-                const std::string str_test = llama.generated_text.substr(pos);
-                size_t stop_pos =
-                llama.findStoppingStrings(str_test, token_text.size(), STOP_FULL);
-                if (stop_pos != std::string::npos) {
-                    llama.generated_text.erase(
-                                               llama.generated_text.begin() + pos + stop_pos,
-                                               llama.generated_text.end());
-                    pos = std::min(sent_count, llama.generated_text.size());
-                } else {
-                    stop_pos = llama.findStoppingStrings(str_test, token_text.size(),
-                                                         STOP_PARTIAL);
-                }
-                
-                const std::string to_send = llama.generated_text.substr(pos, stop_pos);
-                sent_count += to_send.size();
-                
-                std::vector<completion_token_output> probs_output = {};
-                
-                if (llama.params.n_probs > 0) {
-                    const std::vector<llama_token> to_send_toks = llama_tokenize(llama.ctx, to_send, false);
-                    size_t probs_pos = std::min(sent_token_probs_index, llama.generated_token_probs.size());
-                    size_t probs_stop_pos = std::min(sent_token_probs_index + to_send_toks.size(), llama.generated_token_probs.size());
-                    if (probs_pos < probs_stop_pos) {
-                        probs_output = std::vector<completion_token_output>(llama.generated_token_probs.begin() + probs_pos, llama.generated_token_probs.begin() + probs_stop_pos);
-                    }
-                    sent_token_probs_index = probs_stop_pos;
-                }
-                
-                const json data = llama.has_next_token
-                ? format_partial_response(llama, to_send, probs_output)
-                // Generation is done, send extra information.
-                : format_final_response(llama, to_send, llama.generated_token_probs);
-                
-                const std::string str =
-                "data: " +
-                data.dump(-1, ' ', false, json::error_handler_t::replace) +
-                "\n\n";
-                
-                LOG_VERBOSE("data stream", {
-                    { "to_send", str }
-                });
-                
-                callback(str);
-                if (!sink.write(str.data(), str.size())) {
-                    LOG_VERBOSE("stream closed", {});
-                    llama_print_timings(llama.ctx);
-                    return false;
-                }
+        size_t sent_count = 0;
+        size_t sent_token_probs_index = 0;
+        
+        while (llama.has_next_token) {
+            const completion_token_output token_with_probs = llama.doCompletion();
+            const std::string token_text = token_with_probs.tok == -1 ? "" : llama_token_to_str(llama.ctx, token_with_probs.tok);
+            if (llama.multibyte_pending > 0) {
+                continue;
             }
             
-            llama_print_timings(llama.ctx);
-            sink.done();
-            return true;
-        };
-        res.set_chunked_content_provider("text/event-stream", chunked_content_provider);
+            size_t pos = std::min(sent_count, llama.generated_text.size());
+            
+            const std::string str_test = llama.generated_text.substr(pos);
+            size_t stop_pos =
+            llama.findStoppingStrings(str_test, token_text.size(), STOP_FULL);
+            if (stop_pos != std::string::npos) {
+                llama.generated_text.erase(
+                                           llama.generated_text.begin() + pos + stop_pos,
+                                           llama.generated_text.end());
+                pos = std::min(sent_count, llama.generated_text.size());
+            } else {
+                stop_pos = llama.findStoppingStrings(str_test, token_text.size(),
+                                                     STOP_PARTIAL);
+            }
+            
+            const std::string to_send = llama.generated_text.substr(pos, stop_pos);
+            sent_count += to_send.size();
+            
+            std::vector<completion_token_output> probs_output = {};
+            
+            if (llama.params.n_probs > 0) {
+                const std::vector<llama_token> to_send_toks = llama_tokenize(llama.ctx, to_send, false);
+                size_t probs_pos = std::min(sent_token_probs_index, llama.generated_token_probs.size());
+                size_t probs_stop_pos = std::min(sent_token_probs_index + to_send_toks.size(), llama.generated_token_probs.size());
+                if (probs_pos < probs_stop_pos) {
+                    probs_output = std::vector<completion_token_output>(llama.generated_token_probs.begin() + probs_pos, llama.generated_token_probs.begin() + probs_stop_pos);
+                }
+                sent_token_probs_index = probs_stop_pos;
+            }
+            
+            const json data = llama.has_next_token
+            ? format_partial_response(llama, to_send, probs_output)
+            // Generation is done, send extra information.
+            : format_final_response(llama, to_send, llama.generated_token_probs);
+            
+            const std::string dump = data.dump(-1, ' ', false, json::error_handler_t::replace);
+            
+            const std::string str =
+            "data: " +
+            dump +
+            "\n\n";
+            
+            LOG_VERBOSE("data stream", {
+                { "to_send", str }
+            });
+            
+            callback(dump);
+        }
+        
+        llama_print_timings(llama.ctx);
     }
 }
 

@@ -21,6 +21,11 @@ actor ThingyThing {
     }
 }
 
+struct DataString: Codable {
+    let content: String
+    let stop: Bool
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
@@ -30,9 +35,10 @@ struct ContentView: View {
         NavigationSplitView {
             Text(thing ?? "Loading")
                 .task {
-                    for await string in try! await ThingyThing.shared.initialize() {
+                    let decoder = JSONDecoder()
+                    for await string in try! await ThingyThing.shared.initialize().map({ try! decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
                         print("string is \(string)")
-                        thing = string
+                        thing = thing ?? "" + string.content
                     }
                     print("Done listening")
                 }

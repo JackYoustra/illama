@@ -36,15 +36,16 @@ let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
      // free dups
      for ptr in cargs { free(ptr) }
      
-     var response = httplib.Response()
      let coder = JSONEncoder()
      let jsonData = try coder.encode(JsonInput())
      let json = String(data: jsonData, encoding: .utf8)!
      let cppString = CxxStdlib.std.string(json)
      return AsyncStream { continuation in
-         rc.completion(cppString, &response) { midThing in
-             continuation.yield(String(midThing.pointee.body))
+         DispatchQueue.global().async {
+             rc.completion(cppString) { s in
+                 continuation.yield(String(s))
+             }
+             continuation.yield(with: .success(""))
          }
-         continuation.yield(with: .success(String(response.body)))
      }
  }
