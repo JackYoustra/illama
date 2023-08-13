@@ -7,6 +7,7 @@
 
 import Foundation
 import CxxStdlib.string
+import AsyncQueue
 
 struct JsonInput: Codable {
     var stream = true
@@ -47,44 +48,49 @@ struct JsonInput: Codable {
     }()
 }
 
-let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
-
-let initializationTask = Task {
-    // run main
-//                    gpt_params.init()
-//     let server_context = ServerContext()
-//     try await server_context.run()
-    let args = [
-       "server",
-        "-m", path_model,
-        "-c", "2048",
-        "-ngl", "1",
-        "-v"
-    ]
-    // Create [UnsafeMutablePointer<Int8>]:
-    var cargs = args.map { strdup($0) }
-    // Call C function:
-    let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
-    let normieResult = getInt(result)
-    assert(normieResult == 0)
-    let rc = getRunContext(result)
-    // free dups
-    for ptr in cargs { free(ptr) }
-    return rc
+final actor LlamaInstance {
+    static let shared = LlamaInstance()
+    
+    let initializationTask = Task {
+        // run main
+    //                    gpt_params.init()
+    //     let server_context = ServerContext()
+    //     try await server_context.run()
+        let args = [
+           "server",
+            "-m", path_model,
+            "-c", "2048",
+            "-ngl", "1",
+            "-v"
+        ]
+        // Create [UnsafeMutablePointer<Int8>]:
+        var cargs = args.map { strdup($0) }
+        // Call C function:
+        let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
+        let normieResult = getInt(result)
+        assert(normieResult == 0)
+        let rc = getRunContext(result)
+        // free dups
+        for ptr in cargs { free(ptr) }
+        return rc
+    }
+    
+    // implicitly locked, can just rely on engine lock (unless have to worry about cancel?)
+    func run_llama() async throws -> AsyncStream<String> {
+        var rc = await initializationTask.value
+        let coder = JSONEncoder()
+        let jsonData = try coder.encode(JsonInput.input)
+        let json = String(data: jsonData, encoding: .utf8)!
+        let cppString = CxxStdlib.std.string(json)
+        return AsyncStream { continuation in
+            DispatchQueue.global().async {
+                rc.completion(cppString) { s in
+                    continuation.yield(String(s))
+                }
+                continuation.yield(with: .success(""))
+            }
+        }
+    }
 }
 
- func run_llama() async throws -> AsyncStream<String> {
-     var rc = await initializationTask.value
-     let coder = JSONEncoder()
-     let jsonData = try coder.encode(JsonInput.input)
-     let json = String(data: jsonData, encoding: .utf8)!
-     let cppString = CxxStdlib.std.string(json)
-     return AsyncStream { continuation in
-         DispatchQueue.global().async {
-             rc.completion(cppString) { s in
-                 continuation.yield(String(s))
-             }
-             continuation.yield(with: .success(""))
-         }
-     }
- }
+let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!

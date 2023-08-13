@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041ECE0E2A8932240001A821 /* AsyncQueue in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE0D2A8932240001A821 /* AsyncQueue */; };
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
@@ -71,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C9C6D52A7A656700A6B66B /* llama in Frameworks */,
+				041ECE0E2A8932240001A821 /* AsyncQueue in Frameworks */,
 				04C9C6D22A7A64B300A6B66B /* llama in Frameworks */,
 				04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */,
 			);
@@ -187,6 +189,7 @@
 				04C9C6CE2A7A640B00A6B66B /* llama */,
 				04C9C6D12A7A64B300A6B66B /* llama */,
 				04C9C6D42A7A656700A6B66B /* llama */,
+				041ECE0D2A8932240001A821 /* AsyncQueue */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -263,6 +266,7 @@
 			mainGroup = 04C9C68E2A7A619B00A6B66B;
 			packageReferences = (
 				04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */,
+				041ECE0C2A8932240001A821 /* XCRemoteSwiftPackageReference "swift-async-queue" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -683,6 +687,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		041ECE0C2A8932240001A821 /* XCRemoteSwiftPackageReference "swift-async-queue" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dfed/swift-async-queue";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.0;
+			};
+		};
 		04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
@@ -694,6 +706,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		041ECE0D2A8932240001A821 /* AsyncQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 041ECE0C2A8932240001A821 /* XCRemoteSwiftPackageReference "swift-async-queue" */;
+			productName = AsyncQueue;
+		};
 		04C9C6CE2A7A640B00A6B66B /* llama */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = llama;
