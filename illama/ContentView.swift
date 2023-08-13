@@ -33,21 +33,13 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            Text(thing ?? "Loading")
-                .task {
-                    let decoder = JSONDecoder()
-                    for await string in try! await ThingyThing.shared.initialize().map({ try! decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
-                        print("string is \(string)")
-                        thing = thing ?? "" + string.content
-                    }
-                    print("Done listening")
-                }
             List {
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(thing ?? "Loading")
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -66,6 +58,18 @@ struct ContentView: View {
             }
         } detail: {
             Text("Select an item")
+            Text(thing ?? "Loading")
+        }
+        .task {
+            let decoder = JSONDecoder()
+            for await string in try! await ThingyThing.shared.initialize().compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
+                print("string is \(string)")
+                thing = (thing ?? "") + string.content
+                if string.stop {
+                    break
+                }
+            }
+            print("Done listening")
         }
     }
 

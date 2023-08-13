@@ -436,6 +436,7 @@ completion_token_output llama_server_context::nextToken()
         has_next_token = false;
         stopped_eos = true;
         LOG_VERBOSE("eos token found", {});
+        num_tokens_predicted--;
         return result;
     }
 
