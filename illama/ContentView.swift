@@ -8,19 +8,6 @@
 import SwiftUI
 import SwiftData
 
-actor ThingyThing {
-    var thing: AsyncStream<String>? = nil
-    
-    static let shared = ThingyThing()
-    
-    func initialize() async throws -> AsyncStream<String> {
-        if thing == nil {
-            thing = try await run_llama()
-        }
-        return thing!
-    }
-}
-
 struct DataString: Codable {
     let content: String
     let stop: Bool
@@ -62,7 +49,7 @@ struct ContentView: View {
         }
         .task {
             let decoder = JSONDecoder()
-            for await string in try! await ThingyThing.shared.initialize().compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
+            for await string in try! await run_llama().compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
                 print("string is \(string)")
                 thing = (thing ?? "") + string.content
                 if string.stop {
