@@ -15,7 +15,7 @@ struct DataString: Codable {
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Chat]
     @State private var thing: String? = nil
 
     var body: some View {
@@ -62,7 +62,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Chat.preview
             modelContext.insert(newItem)
         }
     }
@@ -78,5 +78,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Chat.self, inMemory: true)
 }

@@ -1,11 +1,38 @@
 {
   "pins" : [
     {
+      "identity" : "gsplayer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wxxsw/GSPlayer.git",
+      "state" : {
+        "revision" : "aa6dad7943d52f5207f7fcc2ad3e4274583443b8",
+        "version" : "0.2.26"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "c75584ac759cbb16b204d0a7de3ebf53ea6b304d",
+        "version" : "7.9.0"
+      }
+    },
+    {
       "identity" : "llama.cpp",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/JackYoustra/llama.cpp",
       "state" : {
         "revision" : "336c479eb3be0aae91b2aa136635317b7bb0d8c4"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms.git",
+      "state" : {
+        "revision" : "b14b7f4c528c942f121c8b860b9410b2bf57825e",
+        "version" : "1.0.0"
       }
     },
     {
@@ -15,6 +42,51 @@
       "state" : {
         "revision" : "a232ddbfb776a3d3e380dce30e7d5f617cffcf82",
         "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics",
+      "state" : {
+        "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swiftuiektensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
+      "state" : {
+        "revision" : "21421df3266c99b83992face9e1523c8f1acb924",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swiftychat",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EnesKaraosman/SwiftyChat",
+      "state" : {
+        "revision" : "be42d39ba63c54c7c83015b23e6ea3ba6793a0ea",
+        "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "videoplayer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wxxsw/VideoPlayer.git",
+      "state" : {
+        "revision" : "3c5b9531ee20e34d3a86142ca2c076a5b99afdb2",
+        "version" : "1.2.3"
+      }
+    },
+    {
+      "identity" : "wrappinghstack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dkk/WrappingHStack.git",
+      "state" : {
+        "revision" : "f31b8fdc57759c5aa5fc98c70746db5556e73300",
+        "version" : "2.2.10"
       }
     }
   ],
