@@ -41,6 +41,10 @@ struct JsonInput: Codable {
         case prompt
     }
     
+    mutating func starterPrompt(prompt: String) {
+        self.prompt = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\nUser: \(prompt)\nllama:"
+    }
+    
     static let input: Self = {
         let json = #"{"stream":true,"n_predict":400,"temperature":0.7,"stop":["</s>","llama:","User:"],"repeat_last_n":256,"repeat_penalty":1.18,"top_k":40,"top_p":0.5,"tfs_z":1,"typical_p":1,"presence_penalty":0,"frequency_penalty":0,"mirostat":0,"mirostat_tau":5,"mirostat_eta":0.1,"prompt":"This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\nUser: Tell me a fun fact\nllama:"}"#
         let decoder = JSONDecoder()
@@ -76,16 +80,25 @@ final actor LlamaInstance {
     }
     
     // implicitly locked, can just rely on engine lock (unless have to worry about cancel?)
-    func run_llama() async throws -> AsyncStream<String> {
+    func run_llama(prompt: String) async throws -> AsyncStream<String> {
         var rc = await initializationTask.value
         let coder = JSONEncoder()
-        let jsonData = try coder.encode(JsonInput.input)
+        var input = JsonInput.input
+        input.starterPrompt(prompt: prompt)
+        let jsonData = try coder.encode(input)
         let json = String(data: jsonData, encoding: .utf8)!
         let cppString = CxxStdlib.std.string(json)
         return AsyncStream { continuation in
             DispatchQueue.global().async {
-                rc.completion(cppString) { s in
-                    continuation.yield(String(s))
+                rc.completion(cppString) { (s: std.string) in
+                    // ugh catalyst no worky with this
+                    #if targetEnvironment(macCatalyst)
+                    let c = convertToCString(s)!
+                    let stringTransfer = String(cString: c)
+                    #else
+                    let stringTransfer = String(s)
+                    #endif
+                    continuation.yield(stringTransfer)
                 }
                 continuation.yield(with: .success(""))
             }

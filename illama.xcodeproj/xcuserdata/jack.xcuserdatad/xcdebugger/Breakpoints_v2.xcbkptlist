@@ -18,6 +18,38 @@
             endingLineNumber = "114"
             landmarkName = "read_raw(ptr, len)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
+                  moduleName = "illama"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "456">
+               </Location>
+               <Location
+                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
+                  moduleName = "illama"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "120">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -50,6 +82,29 @@
             endingLineNumber = "2144"
             landmarkName = "read_raw(ptr, size)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            uuid = "DD086DCF-B4B3-4DCD-BADD-3A1A393899E0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "-[NSPersistentContainer loadPersistentStoresWithCompletionHandler:]"
+            moduleName = "">
+            <Locations>
+               <Location
+                  uuid = "DD086DCF-B4B3-4DCD-BADD-3A1A393899E0 - 8b03bf0388fa4197"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NSPersistentContainer loadPersistentStoresWithCompletionHandler:]"
+                  moduleName = "CoreData"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "0">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

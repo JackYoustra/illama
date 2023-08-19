@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "aspects",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/djpearce/Aspects",
+      "state" : {
+        "branch" : "master",
+        "revision" : "771b2f3da3b1a201f110b141854ca45070036ccc"
+      }
+    },
+    {
       "identity" : "gsplayer",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wxxsw/GSPlayer.git",
@@ -27,6 +36,15 @@
       }
     },
     {
+      "identity" : "lumos",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JackYoustra/lumos",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3515cd2d2053d8974b6abe665ae25b3f3939ddb4"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms.git",
@@ -42,6 +60,15 @@
       "state" : {
         "revision" : "a232ddbfb776a3d3e380dce30e7d5f617cffcf82",
         "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-custom-dump",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-custom-dump.git",
+      "state" : {
+        "revision" : "edd66cace818e1b1c6f1b3349bb1d8e00d6f8b01",
+        "version" : "1.0.0"
       }
     },
     {
@@ -87,6 +114,15 @@
       "state" : {
         "revision" : "f31b8fdc57759c5aa5fc98c70746db5556e73300",
         "version" : "2.2.10"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "23cbf2294e350076ea4dbd7d5d047c1e76b03631",
+        "version" : "1.0.2"
       }
     }
   ],

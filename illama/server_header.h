@@ -112,4 +112,6 @@ int getInt(const std::variant<int, RunContext>& v);
 
 RunContext getRunContext(const std::variant<int, RunContext>& v);
 
+const char* convertToCString(const std::string& str);
+
 #endif /* server_header_h */

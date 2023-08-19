@@ -23,10 +23,9 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        ChatView(chat: item)
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                        Text(thing ?? "Loading")
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -47,23 +46,13 @@ struct ContentView: View {
             Text("Select an item")
             Text(thing ?? "Loading")
         }
-        .task {
-            let decoder = JSONDecoder()
-            for await string in try! await LlamaInstance.shared.run_llama().compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
-                print("string is \(string)")
-                thing = (thing ?? "") + string.content
-                if string.stop {
-                    break
-                }
-            }
-            print("Done listening")
-        }
     }
 
     private func addItem() {
         withAnimation {
             let newItem = Chat.preview
             modelContext.insert(newItem)
+            try! modelContext.save()
         }
     }
 
@@ -71,6 +60,7 @@ struct ContentView: View {
         withAnimation {
             for index in offsets {
                 modelContext.delete(items[index])
+                try! modelContext.save()
             }
         }
     }

@@ -1473,4 +1473,6 @@ std::variant<int, RunContext> RunContext::runServer(int argc, char **argv) {
     return context;
 }
 
-
+const char* convertToCString(const std::string& str) {
+    return str.c_str();
+}

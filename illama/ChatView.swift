@@ -10,15 +10,26 @@ import SwiftyChat
 import Algorithms
 
 struct AnyChatUser: ChatUser {
+    var avatar: UIImage?
+    
+    var avatarURL: URL?
+    
     var userName: String
     
     var id: String {
         userName
     }
+    
+    // blank default init
+    init(avatar: UIImage? = nil, avatarURL: URL? = nil, userName: String = "") {
+        self.avatar = avatar
+        self.avatarURL = avatarURL
+        self.userName = userName
+    }
 }
 
 let llamaUser = AnyChatUser(userName: "llama")
-let user = AnyChatUser(userName: "user")
+let userUser = AnyChatUser(userName: "user")
 
 struct AnyChatMessage: ChatMessage {
     var user: AnyChatUser
@@ -48,7 +59,7 @@ extension ChatMessage {
 extension CompletedConversation {
     var anyChatMessage: [AnyChatMessage] {
         [
-            AnyChatMessage(user: user, messageKind: .text(me), isSender: true),
+            AnyChatMessage(user: userUser, messageKind: .text(me), isSender: true),
             AnyChatMessage(user: llamaUser, messageKind: .text(llama), isSender: false),
         ]
     }
@@ -57,10 +68,10 @@ extension CompletedConversation {
 extension Terminal {
     var anyChatMessage: [AnyChatMessage] {
         switch self {
-        case let .complete(completed):
+        case let .complete(completed), let .progressing(completed):
             return completed.anyChatMessage
         case let .unanswered(prompt):
-            return [AnyChatMessage(user: user, messageKind: .text(prompt), isSender: true)]
+            return [AnyChatMessage(user: userUser, messageKind: .text(prompt), isSender: true)]
         }
     }
 }
@@ -115,6 +126,9 @@ struct ChatView: View {
     @State private var isEditing: Bool = false
     
     var body: some View {
+        let _ = print("Chat is \(chat)")
+        let _ = print("Convo is \(chat.conversation)")
+        let _ = print("Messages is \(chat.messages)")
         SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.messages) {
             AnyView(
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
@@ -127,7 +141,39 @@ struct ChatView: View {
                 }
             )
         }
-        .navigationSubtitle(chat.timestamp.description)
+        .task(id: chat.conversation.promptLeftUnanswered) {
+            // finally
+            defer {
+                if case let .progressing(c) = chat.conversation.asConversation?.current {
+                    chat.conversation.asConversation!.current = .complete(c)
+                }
+            }
+            do {
+                if case let .unanswered(prompt) = chat.conversation.asConversation?.current {
+                    let decoder = JSONDecoder()
+                    for await string in try! await LlamaInstance.shared.run_llama(prompt: prompt).compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
+                        try Task.checkCancellation()
+                        print("string is \(string)")
+                        if let c = chat.conversation.asConversation {
+                            let oldString = c.current.llama
+                            let completedConversation = CompletedConversation(me: c.current.user, llama: (oldString ?? "") + string.content)
+                            if string.stop {
+                                chat.conversation.asConversation!.current = .complete(completedConversation)
+                                break
+                            } else {
+                                chat.conversation.asConversation!.current = .progressing(completedConversation)
+                            }
+                        }
+                    }
+                }
+            } catch {
+            }
+            print("Done listening")
+        }
+        // only do on macOS or catalyst
+        #if targetEnvironment(macCatalyst)
+        .navigationSubtitle(Text("Item at \(chat.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))"))
+        #endif
     }
 }
 

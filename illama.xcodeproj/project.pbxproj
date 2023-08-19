@@ -12,6 +12,8 @@
 		041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE122A8943F20001A821 /* SwiftyChat */; };
 		041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE152A8A3E5C0001A821 /* Algorithms */; };
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
+		048601612A8F46B600292E9F /* Lumos in Frameworks */ = {isa = PBXBuildFile; productRef = 048601602A8F46B600292E9F /* Lumos */; };
+		048601642A8F495800292E9F /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 048601632A8F495800292E9F /* CustomDump */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -77,6 +79,8 @@
 			files = (
 				041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */,
 				04C9C6D52A7A656700A6B66B /* llama in Frameworks */,
+				048601612A8F46B600292E9F /* Lumos in Frameworks */,
+				048601642A8F495800292E9F /* CustomDump in Frameworks */,
 				041ECE0E2A8932240001A821 /* AsyncQueue in Frameworks */,
 				04C9C6D22A7A64B300A6B66B /* llama in Frameworks */,
 				041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */,
@@ -199,6 +203,8 @@
 				041ECE0D2A8932240001A821 /* AsyncQueue */,
 				041ECE122A8943F20001A821 /* SwiftyChat */,
 				041ECE152A8A3E5C0001A821 /* Algorithms */,
+				048601602A8F46B600292E9F /* Lumos */,
+				048601632A8F495800292E9F /* CustomDump */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -278,6 +284,8 @@
 				041ECE0C2A8932240001A821 /* XCRemoteSwiftPackageReference "swift-async-queue" */,
 				041ECE112A8943F20001A821 /* XCRemoteSwiftPackageReference "SwiftyChat" */,
 				041ECE142A8A3E5C0001A821 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */,
+				048601622A8F495800292E9F /* XCRemoteSwiftPackageReference "swift-custom-dump" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -517,7 +525,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nanoflick.illama;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -559,7 +568,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nanoflick.illama;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -723,6 +733,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JackYoustra/lumos";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		048601622A8F495800292E9F /* XCRemoteSwiftPackageReference "swift-custom-dump" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-custom-dump.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
@@ -748,6 +774,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 041ECE142A8A3E5C0001A821 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
 			productName = Algorithms;
+		};
+		048601602A8F46B600292E9F /* Lumos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */;
+			productName = Lumos;
+		};
+		048601632A8F495800292E9F /* CustomDump */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 048601622A8F495800292E9F /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
+			productName = CustomDump;
 		};
 		04C9C6CE2A7A640B00A6B66B /* llama */ = {
 			isa = XCSwiftPackageProductDependency;

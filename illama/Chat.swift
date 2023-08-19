@@ -18,7 +18,30 @@ struct CompletedConversation : SHC {
 
 enum Terminal : SHC {
     case complete(CompletedConversation)
+    case progressing(CompletedConversation)
     case unanswered(String)
+    
+    var llama: String? {
+        switch self {
+        case let .complete(c):
+            return c.llama
+        case let .progressing(c):
+            return c.llama
+        case .unanswered(_):
+            return nil
+        }
+    }
+    
+    var user: String {
+        switch self {
+        case let .complete(c):
+            return c.me
+        case let .progressing(c):
+            return c.me
+        case let .unanswered(s):
+            return s
+        }
+    }
 }
 
 struct Conversation : SHC {
@@ -39,6 +62,38 @@ struct Conversation : SHC {
 enum ChatEntry : SHC {
     case conversation(Conversation)
     case potential
+    
+    // getters, setters
+    var asConversation: Conversation? {
+        get {
+            if case let .conversation(conversation) = self {
+                return conversation
+            }
+            return nil
+        } set {
+            if let newValue = newValue {
+                self = .conversation(newValue)
+            } else {
+                self = .potential
+            }
+        }
+    }
+}
+
+extension ChatEntry {
+    var promptLeftUnanswered: String? {
+        if case let .conversation(conversation) = self {
+            switch conversation.current {
+            case let .unanswered(prompt):
+                return prompt
+            case let .progressing(c):
+                return c.me
+            case .complete(_):
+                break
+            }
+        }
+        return nil
+    }
 }
 
 @Model
