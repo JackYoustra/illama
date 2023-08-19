@@ -149,7 +149,7 @@ struct ChatView: View {
             do {
                 if case let .unanswered(prompt) = chat.conversation?.current {
                     let decoder = JSONDecoder()
-                    for await string in try! await LlamaInstance.shared.run_llama(prompt: prompt).compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
+                    for try await string in try! await LlamaInstance.shared.run_llama(prompt: prompt).compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
                         try Task.checkCancellation()
                         print("string is \(string)")
                         if let c = chat.conversation {
@@ -165,6 +165,8 @@ struct ChatView: View {
                     }
                 }
             } catch {
+                let thing = error
+                fatalError(thing.localizedDescription)
             }
             print("Done listening")
         }

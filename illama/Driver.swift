@@ -80,27 +80,34 @@ final actor LlamaInstance {
     }
     
     // implicitly locked, can just rely on engine lock (unless have to worry about cancel?)
-    func run_llama(prompt: String) async throws -> AsyncStream<String> {
+    func run_llama(prompt: String) async throws -> AsyncThrowingStream<String, Error> {
         var rc = await initializationTask.value
-        let coder = JSONEncoder()
-        var input = JsonInput.input
-        input.starterPrompt(prompt: prompt)
-        let jsonData = try coder.encode(input)
-        let json = String(data: jsonData, encoding: .utf8)!
-        let cppString = CxxStdlib.std.string(json)
-        return AsyncStream { continuation in
+        return AsyncThrowingStream { continuation in
             DispatchQueue.global().async {
-                rc.completion(cppString) { (s: std.string) in
-                    // ugh catalyst no worky with this
-                    #if targetEnvironment(macCatalyst)
-                    let c = convertToCString(s)!
-                    let stringTransfer = String(cString: c)
-                    #else
-                    let stringTransfer = String(s)
-                    #endif
-                    continuation.yield(stringTransfer)
+                do {
+                    let coder = JSONEncoder()
+                    var input = JsonInput.input
+                    input.starterPrompt(prompt: prompt)
+                    let jsonData = try coder.encode(input)
+                    let json = String(data: jsonData, encoding: .utf8)!
+                    // ??? ok so cxxstdlib doesn't do lifetimes well...
+                    try withExtendedLifetime(json) {
+                        let cppString = CxxStdlib.std.string(json)
+                        try rc.completion(cppString) { (s: std.string) in
+                            // ugh catalyst no worky with this
+#if targetEnvironment(macCatalyst)
+                            let c = convertToCString(s)!
+                            let stringTransfer = String(cString: c)
+#else
+                            let stringTransfer = String(s)
+#endif
+                            continuation.yield(stringTransfer)
+                        }
+                        continuation.yield(with: .success(""))
+                    }
+                } catch {
+                    continuation.finish(throwing: error)
                 }
-                continuation.yield(with: .success(""))
             }
         }
     }
