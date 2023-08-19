@@ -79,15 +79,13 @@ extension Terminal {
 extension Chat {
     var messages: [AnyChatMessage] {
         get {
-            switch conversation {
-            case .potential:
-                return []
-            case let .conversation(conversation):
+            if let conversation {
                 return conversation.prior.flatMap(\.anyChatMessage)
             }
+            return []
         } set {
             if newValue.isEmpty {
-                conversation = .potential
+                conversation = nil
             } else {
                 var conversationItems = [CompletedConversation]()
                 var current: Terminal? = nil
@@ -110,11 +108,11 @@ extension Chat {
                         current = .complete(last)
                     } else {
                         // pending
-                        conversation = .potential
+                        conversation = nil
                         return
                     }
                 }
-                conversation = .conversation(Conversation(prior: conversationItems, current: current!))
+                conversation = Conversation(prior: conversationItems, current: current!)
             }
         }
     }
@@ -134,7 +132,7 @@ struct ChatView: View {
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
                     switch messageKind {
                     case .text(let string):
-                        chat.conversation = .conversation(Conversation(prior: [], current: .unanswered(string)))
+                        chat.conversation = Conversation(prior: [], current: .unanswered(string))
                     default:
                         break
                     }
@@ -144,24 +142,24 @@ struct ChatView: View {
         .task(id: chat.conversation.promptLeftUnanswered) {
             // finally
             defer {
-                if case let .progressing(c) = chat.conversation.asConversation?.current {
-                    chat.conversation.asConversation!.current = .complete(c)
+                if case let .progressing(c) = chat.conversation?.current {
+                    chat.conversation!.current = .complete(c)
                 }
             }
             do {
-                if case let .unanswered(prompt) = chat.conversation.asConversation?.current {
+                if case let .unanswered(prompt) = chat.conversation?.current {
                     let decoder = JSONDecoder()
                     for await string in try! await LlamaInstance.shared.run_llama(prompt: prompt).compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
                         try Task.checkCancellation()
                         print("string is \(string)")
-                        if let c = chat.conversation.asConversation {
+                        if let c = chat.conversation {
                             let oldString = c.current.llama
                             let completedConversation = CompletedConversation(me: c.current.user, llama: (oldString ?? "") + string.content)
                             if string.stop {
-                                chat.conversation.asConversation!.current = .complete(completedConversation)
+                                chat.conversation!.current = .complete(completedConversation)
                                 break
                             } else {
-                                chat.conversation.asConversation!.current = .progressing(completedConversation)
+                                chat.conversation!.current = .progressing(completedConversation)
                             }
                         }
                     }

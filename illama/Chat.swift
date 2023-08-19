@@ -44,7 +44,8 @@ enum Terminal : SHC {
     }
 }
 
-struct Conversation : SHC {
+@Model
+final class Conversation {
     var prior: [CompletedConversation]
     var current: Terminal
     
@@ -59,7 +60,7 @@ struct Conversation : SHC {
     }
 }
 
-enum ChatEntry : SHC {
+enum ChatEntry {
     case conversation(Conversation)
     case potential
     
@@ -77,6 +78,12 @@ enum ChatEntry : SHC {
                 self = .potential
             }
         }
+    }
+}
+
+extension Optional where Wrapped == Conversation {
+    var promptLeftUnanswered: String? {
+        (self.map(ChatEntry.conversation) ?? .potential).promptLeftUnanswered
     }
 }
 
@@ -100,18 +107,18 @@ extension ChatEntry {
 final class Chat {
     @Attribute(.unique) var id: UUID
     var timestamp: Date
-    var conversation: ChatEntry
+    var conversation: Conversation?
     
     init(timestamp: Date) {
         self.id = UUID()
         self.timestamp = timestamp
-        self.conversation = .potential
+        self.conversation = nil
     }
     
     init(timestamp: Date, prompt: String) {
         self.id = UUID()
         self.timestamp = timestamp
-        self.conversation = .conversation(.init(prompt: prompt))
+        self.conversation = Conversation(prompt: prompt)
     }
     
     static var preview: Self {
