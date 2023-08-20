@@ -91,17 +91,18 @@ final actor LlamaInstance {
                     let jsonData = try coder.encode(input)
                     let json = String(data: jsonData, encoding: .utf8)!
                     // ??? ok so cxxstdlib doesn't do lifetimes well...
-                    try withExtendedLifetime(json) {
-                        let cppString = CxxStdlib.std.string(json)
-                        try rc.completion(cppString) { (s: std.string) in
-                            // ugh catalyst no worky with this
+                    withExtendedLifetime(json) {
+                        json.utf8CString.withUnsafeBufferPointer { p in
+                            rc.completion(p.baseAddress) { (s: std.string) in
+                                // ugh catalyst no worky with this
 #if targetEnvironment(macCatalyst)
-                            let c = convertToCString(s)!
-                            let stringTransfer = String(cString: c)
+                                let c = convertToCString(s)!
+                                let stringTransfer = String(cString: c)
 #else
-                            let stringTransfer = String(s)
+                                let stringTransfer = String(s)
 #endif
-                            continuation.yield(stringTransfer)
+                                continuation.yield(stringTransfer)
+                            }
                         }
                         continuation.yield(with: .success(""))
                     }

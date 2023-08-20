@@ -1339,7 +1339,8 @@ RunContext getRunContext(const std::variant<int, RunContext>& v) {
 
 RunContext::RunContext() : llama(std::make_shared<llama_server_context>()) {}
 
-void RunContext::completion(const std::string json_params, CompletionCallback callback) {
+void RunContext::completion(const char* c_json_params, CompletionCallback callback) {
+    const std::string json_params(c_json_params);
     llama_server_context& llama = *this->llama;
     auto lock = llama.lock();
 
