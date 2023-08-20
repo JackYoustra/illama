@@ -14,6 +14,11 @@
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		048601612A8F46B600292E9F /* Lumos in Frameworks */ = {isa = PBXBuildFile; productRef = 048601602A8F46B600292E9F /* Lumos */; };
 		048601642A8F495800292E9F /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 048601632A8F495800292E9F /* CustomDump */; };
+		048601672A910F2800292E9F /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = 048601662A910F2800292E9F /* LoremSwiftum */; };
+		0486016A2A910F3800292E9F /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 048601692A910F3800292E9F /* Dependencies */; };
+		0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486016B2A910F5C00292E9F /* LlamaClient.swift */; };
+		048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D412A911327007B6443 /* AsyncAlgorithms */; };
+		048E4D452A9114AF007B6443 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D442A9114AF007B6443 /* CombineExt */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -52,6 +57,7 @@
 		041ECE0F2A89333E0001A821 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "illama-Bridging-Header.h"; sourceTree = "<group>"; };
 		0436D58D2A7F828F0091D9CF /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
+		0486016B2A910F5C00292E9F /* LlamaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaClient.swift; sourceTree = "<group>"; };
 		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,9 +84,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */,
+				048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */,
 				04C9C6D52A7A656700A6B66B /* llama in Frameworks */,
+				048601672A910F2800292E9F /* LoremSwiftum in Frameworks */,
+				048E4D452A9114AF007B6443 /* CombineExt in Frameworks */,
 				048601612A8F46B600292E9F /* Lumos in Frameworks */,
 				048601642A8F495800292E9F /* CustomDump in Frameworks */,
+				0486016A2A910F3800292E9F /* Dependencies in Frameworks */,
 				041ECE0E2A8932240001A821 /* AsyncQueue in Frameworks */,
 				04C9C6D22A7A64B300A6B66B /* llama in Frameworks */,
 				041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */,
@@ -141,6 +151,7 @@
 				04C9C6A32A7A619E00A6B66B /* Preview Content */,
 				0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */,
 				041ECE0F2A89333E0001A821 /* ChatView.swift */,
+				0486016B2A910F5C00292E9F /* LlamaClient.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -205,6 +216,10 @@
 				041ECE152A8A3E5C0001A821 /* Algorithms */,
 				048601602A8F46B600292E9F /* Lumos */,
 				048601632A8F495800292E9F /* CustomDump */,
+				048601662A910F2800292E9F /* LoremSwiftum */,
+				048601692A910F3800292E9F /* Dependencies */,
+				048E4D412A911327007B6443 /* AsyncAlgorithms */,
+				048E4D442A9114AF007B6443 /* CombineExt */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -286,6 +301,10 @@
 				041ECE142A8A3E5C0001A821 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 				0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */,
 				048601622A8F495800292E9F /* XCRemoteSwiftPackageReference "swift-custom-dump" */,
+				048601652A910F2800292E9F /* XCRemoteSwiftPackageReference "LoremSwiftum" */,
+				048601682A910F3800292E9F /* XCRemoteSwiftPackageReference "swift-dependencies" */,
+				048E4D402A911327007B6443 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
+				048E4D432A9114AF007B6443 /* XCRemoteSwiftPackageReference "CombineExt" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -337,6 +356,7 @@
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
+				0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,6 +769,38 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		048601652A910F2800292E9F /* XCRemoteSwiftPackageReference "LoremSwiftum" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lukaskubanek/LoremSwiftum.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		048601682A910F3800292E9F /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		048E4D402A911327007B6443 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+		048E4D432A9114AF007B6443 /* XCRemoteSwiftPackageReference "CombineExt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineExt";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.1;
+			};
+		};
 		04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
@@ -784,6 +836,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 048601622A8F495800292E9F /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
 			productName = CustomDump;
+		};
+		048601662A910F2800292E9F /* LoremSwiftum */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 048601652A910F2800292E9F /* XCRemoteSwiftPackageReference "LoremSwiftum" */;
+			productName = LoremSwiftum;
+		};
+		048601692A910F3800292E9F /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 048601682A910F3800292E9F /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
+		048E4D412A911327007B6443 /* AsyncAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 048E4D402A911327007B6443 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
+			productName = AsyncAlgorithms;
+		};
+		048E4D442A9114AF007B6443 /* CombineExt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 048E4D432A9114AF007B6443 /* XCRemoteSwiftPackageReference "CombineExt" */;
+			productName = CombineExt;
 		};
 		04C9C6CE2A7A640B00A6B66B /* llama */ = {
 			isa = XCSwiftPackageProductDependency;

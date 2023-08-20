@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftyChat
 import Algorithms
+import Dependencies
+import CustomDump
 
 struct AnyChatUser: ChatUser {
     var avatar: UIImage?
@@ -132,7 +134,9 @@ struct ChatView: View {
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
                     switch messageKind {
                     case .text(let string):
+                        print("Updating chat to have \(string)")
                         chat.conversation = Conversation(prior: [], current: .unanswered(string))
+                        print("Chat convo is \(customDump(chat.conversation)) and messages are now \(chat.messages)")
                     default:
                         break
                     }
@@ -147,9 +151,10 @@ struct ChatView: View {
                 }
             }
             do {
+                @Dependency(\.llama) var llamaClient;
+
                 if case let .unanswered(prompt) = chat.conversation?.current {
-                    let decoder = JSONDecoder()
-                    for try await string in try! await LlamaInstance.shared.run_llama(prompt: prompt).compactMap({ try? decoder.decode(DataString.self, from: $0.data(using: .utf8)!) }) {
+                    for try await string in try! await llamaClient.query(prompt) {
                         try Task.checkCancellation()
                         print("string is \(string)")
                         if let c = chat.conversation {
@@ -179,4 +184,5 @@ struct ChatView: View {
 
 #Preview {
     ChatView(chat: Chat.preview)
+        .modelContainer(for: Chat.self, inMemory: true)
 }

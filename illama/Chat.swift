@@ -48,6 +48,7 @@ enum Terminal : SHC {
 final class Conversation {
     var prior: [CompletedConversation]
     var current: Terminal
+    @Relationship(inverse: \Chat.conversation)
     
     init(prompt: String) {
         prior = []
@@ -107,7 +108,7 @@ extension ChatEntry {
 final class Chat {
     @Attribute(.unique) var id: UUID
     var timestamp: Date
-    var conversation: Conversation?
+    @Relationship(deleteRule: .cascade) var conversation: Conversation?
     
     init(timestamp: Date) {
         self.id = UUID()
