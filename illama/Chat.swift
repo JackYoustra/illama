@@ -152,15 +152,33 @@ extension Optional where Wrapped == Conversation {
 @Model
 final class Chat {
     @Attribute(.unique) var id: UUID
-    var timestamp: Date
-    var messages: [String]
-    var isAnswering: Bool
+    var _timestamp: Date?
+    var _messages: [String]?
+    var _isAnswering: Bool?
     
+    @Transient
+    var timestamp: Date {
+        get { _timestamp ?? .now }
+        set { _timestamp = newValue }
+    }
+    
+    @Transient
+    var messages: [String] {
+        get { _messages ?? [] }
+        set { _messages = newValue }
+    }
+    
+    @Transient
+    var isAnswering: Bool {
+        get { _isAnswering ?? false }
+        set { _isAnswering = newValue }
+    }
+
     init(timestamp: Date) {
         self.id = UUID()
-        self.timestamp = timestamp
-        self.messages = []
-        self.isAnswering = false
+        self._timestamp = timestamp
+        self._messages = []
+        self._isAnswering = false
     }
     
     convenience init(timestamp: Date, prompt: String) {
