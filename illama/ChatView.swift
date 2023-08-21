@@ -42,9 +42,15 @@ struct AnyChatMessage: ChatMessage {
     
     var isSender: Bool
     
-    var date: Date = .now
+    var date: Date
     
     var id: UUID = UUID()
+}
+
+extension AnyChatMessage {
+    var singleMessage: SingleMessage {
+        SingleMessage(text: text!, timestamp: date)
+    }
 }
 
 extension ChatMessage {
@@ -61,8 +67,15 @@ extension ChatMessage {
 extension CompletedConversation {
     var anyChatMessage: [AnyChatMessage] {
         [
-            AnyChatMessage(user: userUser, messageKind: .text(me), isSender: true),
-            AnyChatMessage(user: llamaUser, messageKind: .text(llama), isSender: false),
+            AnyChatMessage(user: userUser, messageKind: .text(me.text), isSender: true, date: me.timestamp),
+            AnyChatMessage(user: llamaUser, messageKind: .text(llama.text), isSender: false, date: me.timestamp),
+        ]
+    }
+    
+    var messages: [SingleMessage] {
+        [
+            me,
+            llama
         ]
     }
 }
@@ -73,7 +86,16 @@ extension Terminal {
         case let .complete(completed), let .progressing(completed):
             return completed.anyChatMessage
         case let .unanswered(prompt):
-            return [AnyChatMessage(user: userUser, messageKind: .text(prompt), isSender: true)]
+            return [AnyChatMessage(user: userUser, messageKind: .text(prompt.text), isSender: true, date: prompt.timestamp)]
+        }
+    }
+    
+    var messages: [SingleMessage] {
+        switch self {
+        case let .complete(completed), let .progressing(completed):
+            return completed.messages
+        case let .unanswered(prompt):
+            return [prompt]
         }
     }
 }
@@ -99,11 +121,11 @@ extension Chat {
                     case 1:
                         let message = chunk.first!
                         assert(message.isSender)
-                        current = .unanswered(message.text!)
+                        current = .unanswered(message.singleMessage)
                     case 2:
                         assert(chunk[0].isSender)
                         assert(!chunk[1].isSender)
-                        conversationItems.append(CompletedConversation(me: chunk[0].text!, llama: chunk[1].text!))
+                        conversationItems.append(CompletedConversation(me: chunk[0].singleMessage, llama: chunk[1].singleMessage))
                     default:
                         fatalError()
                     }
@@ -130,11 +152,7 @@ struct ChatView: View {
     @StateObject private var styling = ChatMessageCellStyle()
     
     var body: some View {
-        let _ = print("Chat is \(chat)")
-        let _ = print("Convo is \(chat.conversation)")
-        let _ = print("Messages is \(chat.messages)")
-        let _ = print("is answering is \(chat.isAnswering)")
-        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.anyChatMessages) {
+        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.anyChatMessages, dateHeaderTimeInterval: 1.0) {
             AnyView(
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
                     switch messageKind {
@@ -144,9 +162,7 @@ struct ChatView: View {
                             message = string
                         } else {
                             // normal order / flow
-                            print("Updating chat to have \(string)")
                             chat.add(query: string)
-                            print("Chat convo is \(customDump(chat.conversation)) and messages are now \(chat.messages)")
                         }
                     default:
                         break
@@ -168,12 +184,14 @@ struct ChatView: View {
                 @Dependency(\.llama) var llamaClient;
 
                 if case let .unanswered(prompt) = chat.conversation?.current {
-                    for try await string in try! await llamaClient.query(prompt) {
+                    for try await string in try! await llamaClient.query(prompt.text) {
                         try Task.checkCancellation()
                         print("string is \(string)")
                         if let c = chat.conversation {
-                            let oldString = c.current.llama
-                            let completedConversation = CompletedConversation(me: c.current.user, llama: (oldString ?? "") + string.content)
+                            let oldString = c.current.llama?.text
+                            let newText = (oldString ?? "") + string.content
+                            // TODO: If we enable resume after interruption, maybe clobber timestamp?
+                            let completedConversation = CompletedConversation(me: c.current.user, llama: SingleMessage(text: newText, timestamp: c.current.llama?.timestamp ?? Date.now))
                             if string.stop {
                                 chat.conversation!.current = .complete(completedConversation)
                                 break

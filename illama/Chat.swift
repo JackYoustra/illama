@@ -12,16 +12,16 @@ typealias SHC = Sendable & Hashable & Codable
 typealias SHCI = SHC & Identifiable
 
 struct CompletedConversation : SHC {
-    var me: String
-    var llama: String
+    var me: SingleMessage
+    var llama: SingleMessage
 }
 
 enum Terminal : SHC {
     case complete(CompletedConversation)
     case progressing(CompletedConversation)
-    case unanswered(String)
+    case unanswered(SingleMessage)
     
-    var llama: String? {
+    var llama: SingleMessage? {
         switch self {
         case let .complete(c):
             return c.llama
@@ -32,7 +32,7 @@ enum Terminal : SHC {
         }
     }
     
-    var user: String {
+    var user: SingleMessage {
         switch self {
         case let .complete(c):
             return c.me
@@ -72,7 +72,7 @@ struct Conversation {
     
     init(prompt: String) {
         prior = []
-        current = .unanswered(prompt)
+        current = .unanswered(SingleMessage(text: prompt, timestamp: .now))
     }
     
     init(prior: [CompletedConversation], current: Terminal) {
@@ -82,7 +82,7 @@ struct Conversation {
     
     mutating func add(query: String) {
         prior.append(current.completed!)
-        current = .unanswered(query)
+        current = .unanswered(SingleMessage(text: query, timestamp: .now))
     }
 }
 
@@ -121,7 +121,7 @@ extension Chat {
                 return Conversation(prior: prior, current: current!)
             }
         } set {
-            messages = newValue?.anyChatMessages.map { $0.text! } ?? []
+            messages = newValue?.anyChatMessages.map(\.singleMessage) ?? []
             isAnswering = newValue?.current.isAnswering ?? false
         }
     }
@@ -133,7 +133,7 @@ extension Chat {
 }
 
 extension Optional where Wrapped == Conversation {
-    var promptLeftUnanswered: String? {
+    var promptLeftUnanswered: SingleMessage? {
         if let self {
             switch self.current {
             case let .unanswered(prompt):
@@ -149,11 +149,16 @@ extension Optional where Wrapped == Conversation {
     }
 }
 
+struct SingleMessage: SHC {
+    let text: String
+    var timestamp: Date
+}
+
 @Model
 final class Chat {
     @Attribute(.unique) var id: UUID
     var _timestamp: Date?
-    var _messages: [String]?
+    var _messages: [SingleMessage]?
     var _isAnswering: Bool?
     
     @Transient
@@ -163,7 +168,7 @@ final class Chat {
     }
     
     @Transient
-    var messages: [String] {
+    var messages: [SingleMessage] {
         get { _messages ?? [] }
         set { _messages = newValue }
     }
