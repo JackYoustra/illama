@@ -42,13 +42,33 @@ enum Terminal : SHC {
             return s
         }
     }
+    
+    var isAnswering: Bool {
+        switch self {
+        case .complete(_):
+            return false
+        case .progressing(_):
+            return true
+        case .unanswered(_):
+            return true
+        }
+    }
+    
+    var completed: CompletedConversation? {
+        switch self {
+        case let .complete(c):
+            return c
+        case let .progressing(c):
+            return nil
+        case .unanswered(_):
+            return nil
+        }
+    }
 }
 
-@Model
-final class Conversation {
+struct Conversation {
     var prior: [CompletedConversation]
     var current: Terminal
-    @Relationship(inverse: \Chat.conversation)
     
     init(prompt: String) {
         prior = []
@@ -59,48 +79,73 @@ final class Conversation {
         self.prior = prior
         self.current = current
     }
+    
+    mutating func add(query: String) {
+        prior.append(current.completed!)
+        current = .unanswered(query)
+    }
 }
 
-enum ChatEntry {
-    case conversation(Conversation)
-    case potential
-    
-    // getters, setters
-    var asConversation: Conversation? {
+extension Chat {
+    @Transient
+    var conversation: Conversation? {
         get {
-            if case let .conversation(conversation) = self {
-                return conversation
-            }
-            return nil
-        } set {
-            if let newValue = newValue {
-                self = .conversation(newValue)
+            if messages.isEmpty {
+                return nil
             } else {
-                self = .potential
+                var prior = [CompletedConversation]()
+                var current: Terminal? = nil
+                for chunk in messages.chunks(ofCount: 2) {
+                    switch chunk.count {
+                    case 1:
+                        assert(isAnswering)
+                        current = .unanswered(chunk.first!)
+                    case 2:
+                        prior.append(CompletedConversation(me: chunk.first!, llama: chunk.last!))
+                    default:
+                        fatalError()
+                    }
+                }
+                if current == nil {
+                    if let last = prior.popLast() {
+                        if isAnswering {
+                            current = .progressing(last)
+                        } else {
+                            current = .complete(last)
+                        }
+                    } else {
+                        // pending first ask, should be handled by checking if is empty
+                        fatalError()
+                    }
+                }
+                return Conversation(prior: prior, current: current!)
             }
+        } set {
+            messages = newValue?.anyChatMessages.map { $0.text! } ?? []
+            isAnswering = newValue?.current.isAnswering ?? false
         }
+    }
+    
+    func add(query: String) {
+        assert(!isAnswering)
+        conversation?.add(query: query)
     }
 }
 
 extension Optional where Wrapped == Conversation {
     var promptLeftUnanswered: String? {
-        (self.map(ChatEntry.conversation) ?? .potential).promptLeftUnanswered
-    }
-}
-
-extension ChatEntry {
-    var promptLeftUnanswered: String? {
-        if case let .conversation(conversation) = self {
-            switch conversation.current {
+        if let self {
+            switch self.current {
             case let .unanswered(prompt):
                 return prompt
             case let .progressing(c):
                 return c.me
             case .complete(_):
-                break
+                return nil
             }
+        } else {
+            return nil
         }
-        return nil
     }
 }
 
@@ -108,17 +153,18 @@ extension ChatEntry {
 final class Chat {
     @Attribute(.unique) var id: UUID
     var timestamp: Date
-    @Relationship(deleteRule: .cascade) var conversation: Conversation?
+    var messages: [String]
+    var isAnswering: Bool
     
     init(timestamp: Date) {
         self.id = UUID()
         self.timestamp = timestamp
-        self.conversation = nil
+        self.messages = []
+        self.isAnswering = false
     }
     
-    init(timestamp: Date, prompt: String) {
-        self.id = UUID()
-        self.timestamp = timestamp
+    convenience init(timestamp: Date, prompt: String) {
+        self.init(timestamp: timestamp)
         self.conversation = Conversation(prompt: prompt)
     }
     

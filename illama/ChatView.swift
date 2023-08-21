@@ -78,13 +78,16 @@ extension Terminal {
     }
 }
 
+extension Conversation {
+    var anyChatMessages: [AnyChatMessage] {
+        prior.flatMap(\.anyChatMessage) + current.anyChatMessage
+    }
+}
+
 extension Chat {
-    var messages: [AnyChatMessage] {
+    var anyChatMessages: [AnyChatMessage] {
         get {
-            if let conversation {
-                return conversation.prior.flatMap(\.anyChatMessage)
-            }
-            return []
+            conversation?.anyChatMessages ?? []
         } set {
             if newValue.isEmpty {
                 conversation = nil
@@ -124,25 +127,36 @@ struct ChatView: View {
     @Bindable var chat: Chat
     @State private var message: String = ""
     @State private var isEditing: Bool = false
+    @StateObject private var styling = ChatMessageCellStyle()
     
     var body: some View {
         let _ = print("Chat is \(chat)")
         let _ = print("Convo is \(chat.conversation)")
         let _ = print("Messages is \(chat.messages)")
-        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.messages) {
+        let _ = print("is answering is \(chat.isAnswering)")
+        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.anyChatMessages) {
             AnyView(
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
                     switch messageKind {
                     case .text(let string):
-                        print("Updating chat to have \(string)")
-                        chat.conversation = Conversation(prior: [], current: .unanswered(string))
-                        print("Chat convo is \(customDump(chat.conversation)) and messages are now \(chat.messages)")
+                        // only update if we can!
+                        if chat.isAnswering {
+                            message = string
+                        } else {
+                            // normal order / flow
+                            print("Updating chat to have \(string)")
+                            chat.add(query: string)
+                            print("Chat convo is \(customDump(chat.conversation)) and messages are now \(chat.messages)")
+                        }
                     default:
                         break
                     }
                 }
             )
         }
+        .environmentObject(styling)
+        // We can't really handle interruption rn, disable button until we're done
+        .disabled(chat.isAnswering)
         .task(id: chat.conversation.promptLeftUnanswered) {
             // finally
             defer {

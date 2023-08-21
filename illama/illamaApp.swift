@@ -36,6 +36,6 @@ struct illamaApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: Chat.self, inMemory: true)
+        .modelContainer(for: Chat.self)
     }
 }

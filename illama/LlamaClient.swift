@@ -49,11 +49,12 @@ extension LlamaClient {
     static let preview: LlamaClient = LlamaClient { str in
         chain(
                 zip(
-                Lorem.words(3)
+                Lorem.words(100)
                     .split(separator: /\s/)
+                    .map { $0 + " " }
                     .async,
                 SuspendingClock()
-                    .timer(interval: .milliseconds(50))
+                    .timer(interval: .milliseconds(20))
             ).map { DataString(content: String($0.0), stop: false) },
             [DataString(content: "Done!", stop: true)].async
         )
