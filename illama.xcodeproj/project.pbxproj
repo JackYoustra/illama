@@ -34,6 +34,9 @@
 		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
 		04C9C6D52A7A656700A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D42A7A656700A6B66B /* llama */; };
 		04C9C6D72A7A75A600A6B66B /* main in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6D62A7A75A600A6B66B /* main */; };
+		04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
+		04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */; };
+		04D7D1512A96E27A001B35FC /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04D7D1502A96E27A001B35FC /* ExyteChat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +79,8 @@
 		04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q6k.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q6k.bin"; sourceTree = "<group>"; };
 		04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-vocab.bin"; path = "../../../../llm/llama.cpp/models/ggml-vocab.bin"; sourceTree = "<group>"; };
 		04C9C6D62A7A75A600A6B66B /* main */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = main; path = "../../../../llm/llama.cpp/build-metal/bin/main"; sourceTree = "<group>"; };
+		04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyChatView.swift; sourceTree = "<group>"; };
+		04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExyteChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +97,7 @@
 				048601642A8F495800292E9F /* CustomDump in Frameworks */,
 				0486016A2A910F3800292E9F /* Dependencies in Frameworks */,
 				041ECE0E2A8932240001A821 /* AsyncQueue in Frameworks */,
+				04D7D1512A96E27A001B35FC /* ExyteChat in Frameworks */,
 				04C9C6D22A7A64B300A6B66B /* llama in Frameworks */,
 				041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */,
 				04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */,
@@ -152,6 +158,8 @@
 				0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */,
 				041ECE0F2A89333E0001A821 /* ChatView.swift */,
 				0486016B2A910F5C00292E9F /* LlamaClient.swift */,
+				04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */,
+				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -220,6 +228,7 @@
 				048601692A910F3800292E9F /* Dependencies */,
 				048E4D412A911327007B6443 /* AsyncAlgorithms */,
 				048E4D442A9114AF007B6443 /* CombineExt */,
+				04D7D1502A96E27A001B35FC /* ExyteChat */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -305,6 +314,7 @@
 				048601682A910F3800292E9F /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 				048E4D402A911327007B6443 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 				048E4D432A9114AF007B6443 /* XCRemoteSwiftPackageReference "CombineExt" */,
+				04D7D14F2A96E27A001B35FC /* XCRemoteSwiftPackageReference "chat" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -351,12 +361,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */,
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
 				0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */,
+				04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -809,6 +821,14 @@
 				revision = 75f7e656475d8019756e9ccff7242e89e134f4ef;
 			};
 		};
+		04D7D14F2A96E27A001B35FC /* XCRemoteSwiftPackageReference "chat" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jackyoustra/chat";
+			requirement = {
+				kind = revision;
+				revision = 793a26659d422878735410c81388504a330b576a;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -869,6 +889,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */;
 			productName = llama;
+		};
+		04D7D1502A96E27A001B35FC /* ExyteChat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04D7D14F2A96E27A001B35FC /* XCRemoteSwiftPackageReference "chat" */;
+			productName = ExyteChat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

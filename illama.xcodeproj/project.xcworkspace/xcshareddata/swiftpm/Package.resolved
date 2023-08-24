@@ -1,12 +1,29 @@
 {
   "pins" : [
     {
+      "identity" : "activityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/ActivityIndicatorView",
+      "state" : {
+        "revision" : "9970fd0bb7a05dad0b6566ae1f56937716686b24",
+        "version" : "1.1.1"
+      }
+    },
+    {
       "identity" : "aspects",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/djpearce/Aspects",
       "state" : {
         "branch" : "master",
         "revision" : "771b2f3da3b1a201f110b141854ca45070036ccc"
+      }
+    },
+    {
+      "identity" : "chat",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jackyoustra/chat",
+      "state" : {
+        "revision" : "793a26659d422878735410c81388504a330b576a"
       }
     },
     {
@@ -25,6 +42,15 @@
       "state" : {
         "revision" : "d7b896fa9ca8b47fa7bcde6b43ef9b70bf8c1f56",
         "version" : "1.8.1"
+      }
+    },
+    {
+      "identity" : "floatingbutton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/FloatingButton",
+      "state" : {
+        "revision" : "0fcbf6c1eed0450382fb8b0efd07f3d82a35da6d",
+        "version" : "1.1.5"
       }
     },
     {
@@ -69,6 +95,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "3515cd2d2053d8974b6abe665ae25b3f3939ddb4"
+      }
+    },
+    {
+      "identity" : "mediapicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/MediaPicker.git",
+      "state" : {
+        "revision" : "1e781e4f121b2ccab3260c213f96114061a209e7",
+        "version" : "1.2.4"
       }
     },
     {
@@ -150,6 +185,15 @@
       "state" : {
         "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
         "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "revision" : "1136c9a348329887844de9353107c787becc675b",
+        "version" : "0.11.0"
       }
     },
     {

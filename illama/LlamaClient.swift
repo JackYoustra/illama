@@ -23,7 +23,7 @@ extension DependencyValues {
     }
     
     private enum LlamaClientKey: DependencyKey {
-        static let liveValue: LlamaClient = LlamaClient.preview
+        static let liveValue: LlamaClient = LlamaClient.live
         static let testValue: LlamaClient = LlamaClient(query: unimplemented())
         static let previewValue: LlamaClient = LlamaClient.preview
     }
