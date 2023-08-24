@@ -41,10 +41,6 @@ struct JsonInput: Codable {
         case prompt
     }
     
-    mutating func starterPrompt(prompt: String) {
-        self.prompt = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\nUser: \(prompt)\nllama:"
-    }
-    
     static let input: Self = {
         let json = #"{"stream":true,"n_predict":400,"temperature":0.7,"stop":["</s>","llama:","User:"],"repeat_last_n":256,"repeat_penalty":1.18,"top_k":40,"top_p":0.5,"tfs_z":1,"typical_p":1,"presence_penalty":0,"frequency_penalty":0,"mirostat":0,"mirostat_tau":5,"mirostat_eta":0.1,"prompt":"This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\nUser: Tell me a fun fact\nllama:"}"#
         let decoder = JSONDecoder()
@@ -87,7 +83,7 @@ final actor LlamaInstance {
                 do {
                     let coder = JSONEncoder()
                     var input = JsonInput.input
-                    input.starterPrompt(prompt: prompt)
+                    input.prompt = prompt
                     let jsonData = try coder.encode(input)
                     let json = String(data: jsonData, encoding: .utf8)!
                     // ??? ok so cxxstdlib doesn't do lifetimes well...

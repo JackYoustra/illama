@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import Algorithms
 
 typealias SHC = Sendable & Hashable & Codable
 typealias SHCI = SHC & Identifiable
@@ -126,6 +127,28 @@ extension Chat {
         }
     }
     
+    var gptPrompt: String? {
+        let preamble = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\n"
+        if messages.isEmpty {
+            return nil
+        }
+        // "User: Tell me a fun fact\nllama:"
+        return messages
+            .chunks(ofCount: 2)
+            .reduce(into: preamble) { result, chunk in
+            let llamaText: String
+            switch chunk.count {
+            case 1:
+                llamaText = ""
+            case 2:
+                llamaText = chunk.last!.text + "\n"
+            default:
+                fatalError()
+            }
+            result += "User: \(chunk.first!.text)\nllama:" + llamaText
+        }
+    }
+    
     func add(query: String) {
         assert(!isAnswering)
         conversation?.add(query: query)
@@ -194,7 +217,7 @@ final class Chat {
     static var preview: Self {
         Self(
             timestamp: .now,
-            prompt: "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\nUser: Tell me a fun fact\nllama:"
+            prompt: "say hi"
         )
     }
 }

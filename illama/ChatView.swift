@@ -183,9 +183,12 @@ struct ChatView: View {
             do {
                 @Dependency(\.llama) var llamaClient;
 
-                if case let .unanswered(prompt) = chat.conversation?.current {
-                    for try await string in try! await llamaClient.query(prompt.text) {
-                        try Task.checkCancellation()
+                if case let .unanswered(_) = chat.conversation?.current {
+                    let prompt = chat.gptPrompt!
+                    print("prompt is \(prompt)")
+                    for try await string in try! await llamaClient.query(prompt) {
+                        // TODO: Need an effective cancellation facility
+//                        try Task.checkCancellation()
                         print("string is \(string)")
                         if let c = chat.conversation {
                             let oldString = c.current.llama?.text
