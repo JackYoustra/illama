@@ -50,7 +50,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/JackYoustra/llama.cpp",
       "state" : {
-        "revision" : "336c479eb3be0aae91b2aa136635317b7bb0d8c4"
+        "revision" : "75f7e656475d8019756e9ccff7242e89e134f4ef"
       }
     },
     {
