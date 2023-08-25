@@ -33,7 +33,6 @@
 		04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6CE2A7A640B00A6B66B /* llama */; };
 		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
 		04C9C6D52A7A656700A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D42A7A656700A6B66B /* llama */; };
-		04C9C6D72A7A75A600A6B66B /* main in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6D62A7A75A600A6B66B /* main */; };
 		04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
 		04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */; };
 		04D7D1512A96E27A001B35FC /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04D7D1502A96E27A001B35FC /* ExyteChat */; };
@@ -335,7 +334,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				049CE6262A981005006E1F57 /* ggml-model-q3_k_m.bin in Resources */,
-				04C9C6D72A7A75A600A6B66B /* main in Resources */,
 				04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */,
 				04C9C6A52A7A619E00A6B66B /* Preview Assets.xcassets in Resources */,
 				04C9C6A12A7A619E00A6B66B /* Assets.xcassets in Resources */,

@@ -59,9 +59,9 @@ final actor LlamaInstance {
         let args = [
            "server",
 //           "--no-mmap",
-//           "--mlock",
+           "--mlock",
             "-m", path_model,
-            "-c", "1024",
+            "-c", "2048",
             "-ngl", "1",
             "-v"
         ]
