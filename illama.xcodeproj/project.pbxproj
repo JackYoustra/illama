@@ -23,6 +23,7 @@
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
 		04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04C1837E2A99550300B220BB /* MarkdownUI */; };
+		04C183812A996C7300B220BB /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 04C183802A996C7300B220BB /* sample.md */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
 		04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Chat.swift */; };
@@ -66,6 +67,7 @@
 		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
+		04C183802A996C7300B220BB /* sample.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
 		04C9C69C2A7A619B00A6B66B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */,
 				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
 				04C1837B2A98A57500B220BB /* MyChatView.swift */,
+				04C183802A996C7300B220BB /* sample.md */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 			files = (
 				049CE6262A981005006E1F57 /* ggml-model-q3_k_m.bin in Resources */,
 				04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */,
+				04C183812A996C7300B220BB /* sample.md in Resources */,
 				04C9C6A52A7A619E00A6B66B /* Preview Assets.xcassets in Resources */,
 				04C9C6A12A7A619E00A6B66B /* Assets.xcassets in Resources */,
 			);

@@ -11,6 +11,7 @@ import AsyncAlgorithms
 import Combine
 import Foundation
 import CombineExt
+import Algorithms
 
 struct LlamaClient {
     var query: (String) async throws -> AsyncThrowingStream<DataString, Error>
@@ -49,8 +50,8 @@ extension LlamaClient {
     static let preview: LlamaClient = LlamaClient { str in
         chain(
                 zip(
-                Lorem.words(100)
-                    .split(separator: /\s/)
+                markdownProvider
+                    .split(separator: " ")
                     .map { $0 + " " }
                     .async,
                 SuspendingClock()
@@ -60,4 +61,13 @@ extension LlamaClient {
         )
         .eraseToThrowingStream()
     }
+    
+    static let loremWordProvider: String = Lorem.words(100)
+    static let markdownProvider: String = {
+        let s = try! String(contentsOf: Bundle.main.url(forResource: "sample", withExtension: "md")!)
+        let sub = s
+        
+//            .prefix(upTo: s.index(s.startIndex, offsetBy: 100000))
+        return String(sub)
+    }()
 }

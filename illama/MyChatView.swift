@@ -34,7 +34,7 @@ extension Optional where Wrapped == MarkdownType {
         case .system:
             return "applelogo"
         case .markdownUI:
-            return "star"
+            return "sparkles"
         case .docC:
             return "doc"
         case .github:
@@ -113,16 +113,10 @@ struct MyChatView: View {
             HStack(spacing: .zero) {
                 Menu {
                     Picker("Markdown", selection: $markdownSupport) {
-                        Label("Apple", systemImage: MarkdownType.system.systemImage)
-                            .tag(Optional.some(MarkdownType.system))
-                        Label("Enhanced", systemImage: MarkdownType.markdownUI.systemImage)
-                            .tag(Optional.some(MarkdownType.markdownUI))
-                        Label("DocC", systemImage: MarkdownType.docC.systemImage)
-                            .tag(Optional.some(MarkdownType.docC))
-                        Label("GitHub", systemImage: MarkdownType.github.systemImage)
-                            .tag(Optional.some(MarkdownType.github))
-                        Label("None", systemImage: Optional<MarkdownType>.none.systemImage)
-                            .tag(Optional<MarkdownType>.none)
+                        ForEach(MarkdownType.allCases.map(Optional.some) + [nil], id: \.self) { type in
+                            Label(type.name, systemImage: type.systemImage)
+                                .tag(type)
+                        }
                     }
                 } label: {
                     Text("🄼↓") + Text(Image(systemName: markdownSupport.systemImage))
