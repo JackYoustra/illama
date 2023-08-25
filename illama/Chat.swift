@@ -12,9 +12,13 @@ import Algorithms
 typealias SHC = Sendable & Hashable & Codable
 typealias SHCI = SHC & Identifiable
 
-struct CompletedConversation : SHC {
+struct CompletedConversation : SHCI {
     var me: SingleMessage
     var llama: SingleMessage
+    
+    var id: Self {
+        self
+    }
 }
 
 enum Terminal : SHC {
@@ -212,6 +216,13 @@ final class Chat {
     convenience init(timestamp: Date, prompt: String) {
         self.init(timestamp: timestamp)
         self.conversation = Conversation(prompt: prompt)
+    }
+    
+    init(timestamp: Date = .now, messages: [SingleMessage] = [], isAnswering: Bool = false) {
+        self.id = UUID()
+        self._timestamp = timestamp
+        self._messages = messages
+        self._isAnswering = isAnswering
     }
     
     static var preview: Self {

@@ -21,6 +21,7 @@
 		048E4D452A9114AF007B6443 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D442A9114AF007B6443 /* CombineExt */; };
 		049CE6262A981005006E1F57 /* ggml-model-q3_k_m.bin in Resources */ = {isa = PBXBuildFile; fileRef = 049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
+		04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
 		04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Chat.swift */; };
@@ -63,6 +64,7 @@
 		049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q3_k_m.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q3_k_m.bin"; sourceTree = "<group>"; };
 		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
+		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
 		04C9C69C2A7A619B00A6B66B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				0486016B2A910F5C00292E9F /* LlamaClient.swift */,
 				04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */,
 				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
+				04C1837B2A98A57500B220BB /* MyChatView.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 			files = (
 				04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */,
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
+				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,

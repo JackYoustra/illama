@@ -8,21 +8,43 @@
 import SwiftUI
 import Dependencies
 
+enum ChatType: String, CaseIterable, Hashable, Identifiable {
+    case mine
+    case swifty
+    case exyte
+    
+    var id: Self {
+        self
+    }
+}
+
 struct ChatViewAdapter: View {
     @Bindable var chat: Chat
-    @State var shouldUseSwiftyChat = true
+    @State var chatType = ChatType.mine
     @ScaledMetric var loadingSize = 25.0
     
     var body: some View {
         Group {
-            if shouldUseSwiftyChat {
+            switch chatType {
+            case .swifty:
                 SwiftyChatView(chat: chat)
-            } else {
+            case .exyte:
                 ExyteChatView(chat: chat)
+            case .mine:
+                MyChatView(chat: chat)
             }
         }.toolbar {
-            Toggle(isOn: $shouldUseSwiftyChat) {
-                Text("Use stable chat")
+            Picker("Chat type", selection: $chatType) {
+                ForEach(ChatType.allCases) { type in
+                    if type == .mine {
+                        Text(type.rawValue.localizedCapitalized)
+                            .tag(type)
+                    } else {
+                        Label(type.rawValue.localizedCapitalized, systemImage: "exclamationmark.triangle.fill")
+                            .labelStyle(TitleAndIconLabelStyle())
+                            .tag(type)
+                    }
+                }
             }
         }
     }
@@ -80,6 +102,9 @@ struct ChatView: View {
 }
 
 #Preview {
-    ChatView(chat: Chat.preview)
-        .modelContainer(for: Chat.self, inMemory: true)
+    _ = previewContainer
+    return NavigationStack {
+        ChatView(chat: Chat.preview)
+            .modelContainer(previewContainer)
+    }
 }
