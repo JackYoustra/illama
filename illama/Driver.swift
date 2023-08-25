@@ -58,8 +58,10 @@ final actor LlamaInstance {
     //     try await server_context.run()
         let args = [
            "server",
+//           "--no-mmap",
+//           "--mlock",
             "-m", path_model,
-            "-c", "2048",
+            "-c", "1024",
             "-ngl", "1",
             "-v"
         ]
@@ -110,4 +112,4 @@ final actor LlamaInstance {
     }
 }
 
-let path_model = Bundle.main.path(forResource: "ggml-model-q6k", ofType: "bin")!
+let path_model = Bundle.main.path(forResource: "ggml-model-q3_k_m", ofType: "bin")!

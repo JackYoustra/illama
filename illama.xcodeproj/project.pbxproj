@@ -19,6 +19,7 @@
 		0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486016B2A910F5C00292E9F /* LlamaClient.swift */; };
 		048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D412A911327007B6443 /* AsyncAlgorithms */; };
 		048E4D452A9114AF007B6443 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D442A9114AF007B6443 /* CombineExt */; };
+		049CE6262A981005006E1F57 /* ggml-model-q3_k_m.bin in Resources */ = {isa = PBXBuildFile; fileRef = 049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -28,7 +29,6 @@
 		04C9C6B02A7A619E00A6B66B /* illamaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6AF2A7A619E00A6B66B /* illamaTests.swift */; };
 		04C9C6BA2A7A619E00A6B66B /* illamaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6B92A7A619E00A6B66B /* illamaUITests.swift */; };
 		04C9C6BC2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6BB2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift */; };
-		04C9C6CA2A7A627100A6B66B /* ggml-model-q6k.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */; };
 		04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */; };
 		04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6CE2A7A640B00A6B66B /* llama */; };
 		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
@@ -61,6 +61,7 @@
 		0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "illama-Bridging-Header.h"; sourceTree = "<group>"; };
 		0436D58D2A7F828F0091D9CF /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
 		0486016B2A910F5C00292E9F /* LlamaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaClient.swift; sourceTree = "<group>"; };
+		049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q3_k_m.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q3_k_m.bin"; sourceTree = "<group>"; };
 		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +193,7 @@
 		04C9C6C82A7A622100A6B66B /* models */ = {
 			isa = PBXGroup;
 			children = (
+				049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */,
 				04C9C6D62A7A75A600A6B66B /* main */,
 				04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */,
 				04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */,
@@ -332,11 +334,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049CE6262A981005006E1F57 /* ggml-model-q3_k_m.bin in Resources */,
 				04C9C6D72A7A75A600A6B66B /* main in Resources */,
 				04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */,
 				04C9C6A52A7A619E00A6B66B /* Preview Assets.xcassets in Resources */,
 				04C9C6A12A7A619E00A6B66B /* Assets.xcassets in Resources */,
-				04C9C6CA2A7A627100A6B66B /* ggml-model-q6k.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

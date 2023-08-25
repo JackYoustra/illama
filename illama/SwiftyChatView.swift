@@ -151,7 +151,7 @@ struct SwiftyChatView: View {
     @StateObject private var styling = ChatMessageCellStyle()
 
     var body: some View {
-        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.anyChatMessages, dateHeaderTimeInterval: 1.0) {
+        SwiftyChat.ChatView<AnyChatMessage, AnyChatUser>(messages: $chat.anyChatMessages, dateHeaderTimeInterval: 60.0) {
             AnyView(
                 BasicInputView(message: $message, isEditing: $isEditing, placeholder: "Type something here") { messageKind in
                     switch messageKind {
