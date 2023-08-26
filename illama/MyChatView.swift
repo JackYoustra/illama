@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MarkdownUI
+import SwiftUIIntrospect
 
 enum MarkdownType: CaseIterable, Hashable, Identifiable {
     case system
@@ -75,6 +76,7 @@ struct MyChatView: View {
     @Bindable var chat: Chat
     @State private var thing: String = ""
     @State private var markdownSupport: MarkdownType? = .markdownUI
+    @FocusState private var textFocused: Bool
 
     @Namespace var bottomID
     
@@ -103,13 +105,39 @@ struct MyChatView: View {
                 }
             }
             Spacer()
-            TextField("Chat box", text: $thing, prompt: Text("Talk to 🦙"))
+            TextEditor(text: $thing)
+//                .fixedSize(horizontal: true, vertical: false)
+                .focused($textFocused)
+                .frame(minHeight: 36.0, maxHeight: 250.0)
+                .fixedSize(horizontal: false, vertical: true)
+//                .background(Color.red)
+                
+//            TextField("Chat box", text: $thing, prompt: Text("Talk to 🦙"))
+                    .textFieldStyle(.roundedBorder)
+                .introspect(.textEditor, on: .iOS(.v14, .v15, .v16, .v17)) {
+                                print(type(of: $0)) // UITextView
+                    let textView = $0 as! UITextView
+                    textView.backgroundColor = .clear
+                            }
                 .onSubmit {
                     chat.add(query: thing)
                     thing = ""
                 }
                 .submitLabel(.send)
-        }.toolbar {
+                .overlay(alignment: Alignment.leading) {
+                    if thing.isEmpty {
+                        Text("Talk to 🦙")
+                            .foregroundStyle(.secondary)
+                            .padding(.leading, 5)
+                    }
+                }
+                .padding(4)
+                .background(RoundedRectangle(cornerRadius: 20).stroke(Color.secondary))
+                .gesture(TapGesture().onEnded {
+                    textFocused = true
+                }, including: textFocused ? .none : .all)
+        }.padding(.horizontal)
+        .toolbar {
             HStack(spacing: .zero) {
                 Menu {
                     Picker("Markdown", selection: $markdownSupport) {
@@ -168,7 +196,7 @@ struct SingleMessageView: View {
                 dateTextView
                 Spacer()
             }
-        }.padding(.horizontal)
+        }
     }
     
     var dateTextView: some View {

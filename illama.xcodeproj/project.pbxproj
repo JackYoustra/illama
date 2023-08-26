@@ -24,6 +24,7 @@
 		04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
 		04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04C1837E2A99550300B220BB /* MarkdownUI */; };
 		04C183812A996C7300B220BB /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 04C183802A996C7300B220BB /* sample.md */; };
+		04C183842A99AD5E00B220BB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 04C183832A99AD5E00B220BB /* SwiftUIIntrospect */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
 		04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Chat.swift */; };
@@ -96,6 +97,7 @@
 				041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */,
 				04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */,
 				048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */,
+				04C183842A99AD5E00B220BB /* SwiftUIIntrospect in Frameworks */,
 				04C9C6D52A7A656700A6B66B /* llama in Frameworks */,
 				048601672A910F2800292E9F /* LoremSwiftum in Frameworks */,
 				048E4D452A9114AF007B6443 /* CombineExt in Frameworks */,
@@ -239,6 +241,7 @@
 				048E4D442A9114AF007B6443 /* CombineExt */,
 				04D7D1502A96E27A001B35FC /* ExyteChat */,
 				04C1837E2A99550300B220BB /* MarkdownUI */,
+				04C183832A99AD5E00B220BB /* SwiftUIIntrospect */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -326,6 +329,7 @@
 				048E4D432A9114AF007B6443 /* XCRemoteSwiftPackageReference "CombineExt" */,
 				04D7D14F2A96E27A001B35FC /* XCRemoteSwiftPackageReference "chat" */,
 				04C1837D2A99550300B220BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				04C183822A99AD5E00B220BB /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -833,6 +837,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		04C183822A99AD5E00B220BB /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.11.1;
+			};
+		};
 		04C9C6D32A7A656700A6B66B /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
@@ -901,6 +913,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04C1837D2A99550300B220BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		04C183832A99AD5E00B220BB /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04C183822A99AD5E00B220BB /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 		04C9C6CE2A7A640B00A6B66B /* llama */ = {
 			isa = XCSwiftPackageProductDependency;

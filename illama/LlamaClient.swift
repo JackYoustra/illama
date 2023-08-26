@@ -50,7 +50,8 @@ extension LlamaClient {
     static let preview: LlamaClient = LlamaClient { str in
         chain(
                 zip(
-                markdownProvider
+//                markdownProvider
+                    loremWordProvider
                     .split(separator: " ")
                     .map { $0 + " " }
                     .async,
