@@ -8,6 +8,23 @@
 import SwiftUI
 import Dependencies
 
+extension DateFormatter {
+    static let longTimeFormatter = {
+        let formatter = DateFormatter()
+        
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        
+        return formatter
+    }()
+}
+
+extension Chat {
+    var longTime: String {
+        DateFormatter.longTimeFormatter.string(from: timestamp)
+    }
+}
+
 enum ChatType: String, CaseIterable, Hashable, Identifiable {
     case mine
     case swifty
@@ -96,7 +113,8 @@ struct ChatView: View {
         }
         // only do on macOS or catalyst
         #if targetEnvironment(macCatalyst)
-        .navigationSubtitle(Text("Item at \(chat.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))"))
+        .navigationTitle(Text(chat.chatTitle ?? chat.longTime))
+        .navigationSubtitle(Text("Last edit: \(chat.longTime))"))
         #endif
     }
 }

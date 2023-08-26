@@ -71,7 +71,7 @@ enum Terminal : SHC {
     }
 }
 
-struct Conversation {
+struct Conversation: SHC {
     var prior: [CompletedConversation]
     var current: Terminal
     
@@ -187,6 +187,7 @@ final class Chat {
     var _timestamp: Date?
     var _messages: [SingleMessage]?
     var _isAnswering: Bool?
+    var _chatTitle: String?
     
     @Transient
     var timestamp: Date {
@@ -204,6 +205,18 @@ final class Chat {
     var isAnswering: Bool {
         get { _isAnswering ?? false }
         set { _isAnswering = newValue }
+    }
+    
+    @Transient
+    var chatTitle: String {
+        get { _chatTitle ?? "" }
+        set {
+            if newValue.isEmpty {
+                _chatTitle = nil
+            } else {
+                _chatTitle = newValue
+            }
+        }
     }
 
     init(timestamp: Date) {

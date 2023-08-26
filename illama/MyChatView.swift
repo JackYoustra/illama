@@ -266,5 +266,6 @@ let previewContainer = try! ModelContainer(for: Chat.self, configurations: Model
                             }
                     )
         ).modelContainer(previewContainer)
+        .navigationTitle(Text("My chat with fred"))
     }
 }

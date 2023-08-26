@@ -25,6 +25,7 @@
 		04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04C1837E2A99550300B220BB /* MarkdownUI */; };
 		04C183812A996C7300B220BB /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 04C183802A996C7300B220BB /* sample.md */; };
 		04C183842A99AD5E00B220BB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 04C183832A99AD5E00B220BB /* SwiftUIIntrospect */; };
+		04C183862A9AA39F00B220BB /* NavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */; };
 		04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
 		04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
 		04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Chat.swift */; };
@@ -69,6 +70,7 @@
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
 		04C183802A996C7300B220BB /* sample.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
+		04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItem.swift; sourceTree = "<group>"; };
 		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
 		04C9C69C2A7A619B00A6B66B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
 				04C1837B2A98A57500B220BB /* MyChatView.swift */,
 				04C183802A996C7300B220BB /* sample.md */,
+				04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
+				04C183862A9AA39F00B220BB /* NavigationMenuItem.swift in Sources */,
 				0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */,
 				04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
