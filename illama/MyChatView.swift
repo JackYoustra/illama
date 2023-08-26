@@ -77,6 +77,7 @@ struct MyChatView: View {
     @State private var thing: String = ""
     @State private var markdownSupport: MarkdownType? = .markdownUI
     @FocusState private var textFocused: Bool
+    @ScaledMetric(relativeTo: .body) var textboxSize = 36.0
 
     @Namespace var bottomID
     
@@ -108,20 +109,18 @@ struct MyChatView: View {
             TextEditor(text: $thing)
 //                .fixedSize(horizontal: true, vertical: false)
                 .focused($textFocused)
-                .frame(minHeight: 36.0, maxHeight: 250.0)
+                .frame(minHeight: textboxSize, maxHeight: 250.0)
                 .fixedSize(horizontal: false, vertical: true)
-//                .background(Color.red)
-                
-//            TextField("Chat box", text: $thing, prompt: Text("Talk to 🦙"))
-                    .textFieldStyle(.roundedBorder)
+                .textFieldStyle(.roundedBorder)
                 .introspect(.textEditor, on: .iOS(.v14, .v15, .v16, .v17)) {
-                                print(type(of: $0)) // UITextView
-                    let textView = $0 as! UITextView
+                    let textView = $0 
                     textView.backgroundColor = .clear
                             }
                 .onSubmit {
-                    chat.add(query: thing)
-                    thing = ""
+                    if !chat.isAnswering {
+                        chat.add(query: thing)
+                        thing = ""
+                    }
                 }
                 .submitLabel(.send)
                 .overlay(alignment: Alignment.leading) {
@@ -130,6 +129,27 @@ struct MyChatView: View {
                             .foregroundStyle(.secondary)
                             .padding(.leading, 5)
                     }
+                }
+                .overlay(alignment: Alignment.bottomTrailing) {
+                    Group {
+                        if chat.isAnswering {
+                            Circle()
+                                .foregroundStyle(.secondary)
+                                .overlay {
+                                    ProgressView()
+                                        .tint(Color.white)
+                                }
+                        } else {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "arrow.up.circle.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                        }
+                    }
+                    .frame(height: textboxSize)
                 }
                 .padding(4)
                 .background(RoundedRectangle(cornerRadius: 20).stroke(Color.secondary))
