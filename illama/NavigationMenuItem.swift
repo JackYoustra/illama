@@ -34,7 +34,10 @@ struct NavigationMenuItem: View {
 
             // duplicate, share, delete
             Button {
-                
+                // create new chat
+                let newItem = Chat(timestamp: .now, messages: item.messages, isAnswering: item.isAnswering)
+                modelContext.insert(newItem)
+                try! modelContext.save()
             } label: {
                 Label("Duplicate", systemImage: "plus.square.on.square")
             }

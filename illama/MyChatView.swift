@@ -83,29 +83,33 @@ struct MyChatView: View {
     
     var body: some View {
         VStack {
-            if let conversation = chat.conversation {
-                ScrollView(.vertical) {
-                    ScrollViewReader { proxy in
-                        LazyVStack {
-                            ForEach(conversation.prior) { completedConversation in
-                                CompletedConversationView(chat: completedConversation)
-                            }.onChange(of: conversation.current) {
-                                proxy.scrollTo(bottomID)
+            Group {
+                if let conversation = chat.conversation {
+                    ScrollView(.vertical) {
+                        ScrollViewReader { proxy in
+                            LazyVStack {
+                                ForEach(conversation.prior) { completedConversation in
+                                    CompletedConversationView(chat: completedConversation)
+                                }.onChange(of: conversation.current) {
+                                    proxy.scrollTo(bottomID)
+                                }
+                                switch conversation.current {
+                                case let .complete(exchange), let .progressing(exchange):
+                                    CompletedConversationView(chat: exchange)
+                                case let .unanswered(message):
+                                    SingleMessageView(message: message, isSender: true)
+                                }
+                                // scrollable proxy
+                                Color.clear.frame(height: 1.0)
+                                    .id(bottomID)
                             }
-                            switch conversation.current {
-                            case let .complete(exchange), let .progressing(exchange):
-                                CompletedConversationView(chat: exchange)
-                            case let .unanswered(message):
-                                SingleMessageView(message: message, isSender: true)
-                            }
-                            // scrollable proxy
-                            Color.clear.frame(height: 1.0)
-                                .id(bottomID)
                         }
                     }
                 }
-            }
-            Spacer()
+                Spacer()
+            }.gesture(TapGesture().onEnded {
+                textFocused = false
+            }, including: textFocused ? .all : .subviews)
             HStack(spacing: .zero) {
                 TextEditor(text: $thing)
                     .focused($textFocused)
@@ -151,7 +155,7 @@ struct MyChatView: View {
                 .background(RoundedRectangle(cornerRadius: 20).stroke(Color.secondary))
                 .gesture(TapGesture().onEnded {
                     textFocused = true
-                }, including: textFocused ? .none : .all)
+                }, including: textFocused ? .subviews : .all)
         }.padding(.horizontal)
         .toolbar {
             HStack(spacing: .zero) {
