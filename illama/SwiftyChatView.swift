@@ -105,6 +105,7 @@ extension Conversation {
     }
 }
 
+@available(iOS 17.0, *)
 extension Chat {
     var anyChatMessages: [AnyChatMessage] {
         get {
@@ -144,6 +145,7 @@ extension Chat {
     }
 }
 
+@available(iOS 17.0, *)
 struct SwiftyChatView: View {
     @Bindable var chat: Chat
     @State private var message: String = ""

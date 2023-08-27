@@ -19,6 +19,7 @@ extension DateFormatter {
     }()
 }
 
+@available(iOS 17.0, *)
 extension Chat {
     var longTime: String {
         DateFormatter.longTimeFormatter.string(from: timestamp)
@@ -35,6 +36,7 @@ enum ChatType: String, CaseIterable, Hashable, Identifiable {
     }
 }
 
+@available(iOS 17.0, *)
 struct ChatViewAdapter: View {
     @Bindable var chat: Chat
     @State var chatType = ChatType.mine
@@ -67,6 +69,7 @@ struct ChatViewAdapter: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct ChatView: View {
     @Bindable var chat: Chat
     
@@ -119,6 +122,7 @@ struct ChatView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     _ = previewContainer
     return NavigationStack {

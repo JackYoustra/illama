@@ -55,6 +55,7 @@ fileprivate extension illama.Conversation {
     }
 }
 
+@available(iOS 17.0, *)
 struct ExyteChatView: View {
     @Bindable var chat: illama.Chat
     @State private var isEditing = false

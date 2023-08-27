@@ -12,9 +12,16 @@ import SwiftData
 struct illamaApp: App {
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        if #available(iOS 17.0, *) {
+            return WindowGroup {
+                ContentView()
+            }
+            .modelContainer(for: Chat.self)
+        } else {
+            // Fallback on earlier versions
+            return WindowGroup {
+                OldContentView()
+            }
         }
-        .modelContainer(for: Chat.self)
     }
 }

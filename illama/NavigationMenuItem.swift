@@ -13,6 +13,7 @@ extension Conversation: Transferable {
     }
 }
 
+@available(iOS 17.0, *)
 struct NavigationMenuItem: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var item: Chat
@@ -86,6 +87,7 @@ struct NavigationMenuItem: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     NavigationStack {
         NavigationMenuItem(item: Chat.preview)

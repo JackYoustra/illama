@@ -13,6 +13,7 @@ struct DataString: Codable {
     let stop: Bool
 }
 
+@available(iOS 17.0, *)
 extension Chat: Identifiable {}
 
 extension UUID: RawRepresentable {
@@ -44,6 +45,7 @@ extension Optional: RawRepresentable where Wrapped == UUID {
     }
 }
 
+@available(iOS 17.0, *)
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
@@ -58,11 +60,9 @@ struct ContentView: View {
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-//#if os(iOS)
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-//#endif
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
@@ -101,6 +101,7 @@ struct ContentView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     ContentView()
         .modelContainer(for: Chat.self, inMemory: true)

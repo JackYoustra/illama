@@ -87,6 +87,7 @@ struct InfiniteRotation: ViewModifier {
     }
 }
 
+@available(iOS 17.0, *)
 struct MyChatView: View {
     @Bindable var chat: Chat
     @State private var thing: String = ""
@@ -289,8 +290,10 @@ struct MessageView<Content: View>: View {
 import LoremSwiftum
 import SwiftData
 
+@available(iOS 17.0, *)
 let previewContainer = try! ModelContainer(for: Chat.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
 
+@available(iOS 17.0, *)
 #Preview {
     _ = previewContainer
     return NavigationStack {

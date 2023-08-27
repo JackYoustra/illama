@@ -38,6 +38,9 @@
 		04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6CE2A7A640B00A6B66B /* llama */; };
 		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
 		04C9C6D52A7A656700A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D42A7A656700A6B66B /* llama */; };
+		04CCBCE22A9B287400533B41 /* OldContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE12A9B287400533B41 /* OldContentView.swift */; };
+		04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */; };
+		04CCBCED2A9B2C3000533B41 /* FileDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */; };
 		04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
 		04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */; };
 		04D7D1512A96E27A001B35FC /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04D7D1502A96E27A001B35FC /* ExyteChat */; };
@@ -87,6 +90,9 @@
 		04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q6k.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q6k.bin"; sourceTree = "<group>"; };
 		04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-vocab.bin"; path = "../../../../llm/llama.cpp/models/ggml-vocab.bin"; sourceTree = "<group>"; };
 		04C9C6D62A7A75A600A6B66B /* main */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = main; path = "../../../../llm/llama.cpp/build-metal/bin/main"; sourceTree = "<group>"; };
+		04CCBCE12A9B287400533B41 /* OldContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldContentView.swift; sourceTree = "<group>"; };
+		04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataModels.swift; sourceTree = "<group>"; };
+		04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDataModels.swift; sourceTree = "<group>"; };
 		04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyChatView.swift; sourceTree = "<group>"; };
 		04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExyteChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,11 +160,12 @@
 		04C9C6992A7A619B00A6B66B /* illama */ = {
 			isa = PBXGroup;
 			children = (
+				04CCBCE72A9B29BD00533B41 /* Old */,
+				04CCBCE62A9B29B700533B41 /* New */,
 				04A6C9052A7F833A003C4586 /* server_header.h */,
 				0436D58D2A7F828F0091D9CF /* server.cpp */,
 				04C9C6C82A7A622100A6B66B /* models */,
 				04C9C69A2A7A619B00A6B66B /* illamaApp.swift */,
-				04C9C69C2A7A619B00A6B66B /* ContentView.swift */,
 				04BEE5A92A7B658A000EB9E6 /* Driver.swift */,
 				04C9C69E2A7A619B00A6B66B /* Chat.swift */,
 				04C9C6A02A7A619E00A6B66B /* Assets.xcassets */,
@@ -211,6 +218,24 @@
 				04C9C6C92A7A627100A6B66B /* ggml-model-q6k.bin */,
 			);
 			path = models;
+			sourceTree = "<group>";
+		};
+		04CCBCE62A9B29B700533B41 /* New */ = {
+			isa = PBXGroup;
+			children = (
+				04C9C69C2A7A619B00A6B66B /* ContentView.swift */,
+				04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */,
+			);
+			path = New;
+			sourceTree = "<group>";
+		};
+		04CCBCE72A9B29BD00533B41 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				04CCBCE12A9B287400533B41 /* OldContentView.swift */,
+				04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,6 +408,8 @@
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
+				04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */,
+				04CCBCE22A9B287400533B41 /* OldContentView.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
@@ -390,6 +417,7 @@
 				0486016C2A910F5C00292E9F /* LlamaClient.swift in Sources */,
 				04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
+				04CCBCED2A9B2C3000533B41 /* FileDataModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +597,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -612,7 +640,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
