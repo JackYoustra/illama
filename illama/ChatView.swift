@@ -19,12 +19,23 @@ extension DateFormatter {
     }()
 }
 
-@available(iOS 17.0, *)
-extension Chat {
+extension AnyChat {
     var longTime: String {
         DateFormatter.longTimeFormatter.string(from: timestamp)
     }
 }
+
+protocol AnyChat {
+    var timestamp: Date { get set }
+    var isAnswering: Bool { get set }
+    var conversation: Conversation? { get set }
+
+    func add(query: String)
+}
+
+@available(iOS 17.0, *)
+extension Chat: AnyChat {}
+extension FileChat: AnyChat {}
 
 enum ChatType: String, CaseIterable, Hashable, Identifiable {
     case mine

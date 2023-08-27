@@ -41,6 +41,7 @@
 		04CCBCE22A9B287400533B41 /* OldContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE12A9B287400533B41 /* OldContentView.swift */; };
 		04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */; };
 		04CCBCED2A9B2C3000533B41 /* FileDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */; };
+		04CCBCEF2A9B39B500533B41 /* OldNavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */; };
 		04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
 		04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */; };
 		04D7D1512A96E27A001B35FC /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04D7D1502A96E27A001B35FC /* ExyteChat */; };
@@ -93,6 +94,7 @@
 		04CCBCE12A9B287400533B41 /* OldContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldContentView.swift; sourceTree = "<group>"; };
 		04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataModels.swift; sourceTree = "<group>"; };
 		04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDataModels.swift; sourceTree = "<group>"; };
+		04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldNavigationMenuItem.swift; sourceTree = "<group>"; };
 		04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyChatView.swift; sourceTree = "<group>"; };
 		04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExyteChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +236,7 @@
 			children = (
 				04CCBCE12A9B287400533B41 /* OldContentView.swift */,
 				04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */,
+				04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */,
 			);
 			path = Old;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */,
+				04CCBCEF2A9B39B500533B41 /* OldNavigationMenuItem.swift in Sources */,
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,

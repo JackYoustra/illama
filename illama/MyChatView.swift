@@ -90,6 +90,31 @@ struct InfiniteRotation: ViewModifier {
 @available(iOS 17.0, *)
 struct MyChatView: View {
     @Bindable var chat: Chat
+
+    var body: some View {
+        MyChatViewCommon(chat: chat) { thing in
+            if !chat.isAnswering {
+                chat.add(query: thing)
+            }
+        }
+    }
+}
+
+struct OldChatView: View {
+    @ObservedObject var chat: FileChat
+    
+    var body: some View {
+        MyChatViewCommon(chat: chat) { thing in
+            if !chat.isAnswering {
+                chat.add(query: thing)
+            }
+        }
+    }
+}
+
+fileprivate struct MyChatViewCommon<ChatType: AnyChat>: View {
+    let chat: ChatType
+    let onSubmit: (String) -> ()
     @State private var thing: String = ""
     @State private var markdownSupport: MarkdownType? = .markdownUI
     @FocusState private var textFocused: Bool
@@ -125,7 +150,7 @@ struct MyChatView: View {
                                 // scrollable proxy
                                 Color.clear.frame(height: 1.0)
                                     .id(bottomID)
-                            }.onChange(of: conversation.current) {
+                            }.onChange(of: conversation.current) { _ in
                                 proxy.scrollTo(bottomID)
                             }
                         }
@@ -154,6 +179,11 @@ struct MyChatView: View {
                             Text("Talk to 🦙")
                                 .foregroundStyle(.secondary)
                                 .padding(.leading, 5)
+                        }
+                    }
+                    .onAppear {
+                        if chat.conversation == nil {
+                            textFocused = true
                         }
                     }
                 Group {
@@ -200,7 +230,7 @@ struct MyChatView: View {
     
     func submit() {
         if !chat.isAnswering {
-            chat.add(query: thing)
+            onSubmit(thing)
             thing = ""
         }
     }
