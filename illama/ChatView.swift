@@ -98,7 +98,7 @@ struct ChatView: View {
             do {
                 @Dependency(\.llama) var llamaClient;
 
-                if case let .unanswered(_) = chat.conversation?.current {
+                if case .unanswered(_) = chat.conversation?.current {
                     let prompt = chat.gptPrompt!
                     print("prompt is \(prompt)")
                     for try await string in try! await llamaClient.query(prompt) {

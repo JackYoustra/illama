@@ -7,9 +7,17 @@
 
 import SwiftUI
 
+extension Conversation {
+    var shareText: String {
+        anyChatMessages.map { message in
+            "\(message.isSender ? "You" : "Llama") at \(DateFormatter.longTimeFormatter.string(from: message.date)): \(message.text!)"
+        }.joined(separator: "\n")
+    }
+}
+
 extension Conversation: Transferable {
     public static var transferRepresentation: some TransferRepresentation {
-        CodableRepresentation(contentType: .text)
+        CodableRepresentation(contentType: .plainText)
     }
 }
 
