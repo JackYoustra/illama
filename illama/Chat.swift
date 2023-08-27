@@ -155,7 +155,11 @@ extension Chat {
     
     func add(query: String) {
         assert(!isAnswering)
-        conversation?.add(query: query)
+        if messages.isEmpty {
+            conversation = .init(prompt: query)
+        } else {
+            conversation?.add(query: query)
+        }
     }
 }
 

@@ -72,6 +72,21 @@ extension EnvironmentValues {
     }
 }
 
+struct InfiniteRotation: ViewModifier {
+    @State private var angle: CGFloat = 0.0
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                withAnimation(.linear(duration: 3)
+                        .repeatForever(autoreverses: false)) {
+                    angle = 360.0
+                }
+            }
+            .rotationEffect(.degrees(angle))
+    }
+}
+
 struct MyChatView: View {
     @Bindable var chat: Chat
     @State private var thing: String = ""
@@ -90,18 +105,27 @@ struct MyChatView: View {
                             LazyVStack {
                                 ForEach(conversation.prior) { completedConversation in
                                     CompletedConversationView(chat: completedConversation)
-                                }.onChange(of: conversation.current) {
-                                    proxy.scrollTo(bottomID)
                                 }
                                 switch conversation.current {
                                 case let .complete(exchange), let .progressing(exchange):
                                     CompletedConversationView(chat: exchange)
                                 case let .unanswered(message):
                                     SingleMessageView(message: message, isSender: true)
+                                    if chat.isAnswering {
+                                        MessageView(timestamp: .now, isSender: false) {
+                                            HStack {
+                                                Text("Loading")
+                                                Text("🦙")
+                                                    .modifier(InfiniteRotation())
+                                            }
+                                        }
+                                    }
                                 }
                                 // scrollable proxy
                                 Color.clear.frame(height: 1.0)
                                     .id(bottomID)
+                            }.onChange(of: conversation.current) {
+                                proxy.scrollTo(bottomID)
                             }
                         }
                     }
@@ -197,19 +221,40 @@ struct SingleMessageView: View {
     let message: SingleMessage
     let isSender: Bool
     
+    var body: some View {
+        MessageView(timestamp: message.timestamp, isSender: isSender) {
+            let v = markdownSupport.wrappedValue
+            switch v {
+            case .markdownUI, .docC, .github:
+                Markdown(message.text)
+                    .markdownTheme(v?.markdownTheme ?? .basic)
+            case .system:
+                Text(LocalizedStringKey(message.text))
+            case .none:
+                Text(message.text)
+            }
+        }
+    }
+}
+
+let timeFormatter = {
+    let formatter = DateFormatter()
+    
+    formatter.dateStyle = .none
+    formatter.timeStyle = .short
+    
+    return formatter
+}()
+
+struct MessageView<Content: View>: View {
+    let timestamp: Date
+    let isSender: Bool
+    @ViewBuilder var content: () -> Content
+    
     @Namespace var ns
     
-    static let timeFormatter = {
-        let formatter = DateFormatter()
-
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-
-        return formatter
-    }()
-    
     var dateText: String {
-        SingleMessageView.timeFormatter.string(from: message.timestamp)
+        timeFormatter.string(from: timestamp)
     }
     
     var body: some View {
@@ -233,18 +278,7 @@ struct SingleMessageView: View {
     }
     
     var textView: some View {
-        Group {
-            let v = markdownSupport.wrappedValue
-            switch v {
-            case .markdownUI, .docC, .github:
-                Markdown(message.text)
-                    .markdownTheme(v?.markdownTheme ?? .basic)
-            case .system:
-                Text(LocalizedStringKey(message.text))
-            case .none:
-                Text(message.text)
-            }
-        }
+        content()
             .font(.body)
             .padding(8.0)
             .foregroundColor(isSender ? Color.white : Color.primary)

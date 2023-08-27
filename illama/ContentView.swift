@@ -13,25 +13,56 @@ struct DataString: Codable {
     let stop: Bool
 }
 
+extension Chat: Identifiable {}
+
+extension UUID: RawRepresentable {
+    public init?(rawValue: String) {
+        self.init(uuidString: rawValue)
+    }
+    
+    public var rawValue: String {
+        uuidString
+    }
+}
+
+extension Optional: RawRepresentable where Wrapped == UUID {
+    public init?(rawValue: String) {
+        if rawValue.isEmpty {
+            self = nil
+        } else {
+            self = .some(.init(rawValue: rawValue)!)
+        }
+    }
+    
+    public var rawValue: String {
+        switch self {
+        case let .some(wrapped):
+            return wrapped.rawValue
+        case .none:
+            return ""
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
-    @State private var thing: String? = nil
+    @AppStorage("selectedChatID") private var selectedItem: Chat.ID? = nil
 
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(items) { item in
+            List(selection: $selectedItem) {
+                ForEach(items, id: \.id) { item in
                     NavigationMenuItem(item: item)
                 }
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-#if os(iOS)
+//#if os(iOS)
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-#endif
+//#endif
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
@@ -39,16 +70,24 @@ struct ContentView: View {
                 }
             }
         } detail: {
-            Text("Select an item")
-            Text(thing ?? "Loading")
+            VStack {
+                Text("🦙")
+                Button("Start a conversation") {
+                    addItem()
+                }
+            }
+            .font(.system(size: 144.0))
+            .minimumScaleFactor(0.1)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Chat.preview
+            let newItem = Chat(timestamp: .now)
             modelContext.insert(newItem)
             try! modelContext.save()
+            selectedItem = newItem.id
         }
     }
 
