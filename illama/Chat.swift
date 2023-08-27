@@ -91,29 +91,7 @@ struct Conversation: SHC {
 }
 
 @available(iOS 17.0, *)
-extension Chat {
-    var gptPrompt: String? {
-        let preamble = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\n"
-        if messages.isEmpty {
-            return nil
-        }
-        // "User: Tell me a fun fact\nllama:"
-        return messages
-            .chunks(ofCount: 2)
-            .reduce(into: preamble) { result, chunk in
-            let llamaText: String
-            switch chunk.count {
-            case 1:
-                llamaText = ""
-            case 2:
-                llamaText = chunk.last!.text + "\n"
-            default:
-                fatalError()
-            }
-            result += "User: \(chunk.first!.text)\nllama:" + llamaText
-        }
-    }
-    
+extension Chat {    
     func add(query: String) {
         assert(!isAnswering)
         if messages.isEmpty {

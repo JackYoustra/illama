@@ -23,14 +23,53 @@ extension AnyChat {
     var longTime: String {
         DateFormatter.longTimeFormatter.string(from: timestamp)
     }
+    
+    var gptPrompt: String? {
+        let preamble = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\n"
+        if messages.isEmpty {
+            return nil
+        }
+        // "User: Tell me a fun fact\nllama:"
+        return messages
+            .chunks(ofCount: 2)
+            .reduce(into: preamble) { result, chunk in
+            let llamaText: String
+            switch chunk.count {
+            case 1:
+                llamaText = ""
+            case 2:
+                llamaText = chunk.last!.text + "\n"
+            default:
+                fatalError()
+            }
+            result += "User: \(chunk.first!.text)\nllama:" + llamaText
+        }
+    }
 }
 
 protocol AnyChat {
     var timestamp: Date { get set }
     var isAnswering: Bool { get set }
     var conversation: Conversation? { get set }
+    var chatTitle: String { get set }
 
     func add(query: String)
+}
+
+extension AnyChat {
+    var messages: [SingleMessage] {
+        conversation?.anyChatMessages.map {
+            SingleMessage(text: $0.text!, timestamp: $0.date)
+        } ?? []
+    }
+    
+    var displayedTitle: String {
+        if chatTitle.isEmpty {
+            return longTime
+        } else {
+            return chatTitle
+        }
+    }
 }
 
 @available(iOS 17.0, *)
@@ -125,9 +164,9 @@ struct ChatView: View {
             }
             print("Done listening")
         }
+        .navigationTitle(Text(chat.displayedTitle))
         // only do on macOS or catalyst
-        #if targetEnvironment(macCatalyst)
-        .navigationTitle(Text(chat.chatTitle ?? chat.longTime))
+#if targetEnvironment(macCatalyst)
         .navigationSubtitle(Text("Last edit: \(chat.longTime))"))
         #endif
     }
