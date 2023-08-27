@@ -100,7 +100,7 @@ struct MyChatView: View {
     }
 }
 
-struct OldChatView: View {
+struct OldChatViewAdapter: View {
     @ObservedObject var chat: FileChat
     
     var body: some View {

@@ -61,7 +61,7 @@ final actor LlamaInstance {
 //           "--no-mmap",
            "--mlock",
             "-m", path_model,
-            "-c", "2048",
+            "-c", "512",
             "-ngl", "1",
             "-v"
         ]
@@ -112,4 +112,4 @@ final actor LlamaInstance {
     }
 }
 
-let path_model = Bundle.main.path(forResource: "ggml-model-q3_k_m", ofType: "bin")!
+let path_model = Bundle.main.path(forResource: "ggml-model-q2_k", ofType: "bin")!

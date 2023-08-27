@@ -172,6 +172,58 @@ struct ChatView: View {
     }
 }
 
+struct OldChatView: View {
+    @ObservedObject var chat: FileChat
+    
+    var body: some View {
+        OldChatViewAdapter(chat: chat)
+        // We can't really handle interruption rn, disable button until we're done
+        .disabled(chat.isAnswering)
+        .task(id: chat.conversation.promptLeftUnanswered) {
+            // finally
+            defer {
+                if case let .progressing(c) = chat.conversation?.current {
+                    chat.conversation!.current = .complete(c)
+                }
+            }
+            do {
+                @Dependency(\.llama) var llamaClient;
+
+                if case .unanswered(_) = chat.conversation?.current {
+                    let prompt = chat.gptPrompt!
+                    print("prompt is \(prompt)")
+                    for try await string in try! await llamaClient.query(prompt) {
+                        // TODO: Need an effective cancellation facility
+//                        try Task.checkCancellation()
+                        print("string is \(string)")
+                        if let c = chat.conversation {
+                            let oldString = c.current.llama?.text
+                            let newText = (oldString ?? "") + string.content
+                            // TODO: If we enable resume after interruption, maybe clobber timestamp?
+                            let completedConversation = CompletedConversation(me: c.current.user, llama: SingleMessage(text: newText, timestamp: c.current.llama?.timestamp ?? Date.now))
+                            if string.stop {
+                                chat.conversation!.current = .complete(completedConversation)
+                                break
+                            } else {
+                                chat.conversation!.current = .progressing(completedConversation)
+                            }
+                        }
+                    }
+                }
+            } catch {
+                let thing = error
+                fatalError(thing.localizedDescription)
+            }
+            print("Done listening")
+        }
+        .navigationTitle(Text(chat.displayedTitle))
+        // only do on macOS or catalyst
+#if targetEnvironment(macCatalyst)
+        .navigationSubtitle(Text("Last edit: \(chat.longTime))"))
+        #endif
+    }
+}
+
 @available(iOS 17.0, *)
 #Preview {
     _ = previewContainer

@@ -91,7 +91,7 @@ struct Conversation: SHC {
 }
 
 @available(iOS 17.0, *)
-extension Chat {    
+extension Chat {
     func add(query: String) {
         assert(!isAnswering)
         if messages.isEmpty {
