@@ -59,9 +59,10 @@ final actor LlamaInstance {
         let args = [
            "server",
 //           "--no-mmap",
-//           "--mlock",
-            "-m", path_model,
-            "-c", "512",
+        ] + (BundledModel.shared.shouldMlock ? ["--mlock",] : [])
+            + [
+           "-m", BundledModel.shared.path,
+           "-c", String(BundledModel.shared.path),
             "-ngl", "1",
             "-v"
         ]
@@ -111,5 +112,3 @@ final actor LlamaInstance {
         }
     }
 }
-
-let path_model = Bundle.main.path(forResource: "open-llama-3b-q4_0", ofType: "bin")!
