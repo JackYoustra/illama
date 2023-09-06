@@ -13,6 +13,8 @@
 		041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE152A8A3E5C0001A821 /* Algorithms */; };
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		044A115B2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 044A115A2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin */; };
+		0453D8852A9EE83C00E57711 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8842A9EE83C00E57711 /* CommonView.swift */; };
+		0453D8872A9EE92E00E57711 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8862A9EE92E00E57711 /* SettingsView.swift */; };
 		048601612A8F46B600292E9F /* Lumos in Frameworks */ = {isa = PBXBuildFile; productRef = 048601602A8F46B600292E9F /* Lumos */; };
 		048601642A8F495800292E9F /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 048601632A8F495800292E9F /* CustomDump */; };
 		048601672A910F2800292E9F /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = 048601662A910F2800292E9F /* LoremSwiftum */; };
@@ -70,6 +72,8 @@
 		0436D58D2A7F828F0091D9CF /* server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
 		044A11562A9B57D700D8F7A0 /* ggml-model-q2_k.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q2_k.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q2_k.bin"; sourceTree = "<group>"; };
 		044A115A2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "open-llama-3b-q4_0.bin"; path = "../../../../llm/llama.cpp/models/3B/open-llama-3b-q4_0.bin"; sourceTree = "<group>"; };
+		0453D8842A9EE83C00E57711 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
+		0453D8862A9EE92E00E57711 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0486016B2A910F5C00292E9F /* LlamaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaClient.swift; sourceTree = "<group>"; };
 		049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; name = "ggml-model-q3_k_m.bin"; path = "../../../../llm/llama.cpp/models/7B/ggml-model-q3_k_m.bin"; sourceTree = "<group>"; };
 		04A6C9052A7F833A003C4586 /* server_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_header.h; sourceTree = "<group>"; };
@@ -184,6 +188,8 @@
 				04C1837B2A98A57500B220BB /* MyChatView.swift */,
 				04C183802A996C7300B220BB /* sample.md */,
 				04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */,
+				0453D8842A9EE83C00E57711 /* CommonView.swift */,
+				0453D8862A9EE92E00E57711 /* SettingsView.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
+				0453D8872A9EE92E00E57711 /* SettingsView.swift in Sources */,
 				04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */,
 				04CCBCE22A9B287400533B41 /* OldContentView.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
@@ -426,6 +433,7 @@
 				04D7D14E2A96DDE8001B35FC /* ExyteChatView.swift in Sources */,
 				04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */,
 				04CCBCED2A9B2C3000533B41 /* FileDataModels.swift in Sources */,
+				0453D8852A9EE83C00E57711 /* CommonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,13 +14,13 @@ struct illamaApp: App {
     var body: some Scene {
         if #available(iOS 17.0, *) {
             return WindowGroup {
-                ContentView()
+                CommonView()
             }
             .modelContainer(for: Chat.self)
         } else {
             // Fallback on earlier versions
             return WindowGroup {
-                OldContentView()
+                CommonView()
             }
         }
     }

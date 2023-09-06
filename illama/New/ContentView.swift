@@ -26,7 +26,7 @@ extension UUID: RawRepresentable {
     }
 }
 
-extension Optional: RawRepresentable where Wrapped == UUID {
+extension Optional: RawRepresentable where Wrapped: RawRepresentable, Wrapped.RawValue == String {
     public init?(rawValue: String) {
         if rawValue.isEmpty {
             self = nil
@@ -49,7 +49,7 @@ extension Optional: RawRepresentable where Wrapped == UUID {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
-    @AppStorage("selectedChatID") private var selectedItem: Chat.ID? = nil
+    @AppStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Chat.ID? = nil
 
     var body: some View {
         NavigationSplitView {

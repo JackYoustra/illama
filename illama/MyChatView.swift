@@ -9,7 +9,7 @@ import SwiftUI
 import MarkdownUI
 import SwiftUIIntrospect
 
-enum MarkdownType: CaseIterable, Hashable, Identifiable {
+enum MarkdownType: String, CaseIterable, Hashable, Identifiable {
     case system
     case markdownUI
     case docC
@@ -116,7 +116,7 @@ fileprivate struct MyChatViewCommon<ChatType: AnyChat>: View {
     let chat: ChatType
     let onSubmit: (String) -> ()
     @State private var thing: String = ""
-    @State private var markdownSupport: MarkdownType? = .markdownUI
+    @AppStorage(AppStorageKey.markdownType.rawValue) private var markdownSupport: MarkdownType? = .markdownUI
     @FocusState private var textFocused: Bool
     @ScaledMetric(relativeTo: .body) var textboxSize = 36.0
 
@@ -215,12 +215,7 @@ fileprivate struct MyChatViewCommon<ChatType: AnyChat>: View {
         .toolbar {
             HStack(spacing: .zero) {
                 Menu {
-                    Picker("Markdown", selection: $markdownSupport) {
-                        ForEach(MarkdownType.allCases.map(Optional.some) + [nil], id: \.self) { type in
-                            Label(type.name, systemImage: type.systemImage)
-                                .tag(type)
-                        }
-                    }
+                    MarkdownPicker()
                 } label: {
                     Text("🄼↓") + Text(Image(systemName: markdownSupport.systemImage))
                 }
@@ -232,6 +227,19 @@ fileprivate struct MyChatViewCommon<ChatType: AnyChat>: View {
         if !chat.isAnswering {
             onSubmit(thing)
             thing = ""
+        }
+    }
+}
+
+struct MarkdownPicker: View {
+    @AppStorage(AppStorageKey.markdownType.rawValue) private var markdownSupport: MarkdownType? = .markdownUI
+
+    var body: some View {
+        Picker("Markdown", selection: $markdownSupport) {
+            ForEach(MarkdownType.allCases.map(Optional.some) + [nil], id: \.self) { type in
+                Label(type.name, systemImage: type.systemImage)
+                    .tag(type)
+            }
         }
     }
 }
@@ -248,22 +256,30 @@ struct CompletedConversationView: View {
 }
 
 struct SingleMessageView: View {
-    @Environment(\.markdownSupport) var markdownSupport
     let message: SingleMessage
     let isSender: Bool
     
     var body: some View {
         MessageView(timestamp: message.timestamp, isSender: isSender) {
-            let v = markdownSupport.wrappedValue
-            switch v {
-            case .markdownUI, .docC, .github:
-                Markdown(message.text)
-                    .markdownTheme(v?.markdownTheme ?? .basic)
-            case .system:
-                Text(LocalizedStringKey(message.text))
-            case .none:
-                Text(message.text)
-            }
+            MarkdownTextDisplay(text: message.text)
+        }
+    }
+}
+
+struct MarkdownTextDisplay: View {
+    @Environment(\.markdownSupport) var markdownSupport
+    let text: String
+    
+    var body: some View {
+        let v = markdownSupport.wrappedValue
+        switch v {
+        case .markdownUI, .docC, .github:
+            Markdown(text)
+                .markdownTheme(v?.markdownTheme ?? .basic)
+        case .system:
+            Text(LocalizedStringKey(text))
+        case .none:
+            Text(text)
         }
     }
 }
