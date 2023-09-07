@@ -32,6 +32,12 @@ final class BundledModel {
     }
 }
 
+let syncInitializationWork: () = {
+    if UserDefaults.standard.value(forKey: AppStorageKey.markdownType.rawValue) == nil {
+        UserDefaults.standard.setValue(MarkdownType.markdownUI.rawValue, forKey: AppStorageKey.markdownType.rawValue)
+    }
+}()
+
 struct CommonView: View {
     var body: some View {
         Group {
@@ -48,6 +54,8 @@ struct CommonView: View {
                     Image(systemName: "gear")
                 }
             }
+        }.task {
+            _ = syncInitializationWork
         }
     }
 }
