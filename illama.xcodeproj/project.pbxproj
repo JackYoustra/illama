@@ -54,11 +54,10 @@
 		04B3D8BA2AA9692E00376560 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8802AA9692E00376560 /* llama */; };
 		04B3D8BB2AA9692E00376560 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8852AA9692E00376560 /* SwiftyChat */; };
 		04B3D8BC2AA9692E00376560 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D87F2AA9692E00376560 /* llama */; };
-		04B3D8BE2AA9692E00376560 /* open-llama-3b-q4_0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 044A115A2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin */; };
-		04B3D8BF2AA9692E00376560 /* ggml-vocab.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */; };
 		04B3D8C02AA9692E00376560 /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 04C183802A996C7300B220BB /* sample.md */; };
 		04B3D8C12AA9692E00376560 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6A42A7A619E00A6B66B /* Preview Assets.xcassets */; };
 		04B3D8C22AA9692E00376560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6A02A7A619E00A6B66B /* Assets.xcassets */; };
+		04B3D8E32AAA81C700376560 /* ggml-model-q3_k_m.bin in Resources */ = {isa = PBXBuildFile; fileRef = 049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
 		04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04C1837E2A99550300B220BB /* MarkdownUI */; };
@@ -486,8 +485,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04B3D8BE2AA9692E00376560 /* open-llama-3b-q4_0.bin in Resources */,
-				04B3D8BF2AA9692E00376560 /* ggml-vocab.bin in Resources */,
+				04B3D8E32AAA81C700376560 /* ggml-model-q3_k_m.bin in Resources */,
 				04B3D8C02AA9692E00376560 /* sample.md in Resources */,
 				04B3D8C12AA9692E00376560 /* Preview Assets.xcassets in Resources */,
 				04B3D8C22AA9692E00376560 /* Assets.xcassets in Resources */,
