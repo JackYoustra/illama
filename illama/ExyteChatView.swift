@@ -12,7 +12,7 @@ import SwiftyChat
 fileprivate let llamaUser = ExyteChat.User(id: "llama", name: "llama", avatarURL: nil, isCurrentUser: false)
 fileprivate let userUser = ExyteChat.User(id: "user", name: "user", avatarURL: nil, isCurrentUser: true)
 
-fileprivate extension illama.CompletedConversation {
+fileprivate extension CompletedConversation {
     var chatMessage: [Message] {
         [
             Message(
@@ -49,7 +49,7 @@ fileprivate extension Terminal {
     }
 }
 
-fileprivate extension illama.Conversation {
+fileprivate extension Conversation {
     var chatMessages: [Message] {
         prior.flatMap(\.chatMessage) + current.chatMessage
     }
@@ -57,7 +57,7 @@ fileprivate extension illama.Conversation {
 
 @available(iOS 17.0, *)
 struct ExyteChatView: View {
-    @Bindable var chat: illama.Chat
+    @Bindable var chat: Chat
     @State private var isEditing = false
     
     var body: some View {
