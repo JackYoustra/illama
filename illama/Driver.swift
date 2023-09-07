@@ -62,7 +62,7 @@ final actor LlamaInstance {
         ] + (BundledModel.shared.shouldMlock ? ["--mlock",] : [])
             + [
            "-m", BundledModel.shared.path,
-           "-c", String(BundledModel.shared.path),
+           "-c", String(BundledModel.shared.contextSize),
             "-ngl", "1",
             "-v"
         ]
