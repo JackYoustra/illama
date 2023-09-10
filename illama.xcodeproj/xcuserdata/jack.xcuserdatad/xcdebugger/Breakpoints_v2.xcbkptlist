@@ -79,6 +79,21 @@
                   endingLineNumber = "114"
                   offsetFromSymbolStart = "200">
                </Location>
+               <Location
+                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
+                  moduleName = "illama"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "380">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -222,6 +237,21 @@
                   endingLineNumber = "341"
                   offsetFromSymbolStart = "40">
                </Location>
+               <Location
+                  uuid = "9898A6E8-9993-41B8-A182-C6CC65D60D5A - 2772b28c3c04eb0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "llama_context::~llama_context()"
+                  moduleName = "illama"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "341"
+                  endingLineNumber = "341"
+                  offsetFromSymbolStart = "100">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -239,6 +269,22 @@
             endingLineNumber = "3324"
             landmarkName = "llama_new_context_with_model(model, params)"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A617847-3D98-4580-84B8-DD227B505E7E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "illama/CommonView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "init()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

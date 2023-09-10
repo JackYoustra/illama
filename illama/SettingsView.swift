@@ -23,6 +23,7 @@ struct SettingsView: View {
         case markdown
         case advanced
         case about
+        case icons
         
         var id: Self {
             self
@@ -36,6 +37,8 @@ struct SettingsView: View {
                     .tag(SettingsPage.markdown)
                 Text("Advanced")
                     .tag(SettingsPage.advanced)
+                Text("Icons")
+                    .tag(SettingsPage.icons)
                 Text("About")
                     .tag(SettingsPage.about)
             }
@@ -81,6 +84,8 @@ Hey! I'm Jack. My main job is working at [nanoflick](https://www.nanoflick.com/)
                 Button("Cool, but can you fling a llama") {
                     // TODO
                 }.hidden()
+            case .icons:
+                AppIconGallery()
             }
         }.pickerStyle(.segmented)
         .padding(.horizontal)
