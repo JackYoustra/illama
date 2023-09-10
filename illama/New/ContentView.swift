@@ -50,14 +50,21 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
     @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Chat.ID? = nil
-
+    @State private var isStartAConversationVisibleInDetail: Bool = false
+    
     var body: some View {
         NavigationSplitView {
-            List(selection: $selectedItem) {
-                ForEach(items, id: \.id) { item in
-                    NavigationMenuItem(item: item)
+            Group {
+                if items.isEmpty, !isStartAConversationVisibleInDetail {
+                    startAConversationView()
+                } else {
+                    List(selection: $selectedItem) {
+                        ForEach(items, id: \.id) { item in
+                            NavigationMenuItem(item: item)
+                        }
+                        .onDelete(perform: deleteItems)
+                    }
                 }
-                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -80,18 +87,29 @@ struct ContentView: View {
             if let selectedItem, let item = items.first(where: { $0.id == selectedItem }) {
                 ChatView(chat: item)
             } else {
-                VStack {
-                    Text("🦙")
-                        .modifier(InfiniteRotation())
-                    Button("Start a conversation") {
-                        addItem()
+                startAConversationView()
+                    .onAppear {
+                        isStartAConversationVisibleInDetail = true
                     }
-                }
-                .font(.system(size: 144.0))
-                .minimumScaleFactor(0.1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onDisappear {
+                        isStartAConversationVisibleInDetail = false
+                    }
             }
         }
+    }
+    
+    private func startAConversationView() -> some View {
+        VStack {
+            Text("🦙")
+                .animation(.spring)
+//                .modifier(InfiniteRotation())
+            Button("Start a conversation") {
+                addItem()
+            }
+        }
+        .font(.system(size: 144.0))
+        .minimumScaleFactor(0.1)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func addItem() {

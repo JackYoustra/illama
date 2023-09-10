@@ -10,20 +10,27 @@ import SwiftUI
 struct OldContentView: View {
     @State private var items: [FileChat]? = nil
     @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: UUID? = nil
+    @State private var isStartAConversationVisibleInDetail: Bool = false
 
     var body: some View {
         NavigationSplitView {
-            List(selection: $selectedItem) {
-                ForEach(items ?? [], id: \.id) { item in
-                    OldNavigationMenuItem(item: item) {
-                        items?.append($0)
-                    } delete: {
-                        guard let index = items?.firstIndex(where: { $0.id == item.id }) else { return }
-                        guard let toBeDeleted = items?.remove(at: index) else { return }
-                        try? toBeDeleted.deleteFromFS()
+            Group {
+                if let items, items.isEmpty, !isStartAConversationVisibleInDetail {
+                    startAConversationView()
+                } else {
+                    List(selection: $selectedItem) {
+                        ForEach(items ?? [], id: \.id) { item in
+                            OldNavigationMenuItem(item: item) {
+                                items?.append($0)
+                            } delete: {
+                                guard let index = items?.firstIndex(where: { $0.id == item.id }) else { return }
+                                guard let toBeDeleted = items?.remove(at: index) else { return }
+                                try? toBeDeleted.deleteFromFS()
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -46,20 +53,13 @@ struct OldContentView: View {
             if let selectedItem, let item = items?.first(where: { $0.id == selectedItem }) {
                 OldChatView(chat: item)
             } else {
-                VStack {
-                    Text("🦙")
-                        .modifier(InfiniteRotation())
-                    if items == nil {
-                        Text("Loading previous conversations")
-                    } else {
-                        Button("Start a conversation") {
-                            addItem()
-                        }
+                startAConversationView()
+                    .onAppear {
+                        isStartAConversationVisibleInDetail = true
                     }
-                }
-                .font(.system(size: 144.0))
-                .minimumScaleFactor(0.1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onDisappear {
+                        isStartAConversationVisibleInDetail = false
+                    }
             }
         }
         .task {
@@ -75,6 +75,20 @@ struct OldContentView: View {
                 }
             }
         }
+    }
+    
+    private func startAConversationView() -> some View {
+        VStack {
+            Text("🦙")
+                .animation(.spring)
+//                .modifier(InfiniteRotation())
+            Button("Start a conversation") {
+                addItem()
+            }
+        }
+        .font(.system(size: 144.0))
+        .minimumScaleFactor(0.1)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
         
     private func addItem() {
