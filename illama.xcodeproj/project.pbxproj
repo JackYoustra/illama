@@ -11,6 +11,8 @@
 		041ECE102A89333E0001A821 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ECE0F2A89333E0001A821 /* ChatView.swift */; };
 		041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE122A8943F20001A821 /* SwiftyChat */; };
 		041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE152A8A3E5C0001A821 /* Algorithms */; };
+		0435AAD72AAD54B400BCCC2C /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0435AAD62AAD54B400BCCC2C /* DeviceKit */; };
+		0435AADA2AAD54C800BCCC2C /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0435AAD92AAD54C800BCCC2C /* DeviceKit */; };
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		044A115B2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 044A115A2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin */; };
 		0453D8852A9EE83C00E57711 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8842A9EE83C00E57711 /* CommonView.swift */; };
@@ -72,7 +74,6 @@
 		04C9C6B02A7A619E00A6B66B /* illamaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6AF2A7A619E00A6B66B /* illamaTests.swift */; };
 		04C9C6BA2A7A619E00A6B66B /* illamaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6B92A7A619E00A6B66B /* illamaUITests.swift */; };
 		04C9C6BC2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C6BB2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift */; };
-		04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6CB2A7A627F00A6B66B /* ggml-vocab.bin */; };
 		04C9C6CF2A7A640B00A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6CE2A7A640B00A6B66B /* llama */; };
 		04C9C6D22A7A64B300A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D12A7A64B300A6B66B /* llama */; };
 		04C9C6D52A7A656700A6B66B /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04C9C6D42A7A656700A6B66B /* llama */; };
@@ -149,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04B3D8AE2AA9692E00376560 /* Algorithms in Frameworks */,
+				0435AADA2AAD54C800BCCC2C /* DeviceKit in Frameworks */,
 				04B3D8AF2AA9692E00376560 /* MarkdownUI in Frameworks */,
 				04B3D8B02AA9692E00376560 /* AsyncAlgorithms in Frameworks */,
 				04B3D8B12AA9692E00376560 /* SwiftUIIntrospect in Frameworks */,
@@ -171,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */,
+				0435AAD72AAD54B400BCCC2C /* DeviceKit in Frameworks */,
 				04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */,
 				048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */,
 				04C183842A99AD5E00B220BB /* SwiftUIIntrospect in Frameworks */,
@@ -205,6 +208,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0435AAD82AAD54C800BCCC2C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		04C9C68E2A7A619B00A6B66B = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +223,7 @@
 				04C9C6B82A7A619E00A6B66B /* illamaUITests */,
 				04C9C6982A7A619B00A6B66B /* Products */,
 				04B3D8C72AA9692E00376560 /* big llama-Info.plist */,
+				0435AAD82AAD54C800BCCC2C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -345,6 +356,7 @@
 				04B3D8952AA9692E00376560 /* ExyteChat */,
 				04B3D8972AA9692E00376560 /* MarkdownUI */,
 				04B3D8992AA9692E00376560 /* SwiftUIIntrospect */,
+				0435AAD92AAD54C800BCCC2C /* DeviceKit */,
 			);
 			productName = illama;
 			productReference = 04B3D8C62AA9692E00376560 /* big llama.app */;
@@ -379,6 +391,7 @@
 				04D7D1502A96E27A001B35FC /* ExyteChat */,
 				04C1837E2A99550300B220BB /* MarkdownUI */,
 				04C183832A99AD5E00B220BB /* SwiftUIIntrospect */,
+				0435AAD62AAD54B400BCCC2C /* DeviceKit */,
 			);
 			productName = illama;
 			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
@@ -467,6 +480,7 @@
 				04D7D14F2A96E27A001B35FC /* XCRemoteSwiftPackageReference "chat" */,
 				04C1837D2A99550300B220BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				04C183822A99AD5E00B220BB /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */,
 			);
 			productRefGroup = 04C9C6982A7A619B00A6B66B /* Products */;
 			projectDirPath = "";
@@ -497,7 +511,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				044A115B2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin in Resources */,
-				04C9C6CC2A7A627F00A6B66B /* ggml-vocab.bin in Resources */,
 				04C183812A996C7300B220BB /* sample.md in Resources */,
 				04C9C6A52A7A619E00A6B66B /* Preview Assets.xcassets in Resources */,
 				04C9C6A12A7A619E00A6B66B /* Assets.xcassets in Resources */,
@@ -1059,6 +1072,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JackYoustra/lumos";
@@ -1260,6 +1281,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 041ECE142A8A3E5C0001A821 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
 			productName = Algorithms;
+		};
+		0435AAD62AAD54B400BCCC2C /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
+		};
+		0435AAD92AAD54C800BCCC2C /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
 		};
 		048601602A8F46B600292E9F /* Lumos */ = {
 			isa = XCSwiftPackageProductDependency;
