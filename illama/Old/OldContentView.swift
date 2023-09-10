@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OldContentView: View {
     @State private var items: [FileChat]? = nil
-    @AppStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: UUID? = nil
+    @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: UUID? = nil
 
     var body: some View {
         NavigationSplitView {

@@ -49,7 +49,7 @@ extension Optional: RawRepresentable where Wrapped: RawRepresentable, Wrapped.Ra
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
-    @AppStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Chat.ID? = nil
+    @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Chat.ID? = nil
 
     var body: some View {
         NavigationSplitView {
@@ -70,15 +70,20 @@ struct ContentView: View {
                 }
             }
         } detail: {
-            VStack {
-                Text("🦙")
-                Button("Start a conversation") {
-                    addItem()
+            if let selectedItem, let item = items.first(where: { $0.id == selectedItem }) {
+                ChatView(chat: item)
+            } else {
+                VStack {
+                    Text("🦙")
+                        .modifier(InfiniteRotation())
+                    Button("Start a conversation") {
+                        addItem()
+                    }
                 }
+                .font(.system(size: 144.0))
+                .minimumScaleFactor(0.1)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .font(.system(size: 144.0))
-            .minimumScaleFactor(0.1)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 

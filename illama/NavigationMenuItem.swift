@@ -30,11 +30,8 @@ struct NavigationMenuItem: View {
     @State private var hasDeleteError = false
     
     var body: some View {
-        NavigationLink {
-            ChatView(chat: item)
-        } label: {
-            Text(item.longTime)
-        }.contextMenu {
+        Text(item.longTime)
+        .contextMenu {
             Button {
                 showRename = true
             } label: {
