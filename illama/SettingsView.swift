@@ -11,6 +11,7 @@ enum AppStorageKey: String {
     case settingsPage
     case markdownType
     case selectedChatID
+    case showOnboarding
 }
 
 struct SettingsView: View {

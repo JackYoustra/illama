@@ -233,6 +233,15 @@
       }
     },
     {
+      "identity" : "uionboarding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FelixLisczyk/UIOnboarding/",
+      "state" : {
+        "branch" : "ios-17-trait-collection",
+        "revision" : "f402e7e2f3568385e275439d50eb840b54fa7efb"
+      }
+    },
+    {
       "identity" : "videoplayer",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wxxsw/VideoPlayer.git",

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import DeviceKit
+import UIOnboarding
 
 final class BundledModel {
     static let shared = BundledModel()
@@ -44,6 +45,7 @@ let vowels: [Character] = ["a","e","i","o","u"]
 struct CommonView: View {
     @State private var showWarning = false
     @State private var hasShownWarning = false
+    @AppStorage(AppStorageKey.showOnboarding.rawValue) private var showOnboarding: Bool = true
     
     var body: some View {
         Group {
@@ -62,6 +64,10 @@ struct CommonView: View {
                 hasShownWarning = true
             }
             #endif
+        }
+        .fullScreenCover(isPresented: $showOnboarding) {
+            OnboardingView()
+                .edgesIgnoringSafeArea(.all)
         }
         .fullScreenCover(isPresented: $showWarning) {
             VStack {
