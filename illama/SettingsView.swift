@@ -65,6 +65,7 @@ struct SettingsView: View {
                 Text("Caution: Changing these settings could cause your app to crash.")
                 Text("🛠️ under construction, modification coming soon 🛠️")
                 Form(content: {
+                    LabeledContent("Prompt", value: String(JsonInput.input.prompt))
 //                    Slider(value: .constant(BundledModel.shared.contextSize), in: 512 ..< 4096, label: {
 //                        Text("Context Size")
 //                    })
