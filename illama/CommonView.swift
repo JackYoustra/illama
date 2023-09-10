@@ -7,7 +7,6 @@
 
 import SwiftUI
 import DeviceKit
-import MessageUI
 
 final class BundledModel {
     static let shared = BundledModel()
@@ -86,12 +85,12 @@ struct CommonView: View {
                     showWarning = false
                 }
                 Button("Email the developer, please") {
-                    showWarning = false
-                    let vc = MFMailComposeViewController()
-                    vc.setSubject("Please fix illama's A12 support")
-                    vc.setMessageBody("Hey, I'm writing because I really want to run illama on A12 processors or newer! Help!", isHTML: false)
-                    vc.setToRecipients(["jack@youstra.com"])
-                    UIApplication.shared.keyWindow!.rootViewController!.present(vc, animated: true)
+                    Task {
+                        let subject = "Please fix illama's A12 support".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                        let body = "Hey, I'm writing because I really want to run illama on A12 processors or newer!".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                        let pre = "mailto:jack@youstra?subject=\(subject)&body=\(body)"
+                        await UIApplication.shared.open(URL(string: pre)!, options: [:])
+                    }
                 }
             }.buttonStyle(BorderedButtonStyle())
             .padding()
