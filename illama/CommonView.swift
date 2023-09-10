@@ -52,14 +52,6 @@ struct CommonView: View {
             } else {
                 OldContentView()
             }
-        }.toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                NavigationLink {
-                    
-                } label: {
-                    Image(systemName: "gear")
-                }
-            }
         }.task {
             _ = syncInitializationWork
         }.onAppear {

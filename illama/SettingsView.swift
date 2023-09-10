@@ -46,7 +46,6 @@ struct SettingsView: View {
                 case .success(let text):
                     ScrollView {
                         MarkdownTextDisplay(text: text)
-                            .padding(.horizontal)
                     }
                         .environment(\.markdownSupport, $markdownSupport)
                 case .failure(let failure):
@@ -77,11 +76,13 @@ struct SettingsView: View {
                 Text("""
 Hey! I'm Jack. My main job is working at [nanoflick](https://www.nanoflick.com/), but I wrote this app as a hackathon project and [wrote about it on my blog](https://www.jackyoustra.com/blog/llama-ios). I hope you enjoy it! It'll probably be tended to here and there, especially regarding the embarrasing inability to function on A12 chips and earlier. Before then, I hope you enjoy it!
 """)
+                Spacer()
                 Button("Cool, but can you fling a llama") {
                     // TODO
                 }.hidden()
             }
         }.pickerStyle(.segmented)
+        .padding(.horizontal)
         .task {
             let priorText = try? text?.get()
             if priorText == nil {

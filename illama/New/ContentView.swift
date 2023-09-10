@@ -68,6 +68,13 @@ struct ContentView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Image(systemName: "gear")
+                    }
+                }
             }
         } detail: {
             if let selectedItem, let item = items.first(where: { $0.id == selectedItem }) {
