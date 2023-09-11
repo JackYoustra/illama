@@ -11,5 +11,11 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>You can send your photos to Llama and chat about them.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>You can take recordings and chat with Llama about them.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>You can send voice recordings to Llama and chat about them.</string>
 </dict>
 </plist>
