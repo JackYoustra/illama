@@ -16,31 +16,75 @@ struct DataString: Codable {
 @available(iOS 17.0, *)
 extension Chat: Identifiable {}
 
-extension UUID: RawRepresentable {
-    public init?(rawValue: String) {
-        self.init(uuidString: rawValue)
-    }
+enum SelectionID: Codable, Hashable {
+    case chat(UUID)
+    case settings(UUID?)
     
-    public var rawValue: String {
-        uuidString
-    }
-}
-
-extension Optional: RawRepresentable where Wrapped: RawRepresentable, Wrapped.RawValue == String {
-    public init?(rawValue: String) {
-        if rawValue.isEmpty {
-            self = nil
-        } else {
-            self = .some(.init(rawValue: rawValue)!)
+    var uuid: UUID? {
+        switch self {
+        case .chat(let id):
+            return id
+        case .settings(let deferredChatID):
+            return deferredChatID
         }
     }
     
-    public var rawValue: String {
+    var isChat: Bool {
         switch self {
-        case let .some(wrapped):
-            return wrapped.rawValue
-        case .none:
-            return ""
+        case .chat:
+            return true
+        case .settings:
+            return false
+        }
+    }
+    
+    var isSettings: Bool {
+        switch self {
+        case .chat:
+            return false
+        case .settings:
+            return true
+        }
+    }
+}
+
+enum Selection: Codable, Hashable, Identifiable {
+    case chat(UUID)
+    case settings(deferredChatID: UUID?)
+    
+    var id: SelectionID {
+        switch self {
+        case .chat(let id):
+            return .chat(id)
+        case .settings(let deferredChatID):
+            return .settings(deferredChatID)
+        }
+    }
+    
+    var uuid: UUID? {
+        switch self {
+        case .chat(let id):
+            return id
+        case .settings(let deferredChatID):
+            return deferredChatID
+        }
+    }
+    
+    var isChat: Bool {
+        switch self {
+        case .chat:
+            return true
+        case .settings:
+            return false
+        }
+    }
+    
+    var isSettings: Bool {
+        switch self {
+        case .chat:
+            return false
+        case .settings:
+            return true
         }
     }
 }
@@ -49,8 +93,36 @@ extension Optional: RawRepresentable where Wrapped: RawRepresentable, Wrapped.Ra
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Chat]
-    @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Chat.ID? = nil
+    @SceneStorage(AppStorageKey.selectedChatID.rawValue) private var selectedItem: Selection? = nil
     @State private var isStartAConversationVisibleInDetail: Bool = false
+    
+    var settingsOn: Binding<Bool> {
+        Binding {
+            selectedItem?.isSettings ?? false
+        } set: { newValue in
+            if newValue {
+                selectedItem = .settings(deferredChatID: selectedItem?.uuid)
+            } else {
+                if case let .settings(.some(id)) = selectedItem {
+                    selectedItem = .chat(id)
+                } else {
+                    selectedItem = nil
+                }
+            }
+        }
+    }
+    
+    var listSelectedChat: Binding<UUID?> {
+        Binding {
+            selectedItem?.uuid
+        } set: { newValue in
+            if let newValue = newValue {
+                selectedItem = .chat(newValue)
+            } else {
+                selectedItem = nil
+            }
+        }
+    }
     
     var body: some View {
         NavigationSplitView {
@@ -58,7 +130,7 @@ struct ContentView: View {
                 if items.isEmpty, !isStartAConversationVisibleInDetail {
                     startAConversationView()
                 } else {
-                    List(selection: $selectedItem) {
+                    List(selection: listSelectedChat) {
                         ForEach(items, id: \.id) { item in
                             NavigationMenuItem(item: item)
                         }
@@ -76,15 +148,15 @@ struct ContentView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
+                    Toggle(isOn: settingsOn) {
                         Image(systemName: "gear")
                     }
                 }
             }
         } detail: {
-            if let selectedItem, let item = items.first(where: { $0.id == selectedItem }) {
+            if case .some(.settings) = selectedItem {
+                SettingsView()
+            } else if case let .some(.chat(chatID)) = selectedItem, let item = items.first(where: { $0.id == chatID }) {
                 ChatView(chat: item)
             } else {
                 startAConversationView()
@@ -117,7 +189,7 @@ struct ContentView: View {
             let newItem = Chat(timestamp: .now)
             modelContext.insert(newItem)
             try! modelContext.save()
-            selectedItem = newItem.id
+            selectedItem = .chat(newItem.id)
         }
     }
 

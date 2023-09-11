@@ -34,6 +34,8 @@
 		04B183F22AAE7BF000F264CD /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F02AAE7BF000F264CD /* AppIcon.swift */; };
 		04B183F42AAE7C8300F264CD /* AppIconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F32AAE7C8300F264CD /* AppIconGallery.swift */; };
 		04B183F52AAE7C8300F264CD /* AppIconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F32AAE7C8300F264CD /* AppIconGallery.swift */; };
+		04B183F72AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
+		04B183F82AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
 		04B3D89C2AA9692E00376560 /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
 		04B3D89D2AA9692E00376560 /* OldNavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */; };
 		04B3D89E2AA9692E00376560 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -128,6 +130,7 @@
 		04B183ED2AADBA3C00F264CD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		04B183F02AAE7BF000F264CD /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		04B183F32AAE7C8300F264CD /* AppIconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconGallery.swift; sourceTree = "<group>"; };
+		04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglingWithRawRepresentable.swift; sourceTree = "<group>"; };
 		04B3D8C62AA9692E00376560 /* big llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "big llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "big llama-Info.plist"; path = "/Users/jack/Documents/programs/illama/big llama-Info.plist"; sourceTree = "<absolute>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
@@ -291,6 +294,7 @@
 				0453D8862A9EE92E00E57711 /* SettingsView.swift */,
 				04B183F02AAE7BF000F264CD /* AppIcon.swift */,
 				04B183F32AAE7C8300F264CD /* AppIconGallery.swift */,
+				04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -580,6 +584,7 @@
 				04B3D8A42AA9692E00376560 /* illamaApp.swift in Sources */,
 				04B3D8A52AA9692E00376560 /* server.cpp in Sources */,
 				04B183F22AAE7BF000F264CD /* AppIcon.swift in Sources */,
+				04B183F82AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */,
 				04B3D8A62AA9692E00376560 /* ChatView.swift in Sources */,
 				04B183F52AAE7C8300F264CD /* AppIconGallery.swift in Sources */,
 				04B183EF2AADBA3C00F264CD /* OnboardingView.swift in Sources */,
@@ -608,6 +613,7 @@
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				04B183F12AAE7BF000F264CD /* AppIcon.swift in Sources */,
+				04B183F72AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
 				04B183F42AAE7C8300F264CD /* AppIconGallery.swift in Sources */,
 				04B183EE2AADBA3C00F264CD /* OnboardingView.swift in Sources */,

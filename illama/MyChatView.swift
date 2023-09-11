@@ -9,7 +9,7 @@ import SwiftUI
 import MarkdownUI
 import SwiftUIIntrospect
 
-enum MarkdownType: String, CaseIterable, Hashable, Identifiable {
+enum MarkdownType: String, CaseIterable, Hashable, Identifiable, Codable {
     case system
     case markdownUI
     case docC

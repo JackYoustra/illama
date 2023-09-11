@@ -13,7 +13,7 @@ public func unwrap<T>(_ v: T???) -> T? {
 }
 
 extension Binding where Value: Equatable {
-    func equals(_ value: Value) -> Binding<Bool> {
+    func equalsNoUnset(_ value: Value) -> Binding<Bool> {
         Binding<Bool> {
             wrappedValue == value
         } set: { _ in
@@ -31,7 +31,7 @@ struct AppIconGallery: View {
             ScrollView {
                 VStack(spacing: 11) {
                     ForEach(AppIcon.allCases) { appIcon in
-                        Toggle(isOn: $selectedIcon.equals(appIcon)) {
+                        Toggle(isOn: $selectedIcon.equalsNoUnset(appIcon)) {
                             HStack(spacing: 16) {
                                 Image(appIcon.preview)
                                     .resizable()

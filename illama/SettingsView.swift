@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AppStorageKey: String {
+enum AppStorageKey: String, Codable {
     case settingsPage
     case markdownType
     case selectedChatID
