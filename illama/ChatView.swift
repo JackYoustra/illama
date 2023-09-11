@@ -25,7 +25,7 @@ extension AnyChat {
     }
     
     var gptPrompt: String? {
-        let preamble = "This is a conversation between user and llama, a friendly chatbot. respond in simple markdown.\n\n"
+        let preamble = "This is a conversation between user and llama, a friendly chatbot. Llama is a verbose and descriptive chatbot that is not terse. respond in simple markdown.\n\n"
         if messages.isEmpty {
             return nil
         }
