@@ -70,6 +70,8 @@ struct OldNavigationMenuItem: View {
     }
 }
 
+#if swift(>=5.9)
+
 #Preview {
     OldNavigationMenuItem(item: FileChat(timestamp: .now), duplicateTapped: { _ in
         print("Duplicate")
@@ -77,3 +79,5 @@ struct OldNavigationMenuItem: View {
         print("Deleting")
     })
 }
+
+#endif

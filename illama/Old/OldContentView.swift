@@ -41,7 +41,7 @@ struct OldContentView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem {
                     NavigationLink {
                         SettingsView()
                     } label: {
@@ -80,7 +80,7 @@ struct OldContentView: View {
     private func startAConversationView() -> some View {
         VStack {
             Text("🦙")
-                .animation(.spring)
+                .animation(.default)
 //                .modifier(InfiniteRotation())
             Button("Start a conversation") {
                 addItem()
@@ -107,6 +107,8 @@ struct OldContentView: View {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     OldContentView()
 }
+#endif

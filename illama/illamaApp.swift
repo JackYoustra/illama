@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+#if swift(>=5.9)
 import SwiftData
+#endif
 
 @main
 struct illamaApp: App {
@@ -16,7 +18,9 @@ struct illamaApp: App {
             return WindowGroup {
                 CommonView()
             }
+#if swift(>=5.9)
             .modelContainer(for: Chat.self)
+#endif
         } else {
             // Fallback on earlier versions
             return WindowGroup {

@@ -6,7 +6,7 @@
  //
 
 import Foundation
-import CxxStdlib.string
+import IllamaDynamic
 import AsyncQueue
 
 struct JsonInput: Codable {
@@ -69,10 +69,7 @@ final actor LlamaInstance {
         // Create [UnsafeMutablePointer<Int8>]:
         var cargs = args.map { strdup($0) }
         // Call C function:
-        let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
-        let normieResult = getInt(result)
-        assert(normieResult == 0)
-        let rc = getRunContext(result)
+        let rc = LlamaInterop.runServer(Int32(args.count), argv: &cargs)! //runServer(Int32(args.count), &cargs)
         // free dups
         for ptr in cargs { free(ptr) }
         return rc
@@ -80,7 +77,7 @@ final actor LlamaInstance {
     
     // implicitly locked, can just rely on engine lock (unless have to worry about cancel?)
     func run_llama(prompt: String) async throws -> AsyncThrowingStream<String, Error> {
-        var rc = await initializationTask.value
+        let rc = await initializationTask.value
         return AsyncThrowingStream { continuation in
             DispatchQueue.global().async {
                 do {
@@ -92,15 +89,9 @@ final actor LlamaInstance {
                     // ??? ok so cxxstdlib doesn't do lifetimes well...
                     withExtendedLifetime(json) {
                         json.utf8CString.withUnsafeBufferPointer { p in
-                            rc.completion(p.baseAddress) { (s: std.string) in
+                            rc.completion(p.baseAddress!) { (s: String) in
                                 // ugh catalyst no worky with this
-#if targetEnvironment(macCatalyst)
-                                let c = convertToCString(s)!
-                                let stringTransfer = String(cString: c)
-#else
-                                let stringTransfer = String(s)
-#endif
-                                continuation.yield(stringTransfer)
+                                continuation.yield(s)
                             }
                         }
                         continuation.yield(with: .success(""))

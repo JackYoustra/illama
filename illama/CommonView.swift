@@ -50,7 +50,11 @@ struct CommonView: View {
     var body: some View {
         Group {
             if #available(iOS 17.0, *) {
+#if swift(>=5.9)
                 ContentView()
+#else
+                OldContentView()
+#endif
             } else {
                 OldContentView()
             }
@@ -96,6 +100,8 @@ struct CommonView: View {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     CommonView()
 }
+#endif

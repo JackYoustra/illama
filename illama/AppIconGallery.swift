@@ -112,8 +112,10 @@ extension View {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     NavigationView {
         SettingsView()
     }
 }
+#endif

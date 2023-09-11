@@ -55,6 +55,8 @@ fileprivate extension Conversation {
     }
 }
 
+#if swift(>=5.9)
+
 @available(iOS 17.0, *)
 struct ExyteChatView: View {
     @Bindable var chat: Chat
@@ -70,3 +72,5 @@ struct ExyteChatView: View {
         }.messageUseMarkdown(messageUseMarkdown: true)
     }
 }
+
+#endif

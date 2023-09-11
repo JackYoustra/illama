@@ -5,6 +5,8 @@
 //  Created by Jack Youstra on 8/26/23.
 //
 
+#if swift(>=5.9)
+
 import SwiftData
 import Foundation
 
@@ -114,3 +116,5 @@ final class Chat {
         }
     }
 }
+
+#endif

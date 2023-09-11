@@ -21,6 +21,8 @@ extension Conversation: Transferable {
     }
 }
 
+#if swift(>=5.9)
+
 @available(iOS 17.0, *)
 struct NavigationMenuItem: View {
     @Environment(\.modelContext) private var modelContext
@@ -92,9 +94,12 @@ struct NavigationMenuItem: View {
     }
 }
 
+
 @available(iOS 17.0, *)
 #Preview {
     NavigationStack {
         NavigationMenuItem(item: Chat.preview)
     }
 }
+
+#endif

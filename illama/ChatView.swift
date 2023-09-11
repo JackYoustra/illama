@@ -72,8 +72,10 @@ extension AnyChat {
     }
 }
 
+#if swift(>=5.9)
 @available(iOS 17.0, *)
 extension Chat: AnyChat {}
+#endif
 extension FileChat: AnyChat {}
 
 enum ChatType: String, CaseIterable, Hashable, Identifiable {
@@ -86,6 +88,7 @@ enum ChatType: String, CaseIterable, Hashable, Identifiable {
     }
 }
 
+#if swift(>=5.9)
 @available(iOS 17.0, *)
 struct ChatViewAdapter: View {
     @Bindable var chat: Chat
@@ -172,6 +175,8 @@ struct ChatView: View {
     }
 }
 
+#endif
+
 struct OldChatView: View {
     @ObservedObject var chat: FileChat
     
@@ -224,6 +229,7 @@ struct OldChatView: View {
     }
 }
 
+#if swift(>=5.9)
 @available(iOS 17.0, *)
 #Preview {
     _ = previewContainer
@@ -232,3 +238,4 @@ struct OldChatView: View {
             .modelContainer(previewContainer)
     }
 }
+#endif

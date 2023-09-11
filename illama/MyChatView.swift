@@ -86,7 +86,7 @@ struct InfiniteRotation: ViewModifier {
             .rotationEffect(.degrees(angle))
     }
 }
-
+#if swift(>=5.9)
 @available(iOS 17.0, *)
 struct MyChatView: View {
     @Bindable var chat: Chat
@@ -99,6 +99,7 @@ struct MyChatView: View {
         }
     }
 }
+#endif
 
 struct OldChatViewAdapter: View {
     @ObservedObject var chat: FileChat
@@ -333,6 +334,8 @@ struct MessageView<Content: View>: View {
     }
 }
 
+#if swift(>=5.9)
+
 import LoremSwiftum
 import SwiftData
 
@@ -356,3 +359,5 @@ let previewContainer = try! ModelContainer(for: Chat.self, configurations: Model
         .navigationTitle(Text("My chat with fred"))
     }
 }
+
+#endif

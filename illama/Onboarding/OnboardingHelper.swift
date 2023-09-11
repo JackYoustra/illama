@@ -69,7 +69,9 @@ extension UIOnboardingViewConfiguration {
     }
 }
 
+#if swift(>=5.9)
 #Preview {
     OnboardingView()
         .ignoresSafeArea()
 }
+#endif

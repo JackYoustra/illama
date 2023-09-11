@@ -90,6 +90,8 @@ struct Conversation: SHC {
     }
 }
 
+#if swift(>=5.9)
+
 @available(iOS 17.0, *)
 extension Chat {
     func add(query: String) {
@@ -101,6 +103,8 @@ extension Chat {
         }
     }
 }
+
+#endif
 
 extension Optional where Wrapped == Conversation {
     var promptLeftUnanswered: SingleMessage? {

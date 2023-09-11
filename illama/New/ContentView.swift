@@ -6,15 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
-
-struct DataString: Codable {
-    let content: String
-    let stop: Bool
-}
-
-@available(iOS 17.0, *)
-extension Chat: Identifiable {}
 
 enum SelectionID: Codable, Hashable {
     case chat(UUID)
@@ -88,6 +79,18 @@ enum Selection: Codable, Hashable, Identifiable {
         }
     }
 }
+
+struct DataString: Codable {
+    let content: String
+    let stop: Bool
+}
+
+#if swift(>=5.9)
+
+import SwiftData
+
+@available(iOS 17.0, *)
+extension Chat: Identifiable {}
 
 @available(iOS 17.0, *)
 struct ContentView: View {
@@ -208,3 +211,5 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Chat.self, inMemory: true)
 }
+
+#endif

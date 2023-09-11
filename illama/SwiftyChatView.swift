@@ -105,6 +105,8 @@ extension Conversation {
     }
 }
 
+#if swift(>=5.9)
+
 @available(iOS 17.0, *)
 extension Chat {
     var anyChatMessages: [AnyChatMessage] {
@@ -173,3 +175,5 @@ struct SwiftyChatView: View {
         }.environmentObject(styling)
     }
 }
+
+#endif

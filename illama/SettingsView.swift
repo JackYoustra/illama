@@ -103,9 +103,10 @@ Hey! I'm Jack. My main job is working at [nanoflick](https://www.nanoflick.com/)
         .navigationTitle("Settings")
     }
 }
-
+#if swift(>=5.9)
 #Preview {
     NavigationView {
         SettingsView()
     }
 }
+#endif
