@@ -26,7 +26,7 @@ struct AppIconGallery: View {
     @State private var selectedIcon = AppIcon(string: UIApplication.shared.alternateIconName)
     
     var body: some View {
-        if UIApplication.shared.supportsAlternateIcons && false {
+        if UIApplication.shared.supportsAlternateIcons {
             VStack {
             ScrollView {
                 VStack(spacing: 11) {
