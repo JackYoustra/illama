@@ -39,7 +39,7 @@ final class BundledModel {
 }
 
 let syncInitializationWork: () = {
-    if ProcessInfo.processInfo.arguments.contains("UI-Testing") || true {
+    if ProcessInfo.processInfo.arguments.contains("UI-Testing") {
         UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
     }
     if UserDefaults.standard.value(forKey: AppStorageKey.markdownType.rawValue) == nil {
