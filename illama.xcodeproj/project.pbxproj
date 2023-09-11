@@ -17,6 +17,8 @@
 		0453D8872A9EE92E00E57711 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8862A9EE92E00E57711 /* SettingsView.swift */; };
 		0477C4222AAED0DB00472726 /* IllamaDynamic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0477C4212AAED0DB00472726 /* IllamaDynamic.xcframework */; };
 		0477C4232AAED0DB00472726 /* IllamaDynamic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0477C4212AAED0DB00472726 /* IllamaDynamic.xcframework */; };
+		047A0DB02AAEF23900DCC398 /* IllamaDynamic.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0477C4212AAED0DB00472726 /* IllamaDynamic.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		047A0DB22AAEF44B00DCC398 /* IllamaDynamic.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0477C4212AAED0DB00472726 /* IllamaDynamic.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		048601612A8F46B600292E9F /* Lumos in Frameworks */ = {isa = PBXBuildFile; productRef = 048601602A8F46B600292E9F /* Lumos */; };
 		048601642A8F495800292E9F /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 048601632A8F495800292E9F /* CustomDump */; };
 		048601672A910F2800292E9F /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = 048601662A910F2800292E9F /* LoremSwiftum */; };
@@ -115,6 +117,29 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		047A0DAF2AAEF22D00DCC398 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				047A0DB02AAEF23900DCC398 /* IllamaDynamic.xcframework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		047A0DB12AAEF44400DCC398 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				047A0DB22AAEF44B00DCC398 /* IllamaDynamic.xcframework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		041ECE0F2A89333E0001A821 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		0453D8842A9EE83C00E57711 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
@@ -129,7 +154,7 @@
 		04B183F32AAE7C8300F264CD /* AppIconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconGallery.swift; sourceTree = "<group>"; };
 		04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglingWithRawRepresentable.swift; sourceTree = "<group>"; };
 		04B3D8C62AA9692E00376560 /* big llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "big llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "big llama-Info.plist"; path = "/Users/jack/Documents/programs/illama/big llama-Info.plist"; sourceTree = "<absolute>"; };
+		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "big llama-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
 		04C183802A996C7300B220BB /* sample.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
@@ -356,6 +381,7 @@
 				04B3D89B2AA9692E00376560 /* Sources */,
 				04B3D8AD2AA9692E00376560 /* Frameworks */,
 				04B3D8BD2AA9692E00376560 /* Resources */,
+				047A0DB12AAEF44400DCC398 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -393,6 +419,7 @@
 				04C9C6932A7A619B00A6B66B /* Sources */,
 				04C9C6942A7A619B00A6B66B /* Frameworks */,
 				04C9C6952A7A619B00A6B66B /* Resources */,
+				047A0DAF2AAEF22D00DCC398 /* CopyFiles */,
 			);
 			buildRules = (
 			);
