@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "04B3D87E2AA9692E00376560"
-               BuildableName = "big llama.app"
-               BlueprintName = "big llama"
+               BuildableName = "Big Llama.app"
+               BlueprintName = "Big Llama"
                ReferencedContainer = "container:illama.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "04B3D87E2AA9692E00376560"
-            BuildableName = "big llama.app"
-            BlueprintName = "big llama"
+            BuildableName = "Big Llama.app"
+            BlueprintName = "Big Llama"
             ReferencedContainer = "container:illama.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -68,8 +68,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "04B3D87E2AA9692E00376560"
-            BuildableName = "big llama.app"
-            BlueprintName = "big llama"
+            BuildableName = "Big Llama.app"
+            BlueprintName = "Big Llama"
             ReferencedContainer = "container:illama.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
