@@ -27,7 +27,11 @@ final class BundledModel {
         shouldMlock = ProcessInfo.processInfo.physicalMemory > UInt64(7.9 * 1024 * 1024 * 1024)
         // Context size is 512 for openllama, 2048 for normal (for now)
         if p.contains("open") {
-            contextSize = 512
+            if ProcessInfo.processInfo.physicalMemory > UInt64(4.1 * 1024 * 1024 * 1024) {
+                contextSize = 1024
+            } else {
+                contextSize = 512
+            }
         } else {
             contextSize = 2048
         }
@@ -35,8 +39,12 @@ final class BundledModel {
 }
 
 let syncInitializationWork: () = {
+    if ProcessInfo.processInfo.arguments.contains("UI-Testing") || true {
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+    }
     if UserDefaults.standard.value(forKey: AppStorageKey.markdownType.rawValue) == nil {
-        UserDefaults.standard.setValue(MarkdownType.markdownUI.rawValue, forKey: AppStorageKey.markdownType.rawValue)
+        // we need to store like in like because of strict coding
+        UserDefaults.standard.setValue(Optional.some(MarkdownType.markdownUI).rawValue, forKey: AppStorageKey.markdownType.rawValue)
     }
 }()
 
