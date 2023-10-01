@@ -133,13 +133,14 @@
 		04B183F32AAE7C8300F264CD /* AppIconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconGallery.swift; sourceTree = "<group>"; };
 		04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglingWithRawRepresentable.swift; sourceTree = "<group>"; };
 		04B184752AAF032100F264CD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		04B3D8C62AA9692E00376560 /* big llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "big llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "big llama-Info.plist"; path = "/Users/jack/Documents/programs/illama/big llama-Info.plist"; sourceTree = "<absolute>"; };
+		04B3D8C62AA9692E00376560 /* Big Llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Big Llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "big llama-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
 		04C183802A996C7300B220BB /* sample.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItem.swift; sourceTree = "<group>"; };
-		04C9C6972A7A619B00A6B66B /* illama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = illama.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04C9C6972A7A619B00A6B66B /* iLlama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLlama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04C9C69A2A7A619B00A6B66B /* illamaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = illamaApp.swift; sourceTree = "<group>"; };
 		04C9C69C2A7A619B00A6B66B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		04C9C69E2A7A619B00A6B66B /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
@@ -260,10 +261,10 @@
 		04C9C6982A7A619B00A6B66B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				04C9C6972A7A619B00A6B66B /* illama.app */,
+				04C9C6972A7A619B00A6B66B /* iLlama.app */,
 				04C9C6AB2A7A619E00A6B66B /* illamaTests.xctest */,
 				04C9C6B52A7A619E00A6B66B /* illamaUITests.xctest */,
-				04B3D8C62AA9692E00376560 /* big llama.app */,
+				04B3D8C62AA9692E00376560 /* Big Llama.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -362,9 +363,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		04B3D87E2AA9692E00376560 /* big llama */ = {
+		04B3D87E2AA9692E00376560 /* Big Llama */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "big llama" */;
+			buildConfigurationList = 04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "Big Llama" */;
 			buildPhases = (
 				04B3D89B2AA9692E00376560 /* Sources */,
 				04B3D8AD2AA9692E00376560 /* Frameworks */,
@@ -374,7 +375,7 @@
 			);
 			dependencies = (
 			);
-			name = "big llama";
+			name = "Big Llama";
 			packageProductDependencies = (
 				04B3D87F2AA9692E00376560 /* llama */,
 				04B3D8802AA9692E00376560 /* llama */,
@@ -395,12 +396,12 @@
 				04B183E72AADB5C000F264CD /* UIOnboarding */,
 			);
 			productName = illama;
-			productReference = 04B3D8C62AA9692E00376560 /* big llama.app */;
+			productReference = 04B3D8C62AA9692E00376560 /* Big Llama.app */;
 			productType = "com.apple.product-type.application";
 		};
-		04C9C6962A7A619B00A6B66B /* illama */ = {
+		04C9C6962A7A619B00A6B66B /* iLlama */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 04C9C6BF2A7A619E00A6B66B /* Build configuration list for PBXNativeTarget "illama" */;
+			buildConfigurationList = 04C9C6BF2A7A619E00A6B66B /* Build configuration list for PBXNativeTarget "iLlama" */;
 			buildPhases = (
 				04C9C6932A7A619B00A6B66B /* Sources */,
 				04C9C6942A7A619B00A6B66B /* Frameworks */,
@@ -410,7 +411,7 @@
 			);
 			dependencies = (
 			);
-			name = illama;
+			name = iLlama;
 			packageProductDependencies = (
 				04C9C6CE2A7A640B00A6B66B /* llama */,
 				04C9C6D12A7A64B300A6B66B /* llama */,
@@ -431,7 +432,7 @@
 				04B183E52AADB5B100F264CD /* UIOnboarding */,
 			);
 			productName = illama;
-			productReference = 04C9C6972A7A619B00A6B66B /* illama.app */;
+			productReference = 04C9C6972A7A619B00A6B66B /* iLlama.app */;
 			productType = "com.apple.product-type.application";
 		};
 		04C9C6AA2A7A619E00A6B66B /* illamaTests */ = {
@@ -524,10 +525,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				04C9C6962A7A619B00A6B66B /* illama */,
+				04C9C6962A7A619B00A6B66B /* iLlama */,
 				04C9C6AA2A7A619E00A6B66B /* illamaTests */,
 				04C9C6B42A7A619E00A6B66B /* illamaUITests */,
-				04B3D87E2AA9692E00376560 /* big llama */,
+				04B3D87E2AA9692E00376560 /* Big Llama */,
 			);
 		};
 /* End PBXProject section */
@@ -653,12 +654,12 @@
 /* Begin PBXTargetDependency section */
 		04C9C6AD2A7A619E00A6B66B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 04C9C6962A7A619B00A6B66B /* illama */;
+			target = 04C9C6962A7A619B00A6B66B /* iLlama */;
 			targetProxy = 04C9C6AC2A7A619E00A6B66B /* PBXContainerItemProxy */;
 		};
 		04C9C6B72A7A619E00A6B66B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 04C9C6962A7A619B00A6B66B /* illama */;
+			target = 04C9C6962A7A619B00A6B66B /* iLlama */;
 			targetProxy = 04C9C6B62A7A619E00A6B66B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1051,7 +1052,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "big llama" */ = {
+		04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "Big Llama" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				04B3D8C42AA9692E00376560 /* Debug */,
@@ -1069,7 +1070,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		04C9C6BF2A7A619E00A6B66B /* Build configuration list for PBXNativeTarget "illama" */ = {
+		04C9C6BF2A7A619E00A6B66B /* Build configuration list for PBXNativeTarget "iLlama" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				04C9C6C02A7A619E00A6B66B /* Debug */,
