@@ -14,6 +14,9 @@ final class BundledModel {
     let path: String
     let contextSize: Int
     let shouldMlock: Bool
+    let shouldWarn: Bool
+    
+    static let isBigEnoughForBigLlama = ProcessInfo.processInfo.physicalMemory > UInt64(7.9 * 1024 * 1024 * 1024)
 
     private init() {
         let p = [
@@ -24,7 +27,7 @@ final class BundledModel {
         }.first!
         path = p
         // Mlock if have more or equal to 8gb
-        shouldMlock = ProcessInfo.processInfo.physicalMemory > UInt64(7.9 * 1024 * 1024 * 1024)
+        shouldMlock = Self.isBigEnoughForBigLlama
         // Context size is 512 for openllama, 2048 for normal (for now)
         if p.contains("open") {
             if ProcessInfo.processInfo.physicalMemory > UInt64(4.1 * 1024 * 1024 * 1024) {
@@ -34,6 +37,12 @@ final class BundledModel {
             }
         } else {
             contextSize = 2048
+        }
+        
+        if p == "ggml-model-q3_k_m" {
+            shouldWarn = true
+        } else {
+            shouldWarn = false
         }
     }
 }
@@ -73,7 +82,7 @@ struct CommonView: View {
                 showWarning = true
                 hasShownWarning = true
             }
-            if true {
+            if BundledModel.shared.shouldWarn {
                 showMemoryWarning = true
                 hasShownMemoryWarning = true
             }
