@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "size": "896x896",
+      "idiom": "iphone",
+      "filename": "splash@1x.png",
+      "scale": "1x"
+    },
+    {
+      "size": "1792x1792",
+      "idiom": "iphone",
+      "filename": "splash@2x.png",
+      "scale": "2x"
+    },
+    {
+      "size": "2688x2688",
+      "idiom": "iphone",
+      "filename": "splash@3x.png",
+      "scale": "3x"
+    },
+  ],
+  "info": {
+    "version": 1,
+    "author": "xcode"
+  },
+  "properties": {
+    "pre-rendered": true
+  }
+}

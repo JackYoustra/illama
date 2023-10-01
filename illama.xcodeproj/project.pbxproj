@@ -36,6 +36,7 @@
 		04B183F52AAE7C8300F264CD /* AppIconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F32AAE7C8300F264CD /* AppIconGallery.swift */; };
 		04B183F72AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
 		04B183F82AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
+		04B184762AAF032100F264CD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B184752AAF032100F264CD /* SnapshotHelper.swift */; };
 		04B3D89C2AA9692E00376560 /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
 		04B3D89D2AA9692E00376560 /* OldNavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */; };
 		04B3D89E2AA9692E00376560 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
@@ -131,6 +132,7 @@
 		04B183F02AAE7BF000F264CD /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		04B183F32AAE7C8300F264CD /* AppIconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconGallery.swift; sourceTree = "<group>"; };
 		04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglingWithRawRepresentable.swift; sourceTree = "<group>"; };
+		04B184752AAF032100F264CD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		04B3D8C62AA9692E00376560 /* big llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "big llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "big llama-Info.plist"; path = "/Users/jack/Documents/programs/illama/big llama-Info.plist"; sourceTree = "<absolute>"; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 		04C9C6B82A7A619E00A6B66B /* illamaUITests */ = {
 			isa = PBXGroup;
 			children = (
+				04B184752AAF032100F264CD /* SnapshotHelper.swift */,
 				04C9C6B92A7A619E00A6B66B /* illamaUITests.swift */,
 				04C9C6BB2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift */,
 			);
@@ -641,6 +644,7 @@
 			files = (
 				04C9C6BC2A7A619E00A6B66B /* illamaUITestsLaunchTests.swift in Sources */,
 				04C9C6BA2A7A619E00A6B66B /* illamaUITests.swift in Sources */,
+				04B184762AAF032100F264CD /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
