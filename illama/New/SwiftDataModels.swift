@@ -11,11 +11,18 @@ import Foundation
 @available(iOS 17.0, *)
 @Model
 final class Chat {
-    @Attribute(.unique) var id: UUID
+    // CloudKit can't have unique constraints. See: https://developer.apple.com/forums/thread/734212
+    var _id: UUID?
     var _timestamp: Date?
     var _messages: [SingleMessage]?
     var _isAnswering: Bool?
     var _chatTitle: String?
+    
+    @Transient
+    var id: UUID {
+        get { _id ?? .init(0) }
+        set { _id = newValue }
+    }
     
     @Transient
     var timestamp: Date {
@@ -48,7 +55,7 @@ final class Chat {
     }
 
     init(timestamp: Date) {
-        self.id = UUID()
+        self._id = UUID()
         self._timestamp = timestamp
         self._messages = []
         self._isAnswering = false
