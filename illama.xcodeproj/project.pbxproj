@@ -12,7 +12,6 @@
 		041ECE132A8943F20001A821 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE122A8943F20001A821 /* SwiftyChat */; };
 		041ECE162A8A3E5C0001A821 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 041ECE152A8A3E5C0001A821 /* Algorithms */; };
 		0435AAD72AAD54B400BCCC2C /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0435AAD62AAD54B400BCCC2C /* DeviceKit */; };
-		0435AADA2AAD54C800BCCC2C /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0435AAD92AAD54C800BCCC2C /* DeviceKit */; };
 		0436D58E2A7F828F0091D9CF /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
 		044A115B2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 044A115A2A9C103200D8F7A0 /* open-llama-3b-q4_0.bin */; };
 		0453D8852A9EE83C00E57711 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8842A9EE83C00E57711 /* CommonView.swift */; };
@@ -25,54 +24,12 @@
 		048E4D422A911327007B6443 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D412A911327007B6443 /* AsyncAlgorithms */; };
 		048E4D452A9114AF007B6443 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 048E4D442A9114AF007B6443 /* CombineExt */; };
 		04B183E62AADB5B100F264CD /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 04B183E52AADB5B100F264CD /* UIOnboarding */; };
-		04B183E82AADB5C000F264CD /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 04B183E72AADB5C000F264CD /* UIOnboarding */; };
 		04B183EA2AADBA2600F264CD /* OnboardingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183E92AADBA2600F264CD /* OnboardingHelper.swift */; };
-		04B183EB2AADBA2600F264CD /* OnboardingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183E92AADBA2600F264CD /* OnboardingHelper.swift */; };
 		04B183EE2AADBA3C00F264CD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183ED2AADBA3C00F264CD /* OnboardingView.swift */; };
-		04B183EF2AADBA3C00F264CD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183ED2AADBA3C00F264CD /* OnboardingView.swift */; };
 		04B183F12AAE7BF000F264CD /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F02AAE7BF000F264CD /* AppIcon.swift */; };
-		04B183F22AAE7BF000F264CD /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F02AAE7BF000F264CD /* AppIcon.swift */; };
 		04B183F42AAE7C8300F264CD /* AppIconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F32AAE7C8300F264CD /* AppIconGallery.swift */; };
-		04B183F52AAE7C8300F264CD /* AppIconGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F32AAE7C8300F264CD /* AppIconGallery.swift */; };
 		04B183F72AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
-		04B183F82AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */; };
 		04B184762AAF032100F264CD /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B184752AAF032100F264CD /* SnapshotHelper.swift */; };
-		04B3D89C2AA9692E00376560 /* SwiftyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */; };
-		04B3D89D2AA9692E00376560 /* OldNavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEE2A9B39B500533B41 /* OldNavigationMenuItem.swift */; };
-		04B3D89E2AA9692E00376560 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69C2A7A619B00A6B66B /* ContentView.swift */; };
-		04B3D89F2AA9692E00376560 /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
-		04B3D8A02AA9692E00376560 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69E2A7A619B00A6B66B /* Chat.swift */; };
-		04B3D8A12AA9692E00376560 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8862A9EE92E00E57711 /* SettingsView.swift */; };
-		04B3D8A22AA9692E00376560 /* SwiftDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE82A9B2A2800533B41 /* SwiftDataModels.swift */; };
-		04B3D8A32AA9692E00376560 /* OldContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCE12A9B287400533B41 /* OldContentView.swift */; };
-		04B3D8A42AA9692E00376560 /* illamaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9C69A2A7A619B00A6B66B /* illamaApp.swift */; };
-		04B3D8A52AA9692E00376560 /* server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0436D58D2A7F828F0091D9CF /* server.cpp */; };
-		04B3D8A62AA9692E00376560 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041ECE0F2A89333E0001A821 /* ChatView.swift */; };
-		04B3D8A72AA9692E00376560 /* NavigationMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */; };
-		04B3D8A82AA9692E00376560 /* LlamaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486016B2A910F5C00292E9F /* LlamaClient.swift */; };
-		04B3D8A92AA9692E00376560 /* ExyteChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */; };
-		04B3D8AA2AA9692E00376560 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
-		04B3D8AB2AA9692E00376560 /* FileDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCBCEC2A9B2C3000533B41 /* FileDataModels.swift */; };
-		04B3D8AC2AA9692E00376560 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453D8842A9EE83C00E57711 /* CommonView.swift */; };
-		04B3D8AE2AA9692E00376560 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8872AA9692E00376560 /* Algorithms */; };
-		04B3D8AF2AA9692E00376560 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8972AA9692E00376560 /* MarkdownUI */; };
-		04B3D8B02AA9692E00376560 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8912AA9692E00376560 /* AsyncAlgorithms */; };
-		04B3D8B12AA9692E00376560 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8992AA9692E00376560 /* SwiftUIIntrospect */; };
-		04B3D8B22AA9692E00376560 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8812AA9692E00376560 /* llama */; };
-		04B3D8B32AA9692E00376560 /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D88D2AA9692E00376560 /* LoremSwiftum */; };
-		04B3D8B42AA9692E00376560 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8932AA9692E00376560 /* CombineExt */; };
-		04B3D8B52AA9692E00376560 /* Lumos in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8892AA9692E00376560 /* Lumos */; };
-		04B3D8B62AA9692E00376560 /* CustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D88B2AA9692E00376560 /* CustomDump */; };
-		04B3D8B72AA9692E00376560 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D88F2AA9692E00376560 /* Dependencies */; };
-		04B3D8B82AA9692E00376560 /* AsyncQueue in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8832AA9692E00376560 /* AsyncQueue */; };
-		04B3D8B92AA9692E00376560 /* ExyteChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8952AA9692E00376560 /* ExyteChat */; };
-		04B3D8BA2AA9692E00376560 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8802AA9692E00376560 /* llama */; };
-		04B3D8BB2AA9692E00376560 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D8852AA9692E00376560 /* SwiftyChat */; };
-		04B3D8BC2AA9692E00376560 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3D87F2AA9692E00376560 /* llama */; };
-		04B3D8C02AA9692E00376560 /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 04C183802A996C7300B220BB /* sample.md */; };
-		04B3D8C12AA9692E00376560 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6A42A7A619E00A6B66B /* Preview Assets.xcassets */; };
-		04B3D8C22AA9692E00376560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C9C6A02A7A619E00A6B66B /* Assets.xcassets */; };
-		04B3D8E32AAA81C700376560 /* ggml-model-q3_k_m.bin in Resources */ = {isa = PBXBuildFile; fileRef = 049CE6252A981005006E1F57 /* ggml-model-q3_k_m.bin */; };
 		04BEE5AA2A7B658A000EB9E6 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BEE5A92A7B658A000EB9E6 /* Driver.swift */; };
 		04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C1837B2A98A57500B220BB /* MyChatView.swift */; };
 		04C1837F2A99550300B220BB /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 04C1837E2A99550300B220BB /* MarkdownUI */; };
@@ -133,9 +90,6 @@
 		04B183F32AAE7C8300F264CD /* AppIconGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconGallery.swift; sourceTree = "<group>"; };
 		04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WranglingWithRawRepresentable.swift; sourceTree = "<group>"; };
 		04B184752AAF032100F264CD /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "big llama-Info.plist"; path = "/Users/jack/Documents/programs/illama/big llama-Info.plist"; sourceTree = "<absolute>"; };
-		04B3D8C62AA9692E00376560 /* Big Llama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Big Llama.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		04B3D8C72AA9692E00376560 /* big llama-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "big llama-Info.plist"; sourceTree = SOURCE_ROOT; };
 		04BEE5A92A7B658A000EB9E6 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		04C1837B2A98A57500B220BB /* MyChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatView.swift; sourceTree = "<group>"; };
 		04C183802A996C7300B220BB /* sample.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
@@ -165,30 +119,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		04B3D8AD2AA9692E00376560 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				04B3D8AE2AA9692E00376560 /* Algorithms in Frameworks */,
-				0435AADA2AAD54C800BCCC2C /* DeviceKit in Frameworks */,
-				04B3D8AF2AA9692E00376560 /* MarkdownUI in Frameworks */,
-				04B3D8B02AA9692E00376560 /* AsyncAlgorithms in Frameworks */,
-				04B3D8B12AA9692E00376560 /* SwiftUIIntrospect in Frameworks */,
-				04B3D8B22AA9692E00376560 /* llama in Frameworks */,
-				04B3D8B32AA9692E00376560 /* LoremSwiftum in Frameworks */,
-				04B3D8B42AA9692E00376560 /* CombineExt in Frameworks */,
-				04B3D8B52AA9692E00376560 /* Lumos in Frameworks */,
-				04B3D8B62AA9692E00376560 /* CustomDump in Frameworks */,
-				04B183E82AADB5C000F264CD /* UIOnboarding in Frameworks */,
-				04B3D8B72AA9692E00376560 /* Dependencies in Frameworks */,
-				04B3D8B82AA9692E00376560 /* AsyncQueue in Frameworks */,
-				04B3D8B92AA9692E00376560 /* ExyteChat in Frameworks */,
-				04B3D8BA2AA9692E00376560 /* llama in Frameworks */,
-				04B3D8BB2AA9692E00376560 /* SwiftyChat in Frameworks */,
-				04B3D8BC2AA9692E00376560 /* llama in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		04C9C6942A7A619B00A6B66B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -253,7 +183,6 @@
 				04C9C6AE2A7A619E00A6B66B /* illamaTests */,
 				04C9C6B82A7A619E00A6B66B /* illamaUITests */,
 				04C9C6982A7A619B00A6B66B /* Products */,
-				04B3D8C72AA9692E00376560 /* big llama-Info.plist */,
 				0435AAD82AAD54C800BCCC2C /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -264,7 +193,6 @@
 				04C9C6972A7A619B00A6B66B /* iLlama.app */,
 				04C9C6AB2A7A619E00A6B66B /* illamaTests.xctest */,
 				04C9C6B52A7A619E00A6B66B /* illamaUITests.xctest */,
-				04B3D8C62AA9692E00376560 /* Big Llama.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -363,42 +291,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		04B3D87E2AA9692E00376560 /* Big Llama */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "Big Llama" */;
-			buildPhases = (
-				04B3D89B2AA9692E00376560 /* Sources */,
-				04B3D8AD2AA9692E00376560 /* Frameworks */,
-				04B3D8BD2AA9692E00376560 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Big Llama";
-			packageProductDependencies = (
-				04B3D87F2AA9692E00376560 /* llama */,
-				04B3D8802AA9692E00376560 /* llama */,
-				04B3D8812AA9692E00376560 /* llama */,
-				04B3D8832AA9692E00376560 /* AsyncQueue */,
-				04B3D8852AA9692E00376560 /* SwiftyChat */,
-				04B3D8872AA9692E00376560 /* Algorithms */,
-				04B3D8892AA9692E00376560 /* Lumos */,
-				04B3D88B2AA9692E00376560 /* CustomDump */,
-				04B3D88D2AA9692E00376560 /* LoremSwiftum */,
-				04B3D88F2AA9692E00376560 /* Dependencies */,
-				04B3D8912AA9692E00376560 /* AsyncAlgorithms */,
-				04B3D8932AA9692E00376560 /* CombineExt */,
-				04B3D8952AA9692E00376560 /* ExyteChat */,
-				04B3D8972AA9692E00376560 /* MarkdownUI */,
-				04B3D8992AA9692E00376560 /* SwiftUIIntrospect */,
-				0435AAD92AAD54C800BCCC2C /* DeviceKit */,
-				04B183E72AADB5C000F264CD /* UIOnboarding */,
-			);
-			productName = illama;
-			productReference = 04B3D8C62AA9692E00376560 /* Big Llama.app */;
-			productType = "com.apple.product-type.application";
-		};
 		04C9C6962A7A619B00A6B66B /* iLlama */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04C9C6BF2A7A619E00A6B66B /* Build configuration list for PBXNativeTarget "iLlama" */;
@@ -528,23 +420,11 @@
 				04C9C6962A7A619B00A6B66B /* iLlama */,
 				04C9C6AA2A7A619E00A6B66B /* illamaTests */,
 				04C9C6B42A7A619E00A6B66B /* illamaUITests */,
-				04B3D87E2AA9692E00376560 /* Big Llama */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		04B3D8BD2AA9692E00376560 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				04B3D8E32AAA81C700376560 /* ggml-model-q3_k_m.bin in Resources */,
-				04B3D8C02AA9692E00376560 /* sample.md in Resources */,
-				04B3D8C12AA9692E00376560 /* Preview Assets.xcassets in Resources */,
-				04B3D8C22AA9692E00376560 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		04C9C6952A7A619B00A6B66B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -573,35 +453,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		04B3D89B2AA9692E00376560 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				04B3D89C2AA9692E00376560 /* SwiftyChatView.swift in Sources */,
-				04B3D89D2AA9692E00376560 /* OldNavigationMenuItem.swift in Sources */,
-				04B3D89E2AA9692E00376560 /* ContentView.swift in Sources */,
-				04B3D89F2AA9692E00376560 /* MyChatView.swift in Sources */,
-				04B3D8A02AA9692E00376560 /* Chat.swift in Sources */,
-				04B3D8A12AA9692E00376560 /* SettingsView.swift in Sources */,
-				04B3D8A22AA9692E00376560 /* SwiftDataModels.swift in Sources */,
-				04B3D8A32AA9692E00376560 /* OldContentView.swift in Sources */,
-				04B3D8A42AA9692E00376560 /* illamaApp.swift in Sources */,
-				04B3D8A52AA9692E00376560 /* server.cpp in Sources */,
-				04B183F22AAE7BF000F264CD /* AppIcon.swift in Sources */,
-				04B183F82AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */,
-				04B3D8A62AA9692E00376560 /* ChatView.swift in Sources */,
-				04B183F52AAE7C8300F264CD /* AppIconGallery.swift in Sources */,
-				04B183EF2AADBA3C00F264CD /* OnboardingView.swift in Sources */,
-				04B3D8A72AA9692E00376560 /* NavigationMenuItem.swift in Sources */,
-				04B3D8A82AA9692E00376560 /* LlamaClient.swift in Sources */,
-				04B3D8A92AA9692E00376560 /* ExyteChatView.swift in Sources */,
-				04B3D8AA2AA9692E00376560 /* Driver.swift in Sources */,
-				04B3D8AB2AA9692E00376560 /* FileDataModels.swift in Sources */,
-				04B183EB2AADBA2600F264CD /* OnboardingHelper.swift in Sources */,
-				04B3D8AC2AA9692E00376560 /* CommonView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		04C9C6932A7A619B00A6B66B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -665,93 +516,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		04B3D8C42AA9692E00376560 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = illama/illama.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"illama/Preview Content\"";
-				DEVELOPMENT_TEAM = K8FHN3DJNA;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "illama copy-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nanoflick.bigllama;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
-			};
-			name = Debug;
-		};
-		04B3D8C52AA9692E00376560 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = illama/illama.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"illama/Preview Content\"";
-				DEVELOPMENT_TEAM = K8FHN3DJNA;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "illama copy-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nanoflick.bigllama;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "illama/illama-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
-			};
-			name = Release;
-		};
 		04C9C6BD2A7A619E00A6B66B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1052,15 +816,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		04B3D8C32AA9692E00376560 /* Build configuration list for PBXNativeTarget "Big Llama" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				04B3D8C42AA9692E00376560 /* Debug */,
-				04B3D8C52AA9692E00376560 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		04C9C6922A7A619B00A6B66B /* Build configuration list for PBXProject "illama" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1188,110 +943,6 @@
 				kind = branch;
 			};
 		};
-		04B3D8822AA9692E00376560 /* XCRemoteSwiftPackageReference "llama" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JackYoustra/llama.cpp";
-			requirement = {
-				kind = revision;
-				revision = 75f7e656475d8019756e9ccff7242e89e134f4ef;
-			};
-		};
-		04B3D8842AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-async-queue" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dfed/swift-async-queue";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
-			};
-		};
-		04B3D8862AA9692E00376560 /* XCRemoteSwiftPackageReference "SwiftyChat" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EnesKaraosman/SwiftyChat";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.4.0;
-			};
-		};
-		04B3D8882AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-algorithms.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		04B3D88A2AA9692E00376560 /* XCRemoteSwiftPackageReference "lumos" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JackYoustra/lumos";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		04B3D88C2AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-custom-dump" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-custom-dump.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		04B3D88E2AA9692E00376560 /* XCRemoteSwiftPackageReference "LoremSwiftum" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lukaskubanek/LoremSwiftum.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		04B3D8902AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-dependencies.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		04B3D8922AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
-		};
-		04B3D8942AA9692E00376560 /* XCRemoteSwiftPackageReference "CombineExt" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineExt";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
-			};
-		};
-		04B3D8962AA9692E00376560 /* XCRemoteSwiftPackageReference "chat" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jackyoustra/chat";
-			requirement = {
-				kind = revision;
-				revision = 793a26659d422878735410c81388504a330b576a;
-			};
-		};
-		04B3D8982AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
-			};
-		};
-		04B3D89A2AA9692E00376560 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.11.1;
-			};
-		};
 		04C1837D2A99550300B220BB /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
@@ -1347,11 +998,6 @@
 			package = 0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */;
 			productName = DeviceKit;
 		};
-		0435AAD92AAD54C800BCCC2C /* DeviceKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0435AAD52AAD54B400BCCC2C /* XCRemoteSwiftPackageReference "DeviceKit" */;
-			productName = DeviceKit;
-		};
 		048601602A8F46B600292E9F /* Lumos */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0486015F2A8F46B600292E9F /* XCRemoteSwiftPackageReference "lumos" */;
@@ -1386,84 +1032,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04B183E42AADB5B100F264CD /* XCRemoteSwiftPackageReference "UIOnboarding" */;
 			productName = UIOnboarding;
-		};
-		04B183E72AADB5C000F264CD /* UIOnboarding */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B183E42AADB5B100F264CD /* XCRemoteSwiftPackageReference "UIOnboarding" */;
-			productName = UIOnboarding;
-		};
-		04B3D87F2AA9692E00376560 /* llama */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = llama;
-		};
-		04B3D8802AA9692E00376560 /* llama */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = llama;
-		};
-		04B3D8812AA9692E00376560 /* llama */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8822AA9692E00376560 /* XCRemoteSwiftPackageReference "llama" */;
-			productName = llama;
-		};
-		04B3D8832AA9692E00376560 /* AsyncQueue */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8842AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-async-queue" */;
-			productName = AsyncQueue;
-		};
-		04B3D8852AA9692E00376560 /* SwiftyChat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8862AA9692E00376560 /* XCRemoteSwiftPackageReference "SwiftyChat" */;
-			productName = SwiftyChat;
-		};
-		04B3D8872AA9692E00376560 /* Algorithms */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8882AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
-			productName = Algorithms;
-		};
-		04B3D8892AA9692E00376560 /* Lumos */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D88A2AA9692E00376560 /* XCRemoteSwiftPackageReference "lumos" */;
-			productName = Lumos;
-		};
-		04B3D88B2AA9692E00376560 /* CustomDump */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D88C2AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-custom-dump" */;
-			productName = CustomDump;
-		};
-		04B3D88D2AA9692E00376560 /* LoremSwiftum */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D88E2AA9692E00376560 /* XCRemoteSwiftPackageReference "LoremSwiftum" */;
-			productName = LoremSwiftum;
-		};
-		04B3D88F2AA9692E00376560 /* Dependencies */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8902AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
-			productName = Dependencies;
-		};
-		04B3D8912AA9692E00376560 /* AsyncAlgorithms */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8922AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
-			productName = AsyncAlgorithms;
-		};
-		04B3D8932AA9692E00376560 /* CombineExt */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8942AA9692E00376560 /* XCRemoteSwiftPackageReference "CombineExt" */;
-			productName = CombineExt;
-		};
-		04B3D8952AA9692E00376560 /* ExyteChat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8962AA9692E00376560 /* XCRemoteSwiftPackageReference "chat" */;
-			productName = ExyteChat;
-		};
-		04B3D8972AA9692E00376560 /* MarkdownUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D8982AA9692E00376560 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
-			productName = MarkdownUI;
-		};
-		04B3D8992AA9692E00376560 /* SwiftUIIntrospect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04B3D89A2AA9692E00376560 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = SwiftUIIntrospect;
 		};
 		04C1837E2A99550300B220BB /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
