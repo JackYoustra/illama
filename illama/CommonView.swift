@@ -12,38 +12,82 @@ import fishhook
 
 // mock llama_file
 class FakeFile {
-    let data: Data
-    var offset: UInt64 = 0
+    let rangeInFile: Range<Int>
+    let internalFile: UnsafeMutablePointer<FILE>
+    var carFileSize: Int = 0
+    static let MagicFileno: Int32 = 0xdeadbee
 
-    init() {
-        data = NSDataAsset(name: "llama-model")!.data
+    // we only want to make one of these for now, or else we have to start tracking MagicFileno
+    static var hasReferenceBeenTaken = false
+    static let shared: FakeFile = FakeFile()
+    
+    var size: Int {
+        rangeInFile.count
+    }
+
+    private init() {
+        let data = NSDataAsset(name: "llama-model")!.data
+        // Read .car file into a Data object
+        let carURL = Bundle.main.url(forResource: "Assets", withExtension: "car")!
+        let carData = try! Data(contentsOf: carURL)
+        carFileSize = carData.count
+        // find offset of data in carData
+        self.rangeInFile = carData.range(of: data)!
+
+        // This offset has to be a multiple of the page size (see: https://man7.org/linux/man-pages/man2/mmap.2.html)
+        // TODO: Massage a dummy asset to make this work
+        let pageSize = Int(Darwin.sysconf(Darwin._SC_PAGESIZE))
+        assert(rangeInFile.lowerBound % pageSize == 0)
+
+        // perform fopen on the car file
+        self.internalFile = Darwin.fopen(carURL.path, "r")!
     }
     
     func ftell() -> size_t {
-        size_t(offset)
+        let fullFileOffset = Darwin.ftell(internalFile)
+        return fullFileOffset - rangeInFile.lowerBound
     }
     
-    func fseek(offset: size_t, whence: Int32) -> size_t {
+    func fseek(offset: size_t, whence: Int32) -> Int32 {
         switch whence {
         case SEEK_END:
-            self.offset = UInt64(data.count) + UInt64(offset)
+            // Seeking to the end, only seek to real end
+            return Darwin.fseek(internalFile, rangeInFile.upperBound, SEEK_SET)
         case SEEK_SET:
-            self.offset = UInt64(offset)
+            // Adjust the seek offset
+            let adjustedOffset = offset + rangeInFile.lowerBound
+            if adjustedOffset < rangeInFile.lowerBound {
+                // return as if fseek failed
+                return 1
+            } else if adjustedOffset > rangeInFile.upperBound {
+                // return as if fseek failed
+                return 1
+            } else {
+                // seek to the adjusted offset
+                return Darwin.fseek(internalFile, adjustedOffset, SEEK_SET)
+            }
         case SEEK_CUR:
-            self.offset += UInt64(offset)
+            // no check for performance reasons
+            // Don't have to adjust the offset, it's already adjusted
+            return Darwin.fseek(internalFile, offset, SEEK_CUR)
         default:
             fatalError("invalid whence")
         }
-        return 0
     }
 
     func fread(_ ptr: UnsafeMutableRawPointer, _ size: size_t, _ nitems: size_t) -> size_t {
-        let count = size * nitems
-        let end = Int(offset) + count
-        let data = self.data[Int(offset)..<end]
-        data.copyBytes(to: ptr.assumingMemoryBound(to: UInt8.self), count: count)
-        self.offset += UInt64(count)
-        return nitems
+        return Darwin.fread(ptr, size, nitems, internalFile)
+    }
+    
+    func mmap(_ addr: UnsafeMutableRawPointer?, _ len: size_t, _ prot: Int32, _ flags: Int32, _ fd: Int32, _ offset: off_t) -> UnsafeMutableRawPointer? {
+        assert(fd == FakeFile.MagicFileno)
+        let actualFd = Darwin.fileno(internalFile)
+        // if they're doing weird stuff, think about it then
+        assert(offset == 0)
+        let realOffset = rangeInFile.lowerBound
+        // forward the rest of the call to mmap
+        // (length returned by a seek from earlier)
+        return Darwin.mmap(addr, len, prot, flags, actualFd, off_t(realOffset))
     }
 }
 
@@ -53,7 +97,10 @@ func my_open_impl(_ path: UnsafePointer<CChar>, _ mode: UnsafePointer<CChar>) ->
     assert(String(cString: mode) == "r")
     // if the file is the model file, return a fake file
     if String(cString: path) == BundledModel.shared.path {
-        return OpaquePointer(Unmanaged.passRetained(FakeFile()).toOpaque())
+        // ensure that we only make one of these
+        assert(!FakeFile.hasReferenceBeenTaken)
+        FakeFile.hasReferenceBeenTaken = true
+        return OpaquePointer(Unmanaged.passRetained(FakeFile.shared).toOpaque())
     } else {
         // forward the call to std::fopen (is this correct?)
         let result = my_open_impl(path, mode)
@@ -75,8 +122,8 @@ func my_ftell_impl(_ file: OpaquePointer) -> size_t {
 }
 
 // intercept fseek
-typealias MyFseek = @convention(thin) (OpaquePointer, size_t, Int32) -> size_t
-func my_fseek_impl(_ file: OpaquePointer, _ offset: size_t, _ whence: Int32) -> size_t {
+typealias MyFseek = @convention(thin) (OpaquePointer, size_t, Int32) -> Int32
+func my_fseek_impl(_ file: OpaquePointer, _ offset: size_t, _ whence: Int32) -> Int32 {
     // if the file is the model file, return the offset of the fake file
     if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
         return file.fseek(offset: offset, whence: whence)
@@ -111,12 +158,11 @@ func my_ferror_impl(_ file: OpaquePointer) -> Int32 {
 }
 
 // intercept fileno
-let MagicFileno: Int32 = 0xdeadbee
 typealias MyFileno = @convention(thin) (OpaquePointer) -> Int32
 func my_fileno_impl(_ file: OpaquePointer) -> Int32 {
     // if the file is the model file, return OK
     if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
-        return MagicFileno
+        return FakeFile.MagicFileno
     } else {
         // otherwise, return the result of the call to std::ferror
         return my_fileno_impl(file)
@@ -127,8 +173,8 @@ func my_fileno_impl(_ file: OpaquePointer) -> Int32 {
 typealias MyMmap = @convention(thin) (UnsafeMutableRawPointer?, size_t, Int32, Int32, Int32, off_t) -> UnsafeMutableRawPointer?
 func my_mmap_impl(_ addr: UnsafeMutableRawPointer?, _ len: size_t, _ prot: Int32, _ flags: Int32, _ fd: Int32, _ offset: off_t) -> UnsafeMutableRawPointer? {
     // if the file is the model file, forward mmap, but fix up the fd first
-    if fd == MagicFileno {
-        
+    if fd == FakeFile.MagicFileno {
+        return FakeFile.shared.mmap(addr, len, prot, flags, fd, offset)
     } else {
         // otherwise, return the result of the call to std::ferror
         return my_mmap_impl(addr, len, prot, flags, fd, offset)
