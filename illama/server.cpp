@@ -1482,9 +1482,13 @@ const char* convertToCString(const std::string& str) {
 
 size_t findOffsetInFile(const char* filename, const void* key, size_t keylen) {
     int fd = open(filename, O_RDONLY);
+    assert(fd != -1);
     off_t length = lseek(fd, 0, SEEK_END);
+    assert(length != -1);
     void *data = mmap(NULL, length, PROT_READ, MAP_PRIVATE, fd, 0);
+    assert(data != MAP_FAILED);
     void *ptr = memmem(data, length, key, keylen);
+    assert(ptr != NULL);
     size_t offset = (size_t) ptr - (size_t) data;
     munmap(data, length);
     close(fd);

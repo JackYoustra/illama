@@ -14,7 +14,6 @@ import fishhook
 class FakeFile {
     let rangeInFile: Range<Int>
     let internalFile: UnsafeMutablePointer<FILE>
-    var carFileSize: Int = 0
     let mmapOffsetFromPage: Int
     static let MagicFileno: Int32 = 0xdeadbee
     var mmapAddr: UnsafeMutableRawPointer? = nil
@@ -32,10 +31,13 @@ class FakeFile {
         let data = NSDataAsset(name: "llama-model")!.data
         // Read .car file into a Data object
         let carURL = Bundle.main.url(forResource: "Assets", withExtension: "car")!
-        let carData = try! Data(contentsOf: carURL)
-        carFileSize = carData.count
-        // find offset of data in carData
-        self.rangeInFile = carData.range(of: data)!
+        let offset = carURL.path(percentEncoded: false).withCString { cCarPath in
+            data.withUnsafeBytes { key in
+                findOffsetInFile(cCarPath, key.baseAddress!, min(data.count, 1024*1024*5))
+            }
+        }
+        self.rangeInFile = (offset ..< (offset + data.count))
+        print("Found data at \(self.rangeInFile)")
 
         // This offset has to be a multiple of the page size (see: https://man7.org/linux/man-pages/man2/mmap.2.html)
         // We don't want to rely on the file being magically aligned,
@@ -44,11 +46,11 @@ class FakeFile {
         mmapOffsetFromPage = rangeInFile.lowerBound % FakeFile.pageSize
 
         // perform fopen on the car file
-        self.internalFile = Darwin.fopen(carURL.path, "r")!
+        self.internalFile = OriginalFunctions.fopen(carURL.path, "r")
     }
     
     func ftell() -> size_t {
-        let fullFileOffset = Darwin.ftell(internalFile)
+        let fullFileOffset = OriginalFunctions.ftell(internalFile)
         return fullFileOffset - rangeInFile.lowerBound
     }
     
@@ -56,7 +58,7 @@ class FakeFile {
         switch whence {
         case SEEK_END:
             // Seeking to the end, only seek to real end
-            return Darwin.fseek(internalFile, rangeInFile.upperBound, SEEK_SET)
+            return OriginalFunctions.fseek(internalFile, rangeInFile.upperBound, SEEK_SET)
         case SEEK_SET:
             // Adjust the seek offset
             let adjustedOffset = offset + rangeInFile.lowerBound
@@ -68,24 +70,24 @@ class FakeFile {
                 return 1
             } else {
                 // seek to the adjusted offset
-                return Darwin.fseek(internalFile, adjustedOffset, SEEK_SET)
+                return OriginalFunctions.fseek(internalFile, adjustedOffset, SEEK_SET)
             }
         case SEEK_CUR:
             // no check for performance reasons
             // Don't have to adjust the offset, it's already adjusted
-            return Darwin.fseek(internalFile, offset, SEEK_CUR)
+            return OriginalFunctions.fseek(internalFile, offset, SEEK_CUR)
         default:
             fatalError("invalid whence")
         }
     }
 
     func fread(_ ptr: UnsafeMutableRawPointer, _ size: size_t, _ nitems: size_t) -> size_t {
-        return Darwin.fread(ptr, size, nitems, internalFile)
+        return OriginalFunctions.fread(ptr, size, nitems, internalFile)
     }
     
     func mmap(_ addr: UnsafeMutableRawPointer?, _ len: size_t, _ prot: Int32, _ flags: Int32, _ fd: Int32, _ offset: off_t) -> UnsafeMutableRawPointer? {
         assert(fd == FakeFile.MagicFileno)
-        let actualFd = Darwin.fileno(internalFile)
+        let actualFd = OriginalFunctions.fileno(internalFile)
         // if they're doing weird stuff, think about it then
         assert(offset == 0)
         assert(mmapAddr == nil)
@@ -93,7 +95,7 @@ class FakeFile {
         // align to lowest page size
         let pageAlignmentOffset = (realOffset % FakeFile.pageSize)
         let adjustedOffset = realOffset - pageAlignmentOffset
-        guard let returnAddr = Darwin.mmap(addr, len, prot, flags, actualFd, adjustedOffset) else { return nil }
+        guard let returnAddr = OriginalFunctions.mmap(addr, len, prot, flags, actualFd, off_t(adjustedOffset)) else { return nil }
         let fakemmapaddr = returnAddr.advanced(by: pageAlignmentOffset)
         mmapAddr = fakemmapaddr
         return fakemmapaddr
@@ -103,28 +105,28 @@ class FakeFile {
     func madvise(_ addr: UnsafeMutableRawPointer, _ len: size_t, _ advice: Int32) -> Int32 {
         // fix addr
         let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
-        return Darwin.madvise(addr, len, advice)
+        return OriginalFunctions.madvise(addr, len, advice)
     }
 
     // munmap
     func munmap(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
         // fix addr
         let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
-        return Darwin.munmap(addr, len)
+        return OriginalFunctions.munmap(addr, len)
     }
 
     // mlock
     func mlock(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
         // fix addr
         let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
-        return Darwin.mlock(addr, len)
+        return OriginalFunctions.mlock(addr, len)
     }
 
     // munlock
     func munlock(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
         // fix addr
         let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
-        return Darwin.munlock(addr, len)
+        return OriginalFunctions.munlock(addr, len)
     }
 
     deinit {
@@ -132,8 +134,8 @@ class FakeFile {
     }
 }
 
-typealias MyOpen = @convention(thin) (UnsafePointer<CChar>, UnsafePointer<CChar>) -> OpaquePointer
-func my_open_impl(_ path: UnsafePointer<CChar>, _ mode: UnsafePointer<CChar>) -> OpaquePointer {
+typealias MyOpen = @convention(thin) (UnsafePointer<CChar>, UnsafePointer<CChar>) -> UnsafeMutablePointer<FILE>
+func my_open_impl(_ path: UnsafePointer<CChar>, _ mode: UnsafePointer<CChar>) -> UnsafeMutablePointer<FILE> {
     // assert opened for reading
     assert(String(cString: mode) == "r")
     // if the file is the model file, return a fake file
@@ -141,72 +143,66 @@ func my_open_impl(_ path: UnsafePointer<CChar>, _ mode: UnsafePointer<CChar>) ->
         // ensure that we only make one of these
         assert(!FakeFile.hasReferenceBeenTaken)
         FakeFile.hasReferenceBeenTaken = true
-        return OpaquePointer(Unmanaged.passRetained(FakeFile.shared).toOpaque())
+        return FakeFile.shared.internalFile
     } else {
-        // forward the call to std::fopen (is this correct?)
-        let result = my_open_impl(path, mode)
-        // otherwise, return the result of the call to std::fopen
-        return result
+        return OriginalFunctions.fopen(path, mode)
     }
 }
 
 // intercept ftell
-typealias MyFtell = @convention(thin) (OpaquePointer) -> size_t
-func my_ftell_impl(_ file: OpaquePointer) -> size_t {
+typealias MyFtell = @convention(thin) (UnsafeMutablePointer<FILE>) -> size_t
+func my_ftell_impl(_ file: UnsafeMutablePointer<FILE>) -> size_t {
     // if the file is the model file, return the offset of the fake file
-    if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
-        return file.ftell()
+    let filePtr = UnsafeMutablePointer<FILE>(file)
+    if filePtr == FakeFile.shared.internalFile {
+        return FakeFile.shared.ftell()
     } else {
-        // otherwise, return the result of the call to std::ftell
-        return my_ftell_impl(file)
+        return OriginalFunctions.ftell(file)
     }
 }
 
 // intercept fseek
-typealias MyFseek = @convention(thin) (OpaquePointer, size_t, Int32) -> Int32
-func my_fseek_impl(_ file: OpaquePointer, _ offset: size_t, _ whence: Int32) -> Int32 {
+typealias MyFseek = @convention(thin) (UnsafeMutablePointer<FILE>, size_t, Int32) -> Int32
+func my_fseek_impl(_ file: UnsafeMutablePointer<FILE>, _ offset: size_t, _ whence: Int32) -> Int32 {
     // if the file is the model file, return the offset of the fake file
-    if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
-        return file.fseek(offset: offset, whence: whence)
+    let filePtr = UnsafeMutablePointer<FILE>(file)
+    if filePtr == FakeFile.shared.internalFile {
+        return FakeFile.shared.fseek(offset: offset, whence: whence)
     } else {
-        // otherwise, return the result of the call to std::fseek
-        return my_fseek_impl(file, offset, whence)
+        return OriginalFunctions.fseek(file, offset, whence)
     }
 }
 
 // intercept fread
-typealias MyFread = @convention(thin) (UnsafeMutableRawPointer, size_t, size_t, OpaquePointer) -> size_t
-func my_fread_impl(_ ptr: UnsafeMutableRawPointer, _ size: size_t, _ nitems: size_t, _ stream: OpaquePointer) -> size_t {
+typealias MyFread = @convention(thin) (UnsafeMutableRawPointer, size_t, size_t, UnsafeMutablePointer<FILE>) -> size_t
+func my_fread_impl(_ ptr: UnsafeMutableRawPointer, _ size: size_t, _ nitems: size_t, _ stream: UnsafeMutablePointer<FILE>) -> size_t {
     // if the file is the model file, return the offset of the fake file
-    if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(stream)).takeUnretainedValue() as? FakeFile {
-        return file.fread(ptr, size, nitems)
+    if stream == FakeFile.shared.internalFile {
+        return FakeFile.shared.fread(ptr, size, nitems)
     } else {
-        // otherwise, return the result of the call to std::fread
-        return my_fread_impl(ptr, size, nitems, stream)
+        return OriginalFunctions.fread(ptr, size, nitems, stream)
     }
 }
 
 // intercept ferror
-typealias MyFerror = @convention(thin) (OpaquePointer) -> Int32
-func my_ferror_impl(_ file: OpaquePointer) -> Int32 {
+typealias MyFerror = @convention(thin) (UnsafeMutablePointer<FILE>) -> Int32
+func my_ferror_impl(_ file: UnsafeMutablePointer<FILE>) -> Int32 {
     // if the file is the model file, return OK
-    if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
+    if file == FakeFile.shared.internalFile {
         return 0
     } else {
-        // otherwise, return the result of the call to std::ferror
-        return my_ferror_impl(file)
+        return OriginalFunctions.ferror(file)
     }
 }
 
 // intercept fileno
-typealias MyFileno = @convention(thin) (OpaquePointer) -> Int32
-func my_fileno_impl(_ file: OpaquePointer) -> Int32 {
+typealias MyFileno = @convention(thin) (UnsafeMutablePointer<FILE>) -> Int32
+func my_fileno_impl(_ file: UnsafeMutablePointer<FILE>) -> Int32 {
     // if the file is the model file, return OK
-    if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
+    if file == FakeFile.shared.internalFile {
         return FakeFile.MagicFileno
     } else {
-        // otherwise, return the result of the call to std::fileno
-        return my_fileno_impl(file)
+        return OriginalFunctions.fileno(file)
     }
 }
 
@@ -215,10 +211,12 @@ typealias MyMmap = @convention(thin) (UnsafeMutableRawPointer?, size_t, Int32, I
 func my_mmap_impl(_ addr: UnsafeMutableRawPointer?, _ len: size_t, _ prot: Int32, _ flags: Int32, _ fd: Int32, _ offset: off_t) -> UnsafeMutableRawPointer? {
     // if the file is the model file, forward mmap, but fix up the fd first
     if fd == FakeFile.MagicFileno {
+        print("Was taken")
         return FakeFile.shared.mmap(addr, len, prot, flags, fd, offset)
     } else {
+        print("Was not taken")
         // otherwise, return the result of the call to std::mmap
-        return my_mmap_impl(addr, len, prot, flags, fd, offset)
+        return OriginalFunctions.mmap(addr, len, prot, flags, fd, offset)
     }
 }
 
@@ -230,7 +228,7 @@ func my_madvise_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t, _ advice: I
         return FakeFile.shared.madvise(addr, len, advice)
     } else {
         // otherwise, return the result of the call to std::madvise
-        return my_madvise_impl(addr, len, advice)
+        return OriginalFunctions.madvise(addr, len, advice)
     }
 }
 
@@ -241,8 +239,7 @@ func my_munmap_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
     if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
         return FakeFile.shared.munmap(addr, len)
     } else {
-        // otherwise, return the result of the call to std::munmap
-        return my_munmap_impl(addr, len)
+        return OriginalFunctions.munmap(addr, len)
     }
 }
 
@@ -253,8 +250,7 @@ func my_mlock_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
     if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
         return FakeFile.shared.mlock(addr, len)
     } else {
-        // otherwise, return the result of the call to std::mlock
-        return my_mlock_impl(addr, len)
+        return OriginalFunctions.mlock(addr, len)
     }
 }
 
@@ -265,12 +261,63 @@ func my_munlock_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
     if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
         return FakeFile.shared.munlock(addr, len)
     } else {
-        // otherwise, return the result of the call to std::munlock
-        return my_munlock_impl(addr, len)
+        return OriginalFunctions.munlock(addr, len)
     }
 }
 
-let interposeKeychain = {
+var a: ((UnsafeMutablePointer<FILE>?, Int, Int32) -> Int32)? = nil
+
+enum OriginalFunctions {
+    static var fopen: MyOpen {
+        unsafeBitCast(interposeKeychain["fopen"]!.original, to: MyOpen.self)
+    }
+
+    static var ftell: MyFtell {
+        unsafeBitCast(interposeKeychain["ftell"]!.original, to: MyFtell.self)
+    }
+
+    static var fseek: MyFseek {
+        unsafeBitCast(interposeKeychain["fseek"]!.original, to: MyFseek.self)
+    }
+
+    static var fread: MyFread {
+        unsafeBitCast(interposeKeychain["fread"]!.original, to: MyFread.self)
+    }
+
+    static var ferror: MyFerror {
+        unsafeBitCast(interposeKeychain["ferror"]!.original, to: MyFerror.self)
+    }
+
+    static var fileno: MyFileno {
+        unsafeBitCast(interposeKeychain["fileno"]!.original, to: MyFileno.self)
+    }
+
+    static var mmap: MyMmap {
+        unsafeBitCast(interposeKeychain["mmap"]!.original, to: MyMmap.self)
+    }
+
+    static var madvise: MyMadvise {
+        unsafeBitCast(interposeKeychain["madvise"]!.original, to: MyMadvise.self)
+    }
+
+    static var munmap: MyMunmap {
+        unsafeBitCast(interposeKeychain["munmap"]!.original, to: MyMunmap.self)
+    }
+
+    static var mlock: MyMlock {
+        unsafeBitCast(interposeKeychain["mlock"]!.original, to: MyMlock.self)
+    }
+
+    static var munlock: MyMunlock {
+        unsafeBitCast(interposeKeychain["munlock"]!.original, to: MyMunlock.self)
+    }
+}
+
+let interposeKeychain: [String: Interpose] = {
+    a = fseek
+    DispatchQueue.main.async {
+        print(a)
+    }
     var stuff = [
         Interpose(symbolName: "fopen", targetFunction: unsafeBitCast(my_open_impl as MyOpen, to: UnsafeMutableRawPointer.self)),
         Interpose(symbolName: "ftell", targetFunction: unsafeBitCast(my_ftell_impl as MyFtell, to: UnsafeMutableRawPointer.self)),
@@ -281,6 +328,7 @@ let interposeKeychain = {
         Interpose(symbolName: "mmap", targetFunction: unsafeBitCast(my_mmap_impl as MyMmap, to: UnsafeMutableRawPointer.self)),
     ]
     interpose(symbols: &stuff)
+    return Dictionary(uniqueKeysWithValues: stuff.map { ($0.symbolName, $0) })
 }()
 
 struct Interpose {
