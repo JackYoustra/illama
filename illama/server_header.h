@@ -114,4 +114,6 @@ RunContext getRunContext(const std::variant<int, RunContext>& v);
 
 const char* convertToCString(const std::string& str);
 
+size_t findOffsetInFile(const char* filename, const void* key, size_t keylen);
+
 #endif /* server_header_h */

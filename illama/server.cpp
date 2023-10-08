@@ -1,6 +1,7 @@
 #include "common.h"
 #include "llama_header.h"
 #include "/Users/jack/Documents/llm/llama.cpp/build-info.h"
+#include <sys/mman.h>
 
 #ifndef NDEBUG
 // crash the server in debug mode, otherwise send an http 500 error
@@ -1477,4 +1478,15 @@ std::variant<int, RunContext> RunContext::runServer(int argc, char **argv) {
 
 const char* convertToCString(const std::string& str) {
     return str.c_str();
+}
+
+size_t findOffsetInFile(const char* filename, const void* key, size_t keylen) {
+    int fd = open(filename, O_RDONLY);
+    off_t length = lseek(fd, 0, SEEK_END);
+    void *data = mmap(NULL, length, PROT_READ, MAP_PRIVATE, fd, 0);
+    void *ptr = memmem(data, length, key, keylen);
+    size_t offset = (size_t) ptr - (size_t) data;
+    munmap(data, length);
+    close(fd);
+    return offset;
 }

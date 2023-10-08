@@ -15,11 +15,14 @@ class FakeFile {
     let rangeInFile: Range<Int>
     let internalFile: UnsafeMutablePointer<FILE>
     var carFileSize: Int = 0
+    let mmapOffsetFromPage: Int
     static let MagicFileno: Int32 = 0xdeadbee
+    var mmapAddr: UnsafeMutableRawPointer? = nil
 
     // we only want to make one of these for now, or else we have to start tracking MagicFileno
     static var hasReferenceBeenTaken = false
     static let shared: FakeFile = FakeFile()
+    static let pageSize = Int(Darwin.sysconf(Darwin._SC_PAGESIZE))
     
     var size: Int {
         rangeInFile.count
@@ -35,9 +38,10 @@ class FakeFile {
         self.rangeInFile = carData.range(of: data)!
 
         // This offset has to be a multiple of the page size (see: https://man7.org/linux/man-pages/man2/mmap.2.html)
-        // TODO: Massage a dummy asset to make this work
-        let pageSize = Int(Darwin.sysconf(Darwin._SC_PAGESIZE))
-        assert(rangeInFile.lowerBound % pageSize == 0)
+        // We don't want to rely on the file being magically aligned,
+        // so we'll mmap to the nearest page boundary and then offset
+        // every mmap call and fix up every mmap related syscall
+        mmapOffsetFromPage = rangeInFile.lowerBound % FakeFile.pageSize
 
         // perform fopen on the car file
         self.internalFile = Darwin.fopen(carURL.path, "r")!
@@ -84,10 +88,47 @@ class FakeFile {
         let actualFd = Darwin.fileno(internalFile)
         // if they're doing weird stuff, think about it then
         assert(offset == 0)
+        assert(mmapAddr == nil)
         let realOffset = rangeInFile.lowerBound
-        // forward the rest of the call to mmap
-        // (length returned by a seek from earlier)
-        return Darwin.mmap(addr, len, prot, flags, actualFd, off_t(realOffset))
+        // align to lowest page size
+        let pageAlignmentOffset = (realOffset % FakeFile.pageSize)
+        let adjustedOffset = realOffset - pageAlignmentOffset
+        guard let returnAddr = Darwin.mmap(addr, len, prot, flags, actualFd, adjustedOffset) else { return nil }
+        let fakemmapaddr = returnAddr.advanced(by: pageAlignmentOffset)
+        mmapAddr = fakemmapaddr
+        return fakemmapaddr
+    }
+
+    // madvise
+    func madvise(_ addr: UnsafeMutableRawPointer, _ len: size_t, _ advice: Int32) -> Int32 {
+        // fix addr
+        let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
+        return Darwin.madvise(addr, len, advice)
+    }
+
+    // munmap
+    func munmap(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+        // fix addr
+        let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
+        return Darwin.munmap(addr, len)
+    }
+
+    // mlock
+    func mlock(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+        // fix addr
+        let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
+        return Darwin.mlock(addr, len)
+    }
+
+    // munlock
+    func munlock(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+        // fix addr
+        let adjustedAddr = addr.advanced(by: -mmapOffsetFromPage)
+        return Darwin.munlock(addr, len)
+    }
+
+    deinit {
+        Darwin.fclose(internalFile)
     }
 }
 
@@ -164,7 +205,7 @@ func my_fileno_impl(_ file: OpaquePointer) -> Int32 {
     if let file = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(file)).takeUnretainedValue() as? FakeFile {
         return FakeFile.MagicFileno
     } else {
-        // otherwise, return the result of the call to std::ferror
+        // otherwise, return the result of the call to std::fileno
         return my_fileno_impl(file)
     }
 }
@@ -176,8 +217,56 @@ func my_mmap_impl(_ addr: UnsafeMutableRawPointer?, _ len: size_t, _ prot: Int32
     if fd == FakeFile.MagicFileno {
         return FakeFile.shared.mmap(addr, len, prot, flags, fd, offset)
     } else {
-        // otherwise, return the result of the call to std::ferror
+        // otherwise, return the result of the call to std::mmap
         return my_mmap_impl(addr, len, prot, flags, fd, offset)
+    }
+}
+
+// intercept madvise
+typealias MyMadvise = @convention(thin) (UnsafeMutableRawPointer, size_t, Int32) -> Int32
+func my_madvise_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t, _ advice: Int32) -> Int32 {
+    // if the file is the model file, forward madvise, but fix up the addr first
+    if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
+        return FakeFile.shared.madvise(addr, len, advice)
+    } else {
+        // otherwise, return the result of the call to std::madvise
+        return my_madvise_impl(addr, len, advice)
+    }
+}
+
+// intercept munmap
+typealias MyMunmap = @convention(thin) (UnsafeMutableRawPointer, size_t) -> Int32
+func my_munmap_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+    // if the file is the model file, forward munmap, but fix up the addr first
+    if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
+        return FakeFile.shared.munmap(addr, len)
+    } else {
+        // otherwise, return the result of the call to std::munmap
+        return my_munmap_impl(addr, len)
+    }
+}
+
+// intercept mlock
+typealias MyMlock = @convention(thin) (UnsafeMutableRawPointer, size_t) -> Int32
+func my_mlock_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+    // if the file is the model file, forward mlock, but fix up the addr first
+    if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
+        return FakeFile.shared.mlock(addr, len)
+    } else {
+        // otherwise, return the result of the call to std::mlock
+        return my_mlock_impl(addr, len)
+    }
+}
+
+// intercept munlock
+typealias MyMunlock = @convention(thin) (UnsafeMutableRawPointer, size_t) -> Int32
+func my_munlock_impl(_ addr: UnsafeMutableRawPointer, _ len: size_t) -> Int32 {
+    // if the file is the model file, forward munlock, but fix up the addr first
+    if let mmapAddr = FakeFile.shared.mmapAddr, addr >= mmapAddr {
+        return FakeFile.shared.munlock(addr, len)
+    } else {
+        // otherwise, return the result of the call to std::munlock
+        return my_munlock_impl(addr, len)
     }
 }
 
