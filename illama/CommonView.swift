@@ -189,6 +189,7 @@ let interposeKeychain = {
         Interpose(symbolName: "fread", targetFunction: unsafeBitCast(my_fread_impl as MyFread, to: UnsafeMutableRawPointer.self)),
         Interpose(symbolName: "ferror", targetFunction: unsafeBitCast(my_ferror_impl as MyFerror, to: UnsafeMutableRawPointer.self)),
         Interpose(symbolName: "fileno", targetFunction: unsafeBitCast(my_fileno_impl as MyFileno, to: UnsafeMutableRawPointer.self)),
+        Interpose(symbolName: "mmap", targetFunction: unsafeBitCast(my_mmap_impl as MyMmap, to: UnsafeMutableRawPointer.self)),
     ]
     interpose(symbols: &stuff)
 }()
