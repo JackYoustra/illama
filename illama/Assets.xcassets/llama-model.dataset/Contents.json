@@ -1,0 +1,31 @@
+{
+  "data" : [
+    {
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "open-llama-3b-q4_0.bin",
+      "idiom" : "universal",
+      "memory" : "4GB",
+      "universal-type-identifier" : "com.apple.macbinary-archive"
+    },
+    {
+      "idiom" : "universal",
+      "memory" : "6GB"
+    },
+    {
+      "filename" : "ggml-model-q3_k_m.bin",
+      "idiom" : "universal",
+      "memory" : "8GB",
+      "universal-type-identifier" : "com.apple.macbinary-archive"
+    },
+    {
+      "idiom" : "universal",
+      "memory" : "16GB"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

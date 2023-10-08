@@ -56,6 +56,8 @@ final actor LlamaInstance {
     //                    gpt_params.init()
     //     let server_context = ServerContext()
     //     try await server_context.run()
+        _ = interposeKeychain
+
         let args = [
            "server",
 //           "--no-mmap",

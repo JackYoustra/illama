@@ -7,99 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "read_raw(ptr, len)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
-                  moduleName = "illama"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "456">
-               </Location>
-               <Location
-                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
-                  moduleName = "illama"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "120">
-               </Location>
-               <Location
-                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
-                  moduleName = "illama"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "200">
-               </Location>
-               <Location
-                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 610f73944ab5ccb2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
-                  moduleName = "big llama"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "200">
-               </Location>
-               <Location
-                  uuid = "D01BDC3A-6D6C-4F16-A125-3E92024420BB - 67e2155355340b26"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "llama_file::read_raw(void*, unsigned long) const"
-                  moduleName = "illama"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama-util.h"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "380">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "2B4A72A3-D18C-4D28-ACBB-8FB17E1790AD"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -251,6 +158,21 @@
                   startingLineNumber = "341"
                   endingLineNumber = "341"
                   offsetFromSymbolStart = "100">
+               </Location>
+               <Location
+                  uuid = "9898A6E8-9993-41B8-A182-C6CC65D60D5A - 27723690c20d690"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "llama_context::~llama_context()"
+                  moduleName = "iLlama"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/SourcePackages/checkouts/llama.cpp/llama.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "341"
+                  endingLineNumber = "341"
+                  offsetFromSymbolStart = "40">
                </Location>
             </Locations>
          </BreakpointContent>

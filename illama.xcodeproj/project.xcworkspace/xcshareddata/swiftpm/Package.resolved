@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "aspects",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/djpearce/Aspects",
-      "state" : {
-        "branch" : "master",
-        "revision" : "771b2f3da3b1a201f110b141854ca45070036ccc"
-      }
-    },
-    {
       "identity" : "chat",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jackyoustra/chat",
@@ -51,6 +42,15 @@
       "state" : {
         "revision" : "691fe8112cca20ebf0020a1709d4e0205400311c",
         "version" : "5.0.0"
+      }
+    },
+    {
+      "identity" : "fishhook",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Concoction/fishhook",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f4d289e0393b900b4902e6635e1b2c11e78da5eb"
       }
     },
     {
@@ -95,15 +95,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "8942e732e50458cde5dccf9996afa16f29372853"
-      }
-    },
-    {
-      "identity" : "lumos",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JackYoustra/lumos",
-      "state" : {
-        "branch" : "master",
-        "revision" : "3515cd2d2053d8974b6abe665ae25b3f3939ddb4"
       }
     },
     {
@@ -170,15 +161,6 @@
       }
     },
     {
-      "identity" : "swift-custom-dump",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-custom-dump.git",
-      "state" : {
-        "revision" : "edd66cace818e1b1c6f1b3349bb1d8e00d6f8b01",
-        "version" : "1.0.0"
-      }
-    },
-    {
       "identity" : "swift-dependencies",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies.git",
@@ -235,10 +217,10 @@
     {
       "identity" : "uionboarding",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FelixLisczyk/UIOnboarding/",
+      "location" : "https://github.com/lascic/UIOnboarding",
       "state" : {
-        "branch" : "ios-17-trait-collection",
-        "revision" : "f402e7e2f3568385e275439d50eb840b54fa7efb"
+        "revision" : "efd1e944c399de24c10d9f4947301e1c105dbb9b",
+        "version" : "2.0.3"
       }
     },
     {
