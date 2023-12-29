@@ -1,0 +1,592 @@
+/* com.apple.actool.errors */
+: error: Failed to write image data for the app icon set from "AppIcon.appiconset/iPhone-App-60pt@2x.png" to "/Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/Build/Products/Release-iphoneos/iLlama.app/AppIcon60x60@2x.png".
+    Underlying Errors:
+        Description: pngcrush exited with signal '6' for "/Users/jack/Documents/programs/illama/illama/Assets.xcassets/AppIcon.appiconset/iPhone-App-60pt@2x.png".
+Error output:
+    dyld[6286]: terminating because inserted dylib './otherinterpose.dylib' could not be loaded: tried: './otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS./otherinterpose.dylib' (no such file), './otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS//otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file)
+    dyld[6286]: tried: './otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS./otherinterpose.dylib' (no such file), './otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS//otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file)
+
+
+: error: Failed to write image data for the app icon set from "AppIcon.appiconset/iPad-App-76pt@2x.png" to "/Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/Build/Products/Release-iphoneos/iLlama.app/AppIcon76x76@2x~ipad.png".
+    Underlying Errors:
+        Description: pngcrush exited with signal '6' for "/Users/jack/Documents/programs/illama/illama/Assets.xcassets/AppIcon.appiconset/iPad-App-76pt@2x.png".
+Error output:
+    dyld[6287]: terminating because inserted dylib './otherinterpose.dylib' could not be loaded: tried: './otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS./otherinterpose.dylib' (no such file), './otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS//otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file)
+    dyld[6287]: tried: './otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS./otherinterpose.dylib' (no such file), './otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS//otherinterpose.dylib' (no such file), '//otherinterpose.dylib' (no such file)
+
+
+/* com.apple.actool.document.notices */
+/Users/jack/Documents/programs/illama/illama/Assets.xcassets:./AppIcon.appiconset/[][ipad][76x76][][][1x][][][]: notice: 76x76@1x app icons only apply to iPad apps targeting releases of iOS prior to 10.0.
+/* com.apple.actool.compilation-results */
+/Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/Build/Intermediates.noindex/illama.build/Release-iphoneos/iLlama.build/assetcatalog_generated_info.plist
+/Users/jack/Library/Developer/Xcode/DerivedData/illama-awmdfasbxliudhfcqcjkysgxwrpo/Build/Products/Release-iphoneos/iLlama.app/Assets.car
+
+/* com.apple.actool.catalog-contents */
+filename: Assets.xcassets
+children:           
+          filename: AccentColor.colorset
+          
+          filename: AppIcon-full.appiconset
+          children:                     
+                    filename: iPhone-Notification-20pt@2x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 40
+                           width: 40
+                    
+                    filename: iPhone-Notification-20pt@3x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 3x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: iPhone-Spotlight-Settings-29pt.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 29
+                           width: 29
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@2x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 58
+                           width: 58
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@3x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 3x
+                    image: 
+                           height: 87
+                           width: 87
+                    
+                    filename: iPhone-Spotlight-40pt@2x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 80
+                           width: 80
+                    
+                    filename: iPhone-Spotlight-40pt@3x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 3x
+                    image: 
+                           height: 120
+                           width: 120
+                    
+                    filename: iPhone-App-60pt@2x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 2x
+                    image: 
+                           height: 120
+                           width: 120
+                    
+                    filename: iPhone-App-60pt@3x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 3x
+                    image: 
+                           height: 180
+                           width: 180
+                    
+                    filename: iPad-Notifications-20pt.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 1x
+                    image: 
+                           height: 20
+                           width: 20
+                    
+                    filename: iPad-Notifications-20pt@2x.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 40
+                           width: 40
+                    
+                    filename: iPad-Settings-29pt.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 29
+                           width: 29
+                    
+                    filename: iPad-Settings-29pt@2x.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 58
+                           width: 58
+                    
+                    filename: iPad-Spotlight-40pt.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 1x
+                    image: 
+                           height: 40
+                           width: 40
+                    
+                    filename: iPad-Spotlight-40pt@2x.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 80
+                           width: 80
+                    
+                    filename: iPad-App-76pt.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 1x
+                    image: 
+                           height: 76
+                           width: 76
+                    
+                    filename: iPad-App-76pt@2x.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 2x
+                    image: 
+                           height: 152
+                           width: 152
+                    
+                    filename: iPad-Pro-App-83.5pt@2x.png
+                    idiom: ipad
+                    size: 83.5x83.5
+                    scale: 2x
+                    image: 
+                           height: 167
+                           width: 167
+                    
+                    filename: ios-marketing-512pt@2x.png
+                    idiom: ios-marketing
+                    size: 1024x1024
+                    scale: 1x
+                    image: 
+                           height: 1024
+                           width: 1024
+          
+          filename: AppIcon-smaller.appiconset
+          children:                     
+                    filename: iPhone-Notification-20pt@2x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPhone-Notification-20pt@3x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 3x
+                    image: 
+                           height: 45
+                           width: 45
+                    
+                    filename: iPhone-Spotlight-Settings-29pt.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 21.75
+                           width: 21.75
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@2x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 43.5
+                           width: 43.5
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@3x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 3x
+                    image: 
+                           height: 65.25
+                           width: 65.25
+                    
+                    filename: iPhone-Spotlight-40pt@2x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: iPhone-Spotlight-40pt@3x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 3x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: iPhone-App-60pt@2x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 2x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: iPhone-App-60pt@3x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 3x
+                    image: 
+                           height: 135
+                           width: 135
+                    
+                    filename: iPad-Notifications-20pt.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 1x
+                    image: 
+                           height: 15
+                           width: 15
+                    
+                    filename: iPad-Notifications-20pt@2x.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPad-Settings-29pt.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 21.75
+                           width: 21.75
+                    
+                    filename: iPad-Settings-29pt@2x.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 43.5
+                           width: 43.5
+                    
+                    filename: iPad-Spotlight-40pt.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 1x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPad-Spotlight-40pt@2x.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: iPad-App-76pt.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 1x
+                    image: 
+                           height: 57
+                           width: 57
+                    
+                    filename: iPad-App-76pt@2x.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 2x
+                    image: 
+                           height: 114
+                           width: 114
+                    
+                    filename: iPad-Pro-App-83.5pt@2x.png
+                    idiom: ipad
+                    size: 83.5x83.5
+                    scale: 2x
+                    image: 
+                           height: 125.25
+                           width: 125.25
+                    
+                    filename: ios-marketing-512pt@2x.png
+                    idiom: ios-marketing
+                    size: 1024x1024
+                    scale: 1x
+                    image: 
+                           height: 768
+                           width: 768
+          
+          filename: AppIcon.appiconset
+          children:                     
+                    filename: iPhone-Notification-20pt@2x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPhone-Notification-20pt@3x.png
+                    idiom: iphone
+                    size: 20x20
+                    scale: 3x
+                    image: 
+                           height: 45
+                           width: 45
+                    
+                    filename: iPhone-Spotlight-Settings-29pt.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 21.75
+                           width: 21.75
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@2x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 43.5
+                           width: 43.5
+                    
+                    filename: iPhone-Spotlight-Settings-29pt@3x.png
+                    idiom: iphone
+                    size: 29x29
+                    scale: 3x
+                    image: 
+                           height: 65.25
+                           width: 65.25
+                    
+                    filename: iPhone-Spotlight-40pt@2x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: iPhone-Spotlight-40pt@3x.png
+                    idiom: iphone
+                    size: 40x40
+                    scale: 3x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: iPhone-App-60pt@2x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 2x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: iPhone-App-60pt@3x.png
+                    idiom: iphone
+                    size: 60x60
+                    scale: 3x
+                    image: 
+                           height: 135
+                           width: 135
+                    
+                    filename: iPad-Notifications-20pt.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 1x
+                    image: 
+                           height: 15
+                           width: 15
+                    
+                    filename: iPad-Notifications-20pt@2x.png
+                    idiom: ipad
+                    size: 20x20
+                    scale: 2x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPad-Settings-29pt.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 1x
+                    image: 
+                           height: 21.75
+                           width: 21.75
+                    
+                    filename: iPad-Settings-29pt@2x.png
+                    idiom: ipad
+                    size: 29x29
+                    scale: 2x
+                    image: 
+                           height: 43.5
+                           width: 43.5
+                    
+                    filename: iPad-Spotlight-40pt.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 1x
+                    image: 
+                           height: 30
+                           width: 30
+                    
+                    filename: iPad-Spotlight-40pt@2x.png
+                    idiom: ipad
+                    size: 40x40
+                    scale: 2x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: iPad-App-76pt.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 1x
+                    image: 
+                           height: 57
+                           width: 57
+                    
+                    filename: iPad-App-76pt@2x.png
+                    idiom: ipad
+                    size: 76x76
+                    scale: 2x
+                    image: 
+                           height: 114
+                           width: 114
+                    
+                    filename: iPad-Pro-App-83.5pt@2x.png
+                    idiom: ipad
+                    size: 83.5x83.5
+                    scale: 2x
+                    image: 
+                           height: 125.25
+                           width: 125.25
+                    
+                    filename: ios-marketing-512pt@2x.png
+                    idiom: ios-marketing
+                    size: 1024x1024
+                    scale: 1x
+                    image: 
+                           height: 768
+                           width: 768
+          
+          filename: full-preview.imageset
+          children:                     
+                    filename: preview@1x.png
+                    idiom: universal
+                    scale: 1x
+                    image: 
+                           height: 60
+                           width: 60
+                    
+                    filename: preview@2x.png
+                    idiom: universal
+                    scale: 2x
+                    image: 
+                           height: 120
+                           width: 120
+                    
+                    filename: preview@3x.png
+                    idiom: universal
+                    scale: 3x
+                    image: 
+                           height: 180
+                           width: 180
+          
+          filename: headshot-preview.imageset
+          children:                     
+                    filename: preview@1x.png
+                    idiom: universal
+                    scale: 1x
+                    image: 
+                           height: 45
+                           width: 45
+                    
+                    filename: preview@2x.png
+                    idiom: universal
+                    scale: 2x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: preview@3x.png
+                    idiom: universal
+                    scale: 3x
+                    image: 
+                           height: 135
+                           width: 135
+          
+          filename: llama-model.dataset
+          children:                     
+                    filename: small
+                    idiom: universal
+                    memory: 8GB
+                    image: 
+                           height: 32
+                           width: 32
+          
+          filename: smaller-preview.imageset
+          children:                     
+                    filename: preview@1x.png
+                    idiom: universal
+                    scale: 1x
+                    image: 
+                           height: 45
+                           width: 45
+                    
+                    filename: preview@2x.png
+                    idiom: universal
+                    scale: 2x
+                    image: 
+                           height: 90
+                           width: 90
+                    
+                    filename: preview@3x.png
+                    idiom: universal
+                    scale: 3x
+                    image: 
+                           height: 135
+                           width: 135
+          
+          filename: splash.imageset
+          children:                     
+                    filename: splash@1x.png
+                    idiom: universal
+                    scale: 1x
+                    image: 
+                           height: 896
+                           width: 896
+                    
+                    filename: splash@2x.png
+                    idiom: universal
+                    scale: 2x
+                    image: 
+                           height: 1792
+                           width: 1792
+                    
+                    filename: splash@3x.png
+                    idiom: universal
+                    scale: 3x
+                    image: 
+                           height: 2688
+                           width: 2688
+filename: Preview Assets.xcassets
+
