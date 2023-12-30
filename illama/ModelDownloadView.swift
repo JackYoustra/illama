@@ -8,6 +8,8 @@
 import Collections
 import SwiftUI
 import Perception
+import CombineExt
+import Combine
 
 enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable {
     case smallLlama
@@ -66,11 +68,17 @@ extension ModelType {
     }
     
     var processingIsDone: Bool {
-        if let possibleTargetSize = try? (FileManager.default.attributesOfItem(atPath: targetHolder.path)[.size] as! UInt64),
+        if let possibleTargetSize = targetHolder.size(),
            possibleTargetSize == self.spaceRequirement {
             return true
         }
         return false
+    }
+}
+
+extension URL {
+    func size() -> UInt64? {
+        try? (FileManager.default.attributesOfItem(atPath: self.path)[.size] as! UInt64)
     }
 }
 
@@ -97,7 +105,9 @@ struct ModelDownloadView: View {
         VStack {
             Text("We have many different models for you to choose from! Which do you want to check out?")
             ForEach(registry.models.values) { model in
-                ModelDownloadButton(model: model)
+                ModelDownloadButton(model: model) {
+                    
+                }
             }
             
             VStack {
@@ -121,22 +131,17 @@ class Models: Identifiable {
         }
     }
     
-    /// The following steps are taken for a download:
-    /// 1) Download the tag set from ODR: this is all the tags necessary to recreate the full bundle file
-    /// 1a) Do data check (reachability), memory check, etc. and necessary warnings
+    /// The following steps are taken for a download, one tag at a time
+    /// 0) Do data check (reachability), memory check, etc. and necessary warnings
+    /// 1) Download the tag from ODR: this is one tag at a time
     /// 2) Copy (clone if possible) tag set to persistent memory
     /// 3) Take cloned data and consolidate to one file, removing one at a time
+    /// 4) Repeat for every tag
     enum DownloadingStatus: Sendable, Equatable {
-        /// Haven't queried or determined yet - unsure what step
-        case unknown
         /// Haven't completed ODR download, on step 1
         case incomplete
-        /// In-progress for ODR download, performing step 1
+        /// In-progress for ODR download, performing step 1-3
         case progressing(Double)
-        /// Only resident - need to reconstruct full model via copying, done with step one, step 2 not started
-        case residentOnlyPending
-        /// Consolidating the data into a file, on step 2
-        case consolidating(Double)
         /// Weren't able to download successfully 😢
         case failed
         /// We completed the download and the model is ready to use 😄
@@ -153,7 +158,7 @@ class Models: Identifiable {
         
         var progression: Double? {
             switch self {
-            case .progressing(let status), .consolidating(let status):
+            case .progressing(let status):
                 return status
             default:
                 return nil
@@ -162,7 +167,7 @@ class Models: Identifiable {
         
         var working: Bool {
             switch self {
-            case .unknown, .progressing, .consolidating:
+            case .progressing:
                 return true
             default:
                 return false
@@ -170,141 +175,66 @@ class Models: Identifiable {
         }
     }
     
-    let resourceRequest: NSBundleResourceRequest
     
     init(_ type: ModelType) {
         self.type = type
-        resourceRequest = NSBundleResourceRequest(tags: Set(type.bundleTags))
         if FileManager.default.fileExists(atPath: type.targetHolder.path()) {
             if type.processingIsDone {
                 self.downloading = .completed
-            } else {
-                self.downloading = .residentOnlyPending
             }
         } else {
-            // pre-resident
-            self.downloading = .unknown
-            resourceRequest.conditionallyBeginAccessingResources { [weak self] isResident in
-                self?.downloading = isResident ? .residentOnlyPending : .incomplete
-            }
+            self.downloading = .incomplete
         }
     }
     
-    func advance() {
+    func advance() async {
         switch downloading {
         case .incomplete:
-            self.download()
-        case .residentOnlyPending:
-            self.consolidate()
+            await self.download()
         case .failed:
-            self.download()
+            await self.download()
         default:
             fatalError("Can't interact here!")
         }
     }
 
-    private func download() {
-        if downloading.isIncomplete {
-            downloading = .progressing(0)
-            // TODO: make all this async probably
-            let cancellation = resourceRequest.progress.publisher(for: \.fractionCompleted, options: .new)
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] progress in
-                    self?.downloading = .progressing(progress)
-                }
-            resourceRequest.beginAccessingResources { [weak self] error in
-                DispatchQueue.main.async {
-                    cancellation.cancel()
-                    guard let self else { return }
-                    if let error {
-                        self.downloading = .failed
-                    } else {
-                        self.downloading = .residentOnlyPending
-                        self.consolidate()
-                    }
-                }
-            }
-        }
-    }
-    
-    private func consolidate() {
-        if self.downloading == .residentOnlyPending {
-            // ensure that we haven't already consolidated!
-            
-            if type.processingIsDone {
-                self.downloading = .completed
-                return
-            }
-            
-            self.downloading = .consolidating(0)
-            let alreadyProcessedLockfile = LockfileBacked<UInt64>(type.target, preset: 0)
-            do {
-                if alreadyProcessedLockfile.contents > 0 {
-                    // Find what stuff is already APFS-cloned copied
-                    let alreadyCopied = try FileManager.default.contentsOfDirectory(at: type.target, includingPropertiesForKeys: [.nameKey]).map(\.lastPathComponent)
-                    if alreadyCopied.count < self.type.chunkCount {
-                        let resourcesURL = resourceRequest.bundle.resourceURL!
-                        let resources = try FileManager.default.contentsOfDirectory(at: resourcesURL, includingPropertiesForKeys: [.nameKey])
-                            .sorted(by: { $0.path() < $1.path() })
-                        for file in resources {
-                            if !alreadyCopied.contains(file.lastPathComponent) {
-                                // Copy, probably going to apfs clone, but no real way to guarantee. Shrug!
-                                try FileManager.default.copyItem(at: file, to: type.target.appendingPathComponent(file.lastPathComponent))
-                            }
-                        }
-                    }
-                    
-                    // release the resources, we have all of them copied and we don't need them anymore
-                    resourceRequest.endAccessingResources()
-                    
-                }
-                
-                // consolidate files into the biggo omnibus file
-                // this is a tricky part! Use files for synchronization
-                // at this point, we don't have to think about ODRs any more, we're at step 3
-                // don't support resuming - re-copying isn't particularly expensive.
-                // Just start alllll over again
+    private func download() async {
+        let targetSize = type.targetHolder.size() ?? 0
+        do {
+            for (index, tag) in type.bundleTags.enumerated() {
                 let blockSize: UInt64 = 500 * 1024 * 1024
-                let chunks = try FileManager.default.contentsOfDirectory(at: type.target, includingPropertiesForKeys: [.nameKey])
-                    .sorted(by: { $0.path() < $1.path() })
-                let isAtMultiple = alreadyProcessedLockfile.contents.remainderReportingOverflow(dividingBy: blockSize) == (0, false)
-                let done = chunks.isEmpty
-                // ensure that either the lockfile is at a multiple of the block size or all done
-                assert(isAtMultiple || done)
-                if !done {
-                    // prep
-                    let sizeOfTarget = try FileManager.default.attributesOfItem(atPath: type.targetHolder.path)[.size] as! UInt64
-                    let targetFile = try FileHandle(forWritingTo: type.targetHolder)
-                    defer { targetFile.closeFile() }
-                    if sizeOfTarget != alreadyProcessedLockfile.contents {
-                        assert(sizeOfTarget > alreadyProcessedLockfile.contents)
-                        // Remove the excess from the file
-                        try targetFile.truncate(atOffset: alreadyProcessedLockfile.contents)
-                        // continue
-                    }
-                    
-                    // concat files from targetHolder to target
-                    for chunk in chunks {
-                        try {
-                            let chunkSize = try FileManager.default.attributesOfItem(atPath: chunk.path)[.size] as! UInt64
-                            let chunkFile = try FileHandle(forReadingFrom: chunk)
-                            chunkFile.closeFile()
-                            let chunkData = chunkFile.readData(ofLength: Int(chunkSize))
-                            targetFile.write(chunkData)
-                            try targetFile.synchronize()
-                            alreadyProcessedLockfile.contents += chunkSize
-                        }()
-                        // Remove the chunk
-                        try FileManager.default.removeItem(at: chunk)
-                    }
-                    
-                    // Remove the lockfile
-                    try FileManager.default.removeItem(at: type.target.appendingPathComponent(".lock"))
-                    self.downloading = .completed
+                let currentCursorPosition = UInt64(index) * blockSize
+                if targetSize >= UInt64(index + 1) * blockSize {
+                    // we've already been here
+                    continue
                 }
-            } catch {
-                self.downloading = .failed
+                // we haven't been here!
+                let resourceRequest = NSBundleResourceRequest(tags: [tag])
+                let currentFraction = Double(index) / Double(type.bundleTags.count)
+                // TODO: There's a set of common NSBundleResourceRequest errors in the docs
+                // handle those
+                let cancellation = resourceRequest.progress.publisher(for: \.fractionCompleted, options: .new)
+                    .prepend(0.0)
+                    .append(1.0)
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] progress in
+                        self?.downloading = .progressing(progress * currentFraction)
+                    }
+                try await resourceRequest.beginAccessingResources()
+                // now copy over
+                let targetFile = try FileHandle(forWritingTo: type.targetHolder)
+                try targetFile.truncate(atOffset: currentCursorPosition)
+                let resourceURL = resourceRequest.bundle.resourceURL!
+                let resource = resourceURL.appendingPathComponent(tag)
+                let data = try Data(contentsOf: resource)
+                targetFile.seek(toFileOffset: currentCursorPosition)
+                try targetFile.write(contentsOf: data)
+                try targetFile.synchronize()
+                try targetFile.close()
+                resourceRequest.endAccessingResources()
             }
+        } catch {
+            downloading = .failed
         }
     }
 
@@ -313,39 +243,9 @@ class Models: Identifiable {
     }
 }
 
-fileprivate var lockfilecount = 0
-
-class LockfileBacked<Content: Codable> {
-    private let lockfile: URL
-    let jsonEncoder = JSONEncoder()
-    var contents: Content {
-        didSet {
-            writeback()
-        }
-    }
-
-    init(_ url: URL, preset: Content) {
-        if lockfilecount != 0 {
-            print("WARNING: MORE THAN ONE LOCKFILE OPEN")
-        }
-        lockfilecount += 1
-        lockfile = url.appendingPathComponent(".lock")
-        let jsonDecoder = JSONDecoder()
-        contents = (try? jsonDecoder.decode(Content.self, from: Data(contentsOf: lockfile, options: .uncached))) ?? preset
-        writeback()
-    }
-    
-    func writeback() {
-        try? jsonEncoder.encode(contents).write(to: lockfile, options: .atomic)
-    }
-    
-    deinit {
-        lockfilecount -= 1
-    }
-}
-
 struct ModelDownloadButton: View {
     let model: Models
+    let completedTapped: () -> ()
     
     var body: some View {
         WithPerceptionTracking {
@@ -363,7 +263,14 @@ struct ModelDownloadButton: View {
     var contents: some View {
         HStack(alignment: .center) {
             Button {
-                model.advance()
+                if model.downloading == .completed {
+                    // select
+                    completedTapped()
+                } else {
+                    Task {
+                        await model.advance()
+                    }
+                }
             } label: {
                 VStack {
                     Text(itemTitle)
@@ -373,17 +280,10 @@ struct ModelDownloadButton: View {
             }
             Spacer()
             switch model.downloading {
-            case .unknown:
-                // act like they've never asked before
-                ProgressView()
             case .incomplete:
                 Image(systemName: "arrow.down.circle")
             case .progressing(let double):
-                ProgressView("Downloading", value: double)
-            case .residentOnlyPending:
-                Image(systemName: "arrow.down.circle")
-            case .consolidating(let double):
-                ProgressView("Installing", value: double)
+                ProgressView(value: double)
             case .failed:
                 Image(systemName: "exclamationmark.triangle")
             case .completed:
