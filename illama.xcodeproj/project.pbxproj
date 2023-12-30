@@ -57,9 +57,9 @@
 		04F758F42B3F839100DE00EA /* xab in Resources */ = {isa = PBXBuildFile; fileRef = 04F758F02B3F836800DE00EA /* xab */; settings = {ASSET_TAGS = (3b_q4_b, ); }; };
 		04F758F52B3F839100DE00EA /* xad in Resources */ = {isa = PBXBuildFile; fileRef = 04F758F12B3F836800DE00EA /* xad */; settings = {ASSET_TAGS = (3b_q4_d, ); }; };
 		04F758F62B3F839100DE00EA /* xac in Resources */ = {isa = PBXBuildFile; fileRef = 04F758F22B3F836800DE00EA /* xac */; settings = {ASSET_TAGS = (3b_q4_c, ); }; };
-		04F758F82B3F83D700DE00EA /* ODRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F758F72B3F83D700DE00EA /* ODRManager.swift */; };
 		04F758FA2B3F83FB00DE00EA /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */; };
 		04F758FD2B3F855000DE00EA /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 04F758FC2B3F855000DE00EA /* ComposableArchitecture */; };
+		04F7591C2B3FD53900DE00EA /* HashUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F7591B2B3FD53900DE00EA /* HashUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,8 +126,8 @@
 		04F758F02B3F836800DE00EA /* xab */ = {isa = PBXFileReference; lastKnownFileType = file; path = xab; sourceTree = "<group>"; };
 		04F758F12B3F836800DE00EA /* xad */ = {isa = PBXFileReference; lastKnownFileType = text; path = xad; sourceTree = "<group>"; };
 		04F758F22B3F836800DE00EA /* xac */ = {isa = PBXFileReference; lastKnownFileType = file; path = xac; sourceTree = "<group>"; };
-		04F758F72B3F83D700DE00EA /* ODRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ODRManager.swift; sourceTree = "<group>"; };
 		04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadView.swift; sourceTree = "<group>"; };
+		04F7591B2B3FD53900DE00EA /* HashUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,8 +239,8 @@
 				04B183F02AAE7BF000F264CD /* AppIcon.swift */,
 				04B183F32AAE7C8300F264CD /* AppIconGallery.swift */,
 				04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */,
-				04F758F72B3F83D700DE00EA /* ODRManager.swift */,
 				04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */,
+				04F7591B2B3FD53900DE00EA /* HashUtility.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -507,7 +507,6 @@
 				04CCBCEF2A9B39B500533B41 /* OldNavigationMenuItem.swift in Sources */,
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
-				04F758F82B3F83D700DE00EA /* ODRManager.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
 				0453D8872A9EE92E00E57711 /* SettingsView.swift in Sources */,
 				04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */,
@@ -516,6 +515,7 @@
 				0436D58E2A7F828F0091D9CF /* server.cpp in Sources */,
 				04B183F12AAE7BF000F264CD /* AppIcon.swift in Sources */,
 				04B183F72AAE988000F264CD /* WranglingWithRawRepresentable.swift in Sources */,
+				04F7591C2B3FD53900DE00EA /* HashUtility.swift in Sources */,
 				041ECE102A89333E0001A821 /* ChatView.swift in Sources */,
 				04B183F42AAE7C8300F264CD /* AppIconGallery.swift in Sources */,
 				04B183EE2AADBA3C00F264CD /* OnboardingView.swift in Sources */,
