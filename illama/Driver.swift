@@ -87,7 +87,7 @@ final class LlamaInstance {
 //           "--no-mmap",
         ] + (type.shouldMlock ? ["--mlock",] : [])
             + [
-            "-m", type.targetHolder.path,
+            "-m", type.finalizedLocation.path,
            "-c", String(type.contextSize),
             "-ngl", "1",
             "-v"

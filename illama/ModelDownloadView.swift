@@ -41,7 +41,17 @@ enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable 
     }
     
     var spaceRequirement: UInt64 {
-        0
+        // (chunk count  + 1) * chunk size, for intermediate chunk, to be able to install
+        (UInt64(chunkCount) + 1) * Self.blockSize
+    }
+    
+    var finalizedSpace: UInt64 {
+        switch self {
+        case .smallLlama:
+            return 1928446208
+        case .mediumLlama:
+            return 3282248320
+        }
     }
     
     var memoryRequirementMet: Bool {
@@ -64,6 +74,8 @@ enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable 
         4
     }
     
+    static let blockSize: UInt64 = 500 * 1024 * 1024
+    
     var bundleTags: [String] {
         assert(chunkCount < 26)
         return (0..<chunkCount).map {
@@ -82,16 +94,16 @@ enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable 
 }
 
 extension ModelType {
-    var target: URL {
+    var targetFolder: URL {
         URL.documentsDirectory.appending(path: self.folderName, directoryHint: .isDirectory)
     }
     
-    var targetHolder: URL {
-        target.appending(path: "combined.bin")
+    var finalizedLocation: URL {
+        targetFolder.appending(path: "combined.bin")
     }
     
     var processingIsDone: Bool {
-        if let possibleTargetSize = targetHolder.size(),
+        if let possibleTargetSize = finalizedLocation.size(),
            possibleTargetSize == self.spaceRequirement {
             return true
         }
@@ -194,7 +206,7 @@ class Models: Identifiable {
     
     init(_ type: ModelType) {
         self.type = type
-        if FileManager.default.fileExists(atPath: type.targetHolder.path()) {
+        if FileManager.default.fileExists(atPath: type.finalizedLocation.path()) {
             if type.processingIsDone {
                 self.downloading = .completed
             }
@@ -214,12 +226,11 @@ class Models: Identifiable {
     }
 
     private func download() async {
-        let targetSize = type.targetHolder.size() ?? 0
+        let targetSize = type.finalizedLocation.size() ?? 0
         do {
             for (index, tag) in type.bundleTags.enumerated() {
-                let blockSize: UInt64 = 500 * 1024 * 1024
-                let currentCursorPosition = UInt64(index) * blockSize
-                if targetSize >= UInt64(index + 1) * blockSize {
+                let currentCursorPosition = UInt64(index) * ModelType.blockSize
+                if targetSize >= UInt64(index + 1) * ModelType.blockSize {
                     // we've already been here
                     continue
                 }
@@ -237,7 +248,7 @@ class Models: Identifiable {
                     }
                 try await resourceRequest.beginAccessingResources()
                 // now copy over
-                let targetFile = try FileHandle(forWritingTo: type.targetHolder)
+                let targetFile = try FileHandle(forWritingTo: type.finalizedLocation)
                 try targetFile.truncate(atOffset: currentCursorPosition)
                 let resourceURL = resourceRequest.bundle.resourceURL!
                 let resource = resourceURL.appendingPathComponent(tag)
@@ -245,6 +256,8 @@ class Models: Identifiable {
                 targetFile.seek(toFileOffset: currentCursorPosition)
                 try targetFile.write(contentsOf: data)
                 try targetFile.synchronize()
+                let isAtExpectedSize = try targetFile.offset() == type.finalizedSpace
+                assert(isAtExpectedSize)
                 try targetFile.close()
                 resourceRequest.endAccessingResources()
             }
