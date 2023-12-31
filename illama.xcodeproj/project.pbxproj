@@ -324,6 +324,7 @@
 				04F7591B2B3FD53900DE00EA /* HashUtility.swift */,
 				04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */,
 				04F7591F2B41086A00DE00EA /* ModelType.swift */,
+				04F759212B41089500DE00EA /* Models.swift */,
 			);
 			path = AppModels;
 			sourceTree = "<group>";
@@ -340,7 +341,6 @@
 				0453D8842A9EE83C00E57711 /* CommonView.swift */,
 				0453D8862A9EE92E00E57711 /* SettingsView.swift */,
 				04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */,
-				04F759212B41089500DE00EA /* Models.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

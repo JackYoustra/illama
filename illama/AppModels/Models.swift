@@ -80,14 +80,14 @@ class Models: Identifiable {
         self.downloading = .incomplete
     }
     
-    func advance() async {
+    func advance() async throws {
         switch downloading {
         case .incomplete:
             await self.download()
         case .failed:
             await self.download()
         default:
-            fatalError("Can't interact here!")
+            throw CancellationError()
         }
     }
 

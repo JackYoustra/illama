@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import illama
+@testable import iLlama
 
 final class illamaTests: XCTestCase {
 
@@ -24,5 +24,4 @@ final class illamaTests: XCTestCase {
             client.run_query("Damn that's crazy")
         }
     }
-
 }
