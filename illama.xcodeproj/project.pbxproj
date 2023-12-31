@@ -60,6 +60,8 @@
 		04F758FA2B3F83FB00DE00EA /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */; };
 		04F758FD2B3F855000DE00EA /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 04F758FC2B3F855000DE00EA /* ComposableArchitecture */; };
 		04F7591C2B3FD53900DE00EA /* HashUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F7591B2B3FD53900DE00EA /* HashUtility.swift */; };
+		04F759202B41086A00DE00EA /* ModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F7591F2B41086A00DE00EA /* ModelType.swift */; };
+		04F759222B41089500DE00EA /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F759212B41089500DE00EA /* Models.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +130,8 @@
 		04F758F22B3F836800DE00EA /* xac */ = {isa = PBXFileReference; lastKnownFileType = file; path = xac; sourceTree = "<group>"; };
 		04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadView.swift; sourceTree = "<group>"; };
 		04F7591B2B3FD53900DE00EA /* HashUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashUtility.swift; sourceTree = "<group>"; };
+		04F7591F2B41086A00DE00EA /* ModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelType.swift; sourceTree = "<group>"; };
+		04F759212B41089500DE00EA /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +217,8 @@
 		04C9C6992A7A619B00A6B66B /* illama */ = {
 			isa = PBXGroup;
 			children = (
+				04F7591E2B41083900DE00EA /* Views */,
+				04F7591D2B41082A00DE00EA /* AppModels */,
 				04B183EC2AADBA2E00F264CD /* Onboarding */,
 				04CCBCE72A9B29BD00533B41 /* Old */,
 				04CCBCE62A9B29B700533B41 /* New */,
@@ -220,27 +226,12 @@
 				0436D58D2A7F828F0091D9CF /* server.cpp */,
 				04C9C6C82A7A622100A6B66B /* models */,
 				04C9C69A2A7A619B00A6B66B /* illamaApp.swift */,
-				04BEE5A92A7B658A000EB9E6 /* Driver.swift */,
-				04C9C69E2A7A619B00A6B66B /* Chat.swift */,
 				04C9C6A02A7A619E00A6B66B /* Assets.xcassets */,
 				04C9C6A22A7A619E00A6B66B /* illama.entitlements */,
 				04C9C6A62A7A619E00A6B66B /* Info.plist */,
 				04C9C6A32A7A619E00A6B66B /* Preview Content */,
 				0436D58C2A7F828F0091D9CF /* illama-Bridging-Header.h */,
-				041ECE0F2A89333E0001A821 /* ChatView.swift */,
-				0486016B2A910F5C00292E9F /* LlamaClient.swift */,
-				04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */,
-				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
-				04C1837B2A98A57500B220BB /* MyChatView.swift */,
 				04C183802A996C7300B220BB /* sample.md */,
-				04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */,
-				0453D8842A9EE83C00E57711 /* CommonView.swift */,
-				0453D8862A9EE92E00E57711 /* SettingsView.swift */,
-				04B183F02AAE7BF000F264CD /* AppIcon.swift */,
-				04B183F32AAE7C8300F264CD /* AppIconGallery.swift */,
-				04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */,
-				04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */,
-				04F7591B2B3FD53900DE00EA /* HashUtility.swift */,
 			);
 			path = illama;
 			sourceTree = "<group>";
@@ -321,6 +312,37 @@
 				04F758F22B3F836800DE00EA /* xac */,
 			);
 			path = "open-llama-3b-q4_0";
+			sourceTree = "<group>";
+		};
+		04F7591D2B41082A00DE00EA /* AppModels */ = {
+			isa = PBXGroup;
+			children = (
+				04B183F02AAE7BF000F264CD /* AppIcon.swift */,
+				04BEE5A92A7B658A000EB9E6 /* Driver.swift */,
+				04C9C69E2A7A619B00A6B66B /* Chat.swift */,
+				0486016B2A910F5C00292E9F /* LlamaClient.swift */,
+				04F7591B2B3FD53900DE00EA /* HashUtility.swift */,
+				04B183F62AAE988000F264CD /* WranglingWithRawRepresentable.swift */,
+				04F7591F2B41086A00DE00EA /* ModelType.swift */,
+			);
+			path = AppModels;
+			sourceTree = "<group>";
+		};
+		04F7591E2B41083900DE00EA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				04B183F32AAE7C8300F264CD /* AppIconGallery.swift */,
+				041ECE0F2A89333E0001A821 /* ChatView.swift */,
+				04D7D14B2A96DCA8001B35FC /* SwiftyChatView.swift */,
+				04D7D14D2A96DDE8001B35FC /* ExyteChatView.swift */,
+				04C1837B2A98A57500B220BB /* MyChatView.swift */,
+				04C183852A9AA39F00B220BB /* NavigationMenuItem.swift */,
+				0453D8842A9EE83C00E57711 /* CommonView.swift */,
+				0453D8862A9EE92E00E57711 /* SettingsView.swift */,
+				04F758F92B3F83FB00DE00EA /* ModelDownloadView.swift */,
+				04F759212B41089500DE00EA /* Models.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,11 +526,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D7D14C2A96DCA8001B35FC /* SwiftyChatView.swift in Sources */,
+				04F759222B41089500DE00EA /* Models.swift in Sources */,
 				04CCBCEF2A9B39B500533B41 /* OldNavigationMenuItem.swift in Sources */,
 				04C9C69D2A7A619B00A6B66B /* ContentView.swift in Sources */,
 				04C1837C2A98A57500B220BB /* MyChatView.swift in Sources */,
 				04C9C69F2A7A619B00A6B66B /* Chat.swift in Sources */,
 				0453D8872A9EE92E00E57711 /* SettingsView.swift in Sources */,
+				04F759202B41086A00DE00EA /* ModelType.swift in Sources */,
 				04CCBCE92A9B2A2800533B41 /* SwiftDataModels.swift in Sources */,
 				04CCBCE22A9B287400533B41 /* OldContentView.swift in Sources */,
 				04C9C69B2A7A619B00A6B66B /* illamaApp.swift in Sources */,
