@@ -13,16 +13,30 @@ import Combine
 
 enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable {
     case smallLlama
+    case mediumLlama
     
     var memoryRequirement: UInt64 {
         switch self {
         case .smallLlama: return 4 * 1024 * 1024 * 1024
+        case .mediumLlama: return 8 * 1024 * 1024 * 1024
         }
     }
     
     var shouldMlock: Bool {
+        // Only mlock on big for rn
+        return ModelType.mediumLlama.memoryRequirementMet
+    }
+    
+    var contextSize: UInt {
         switch self {
-        case .smallLlama: return false
+        case .smallLlama:
+            if ProcessInfo.processInfo.physicalMemory > UInt64(4.1 * 1024 * 1024 * 1024) {
+                return 1024
+            } else {
+                return 512
+            }
+        case .mediumLlama:
+            return 2048
         }
     }
     
@@ -54,6 +68,15 @@ enum ModelType: String, CaseIterable, Sendable, Hashable, Codable, Identifiable 
         assert(chunkCount < 26)
         return (0..<chunkCount).map {
             tagPrefix + String(Character(UnicodeScalar(UInt32(UInt8($0) + ("a" as Character).asciiValue!))!))
+        }
+    }
+    
+    var itemTitle: String {
+        switch self {
+        case .smallLlama:
+            return "Small Llama"
+        case .mediumLlama:
+            return "Medium Llama"
         }
     }
 }
@@ -122,14 +145,7 @@ struct ModelDownloadView: View {
 @Perceptible
 class Models: Identifiable {
     let type: ModelType
-    var downloading: DownloadingStatus {
-        didSet {
-            if downloading == .completed {
-                // cleanup
-                resourceRequest.endAccessingResources()
-            }
-        }
-    }
+    var downloading: DownloadingStatus
     
     /// The following steps are taken for a download, one tag at a time
     /// 0) Do data check (reachability), memory check, etc. and necessary warnings
@@ -182,9 +198,8 @@ class Models: Identifiable {
             if type.processingIsDone {
                 self.downloading = .completed
             }
-        } else {
-            self.downloading = .incomplete
         }
+        self.downloading = .incomplete
     }
     
     func advance() async {
@@ -246,6 +261,8 @@ class Models: Identifiable {
 struct ModelDownloadButton: View {
     let model: Models
     let completedTapped: () -> ()
+    @State private var showMemoryWarning = false
+    @State private var hasShownMemoryWarning = false
     
     var body: some View {
         WithPerceptionTracking {
@@ -253,27 +270,25 @@ struct ModelDownloadButton: View {
         }
     }
     
-    var itemTitle: String {
-        switch model.type {
-        case .smallLlama:
-            return "Small Llama"
-        }
-    }
-    
     var contents: some View {
         HStack(alignment: .center) {
             Button {
-                if model.downloading == .completed {
-                    // select
-                    completedTapped()
+                if !model.type.memoryRequirementMet, !hasShownMemoryWarning {
+                    showMemoryWarning = true
+                    hasShownMemoryWarning = true
                 } else {
-                    Task {
-                        await model.advance()
+                    if model.downloading == .completed {
+                        // select
+                        completedTapped()
+                    } else {
+                        Task {
+                            await model.advance()
+                        }
                     }
                 }
             } label: {
                 VStack {
-                    Text(itemTitle)
+                    Text(model.type.itemTitle)
                     Text(String(format: "%0.2f GB", Double(model.type.spaceRequirement) / 1024 * 1024 * 1024))
                         .font(.caption)
                 }
@@ -296,5 +311,28 @@ struct ModelDownloadButton: View {
             }
         }
         .disabled(model.downloading.working)
+        .fullScreenCover(isPresented: $showMemoryWarning) {
+            VStack {
+                Text("⚠️ Llama too big for Phone 🦙💪💥")
+                    .font(.largeTitle)
+                Text("Your phone doesn't have enough memory to safely run Big Llama! You can try running it anyway, in which case it will just use the storage as ram, but it's going to be really, really slow. Like, possibly one word per minute slow. I recommend checking out iLlama on the app store, and using that instead of Big Llama.")
+                Spacer()
+                Button("I'm using my disk as RAM even though it will make the app look like it's frozen. Please don't direct me to iLlama, just let me use Big Llama very very slowly 🐢 and maybe crash anyway") {
+                    showMemoryWarning = false
+                }
+                Button {
+                    Task {
+                        let pre = "https://apps.apple.com/us/app/iLlama/id6465895152"
+                        await UIApplication.shared.open(URL(string: pre)!, options: [:])
+                    }
+                } label: {
+                    Text("Get iLlama")
+                        .padding(.vertical)
+                        .frame(maxWidth: .infinity)
+                        .font(.title)
+                }.buttonStyle(.borderedProminent)
+            }.buttonStyle(BorderedButtonStyle())
+            .padding()
+        }
     }
 }

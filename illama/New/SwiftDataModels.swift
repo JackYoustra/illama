@@ -17,6 +17,7 @@ final class Chat {
     var _messages: [SingleMessage]?
     var _isAnswering: Bool?
     var _chatTitle: String?
+    var _type: ModelType?
     
     @Transient
     var id: UUID {
@@ -52,6 +53,12 @@ final class Chat {
                 _chatTitle = newValue
             }
         }
+    }
+    
+    @Transient
+    var type: ModelType {
+        get { _type ?? .smallLlama }
+        set { _type = newValue }
     }
 
     init(timestamp: Date) {

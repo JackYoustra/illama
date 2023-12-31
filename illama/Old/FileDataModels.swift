@@ -14,6 +14,7 @@ final class FileChat: Codable, ObservableObject {
     @Published var conversation: Conversation?
     @Published var isAnswering: Bool
     @Published var chatTitle: String
+    @Published var modelType: ModelType
     
     func add(query: String) {
         assert(!isAnswering)
@@ -36,21 +37,23 @@ final class FileChat: Codable, ObservableObject {
         }
     }
     
-    init(timestamp: Date) {
+    init(timestamp: Date, modelType: ModelType) {
         self.id = UUID()
         self.timestamp = timestamp
         self.conversation = nil
         self.isAnswering = false
         self.chatTitle = ""
+        self.modelType = modelType
         setupAutosave()
     }
     
-    init(timestamp: Date = .now, conversation: Conversation? = nil, isAnswering: Bool = false, chatTitle: String = "") {
+    init(timestamp: Date = .now, conversation: Conversation? = nil, isAnswering: Bool = false, chatTitle: String = "", modelType: ModelType = .smallLlama) {
         self.id = UUID()
         self.timestamp = timestamp
         self.conversation = conversation
         self.isAnswering = isAnswering
         self.chatTitle = chatTitle
+        self.modelType = modelType
         setupAutosave()
     }
     
@@ -76,6 +79,7 @@ final class FileChat: Codable, ObservableObject {
         case conversation
         case isAnswering
         case chatTitle
+        case modelType
     }
 
     // Manual encode / decode
@@ -86,6 +90,7 @@ final class FileChat: Codable, ObservableObject {
         self.conversation = try container.decode(Conversation.self, forKey: .conversation)
         self.isAnswering = try container.decode(Bool.self, forKey: .isAnswering)
         self.chatTitle = try container.decode(String.self, forKey: .chatTitle)
+        self.modelType = try container.decodeIfPresent(ModelType.self, forKey: .modelType) ?? .smallLlama
         setupAutosave()
     }
     
@@ -96,5 +101,6 @@ final class FileChat: Codable, ObservableObject {
         try container.encode(conversation, forKey: .conversation)
         try container.encode(isAnswering, forKey: .isAnswering)
         try container.encode(chatTitle, forKey: .chatTitle)
+        try container.encode(modelType, forKey: .modelType)
     }
 }

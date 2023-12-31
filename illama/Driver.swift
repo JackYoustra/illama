@@ -48,10 +48,36 @@ struct JsonInput: Codable {
     }()
 }
 
-final actor LlamaInstance {
-    static let shared = LlamaInstance()
+final actor LlamaInferenceQueue {
+    struct CurrentItems {
+        let type: ModelType
+        let instance: LlamaInstance
+        
+        init(type: ModelType) {
+            self.type = type
+            self.instance = LlamaInstance(type: type)
+        }
+    }
+
+    var current: CurrentItems!
     
-    let initializationTask = Task {
+    init() {
+        current = nil
+    }
+    
+    func run_llama(type: ModelType, prompt: String) throws -> AsyncThrowingStream<String, Error> {
+        if current?.type != type {
+            // replace current type
+            current = CurrentItems(type: type)
+        }
+        return try current.instance.run_llama(type: type, prompt: prompt)
+    }
+}
+
+final class LlamaInstance {
+    private var rc: RunContext
+
+    init(type: ModelType) {
         // run main
     //                    gpt_params.init()
     //     let server_context = ServerContext()
@@ -59,10 +85,10 @@ final actor LlamaInstance {
         let args = [
            "server",
 //           "--no-mmap",
-        ] + (BundledModel.shared.shouldMlock ? ["--mlock",] : [])
+        ] + (type.shouldMlock ? ["--mlock",] : [])
             + [
-           "-m", BundledModel.shared.path,
-           "-c", String(BundledModel.shared.contextSize),
+            "-m", type.targetHolder.path,
+           "-c", String(type.contextSize),
             "-ngl", "1",
             "-v"
         ]
@@ -72,17 +98,15 @@ final actor LlamaInstance {
         let result = RunContext.runServer(Int32(args.count), &cargs) //runServer(Int32(args.count), &cargs)
         let normieResult = getInt(result)
         assert(normieResult == 0)
-        let rc = getRunContext(result)
+        self.rc = getRunContext(result)
         // free dups
         for ptr in cargs { free(ptr) }
-        return rc
     }
     
     // implicitly locked, can just rely on engine lock (unless have to worry about cancel?)
-    func run_llama(prompt: String) async throws -> AsyncThrowingStream<String, Error> {
-        var rc = await initializationTask.value
+    func run_llama(type: ModelType, prompt: String) throws -> AsyncThrowingStream<String, Error> {
         return AsyncThrowingStream { continuation in
-            DispatchQueue.global().async {
+            DispatchQueue.global().async { [weak self] in
                 do {
                     let coder = JSONEncoder()
                     var input = JsonInput.input
@@ -92,7 +116,7 @@ final actor LlamaInstance {
                     // ??? ok so cxxstdlib doesn't do lifetimes well...
                     withExtendedLifetime(json) {
                         json.utf8CString.withUnsafeBufferPointer { p in
-                            rc.completion(p.baseAddress) { (s: std.string) in
+                            self?.rc.completion(p.baseAddress) { (s: std.string) in
                                 // ugh catalyst no worky with this
 #if targetEnvironment(macCatalyst)
                                 let c = convertToCString(s)!

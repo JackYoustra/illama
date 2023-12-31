@@ -12,11 +12,13 @@ enum AppStorageKey: String, Codable {
     case markdownType
     case selectedChatID
     case showOnboarding
+    case modelType
 }
 
 struct SettingsView: View {
     @AppStorage(AppStorageKey.settingsPage.rawValue) private var page = SettingsPage.markdown
     @AppStorage(AppStorageKey.markdownType.rawValue) private var markdownSupport: MarkdownType? = MarkdownType.markdownUI
+    @AppStorage(AppStorageKey.modelType.rawValue) private var modelType = ModelType.smallLlama
     @State private var text: Result<String, Error>? = nil
     
     enum SettingsPage: String, CaseIterable, Hashable, Identifiable {
@@ -67,15 +69,21 @@ struct SettingsView: View {
             case .advanced:
                 Text("Caution: Changing these settings could cause your app to crash.")
                 Text("🛠️ under construction, modification coming soon 🛠️")
-                Form(content: {
-                    LabeledContent("Prompt", value: String(JsonInput.input.prompt))
-//                    Slider(value: .constant(BundledModel.shared.contextSize), in: 512 ..< 4096, label: {
-//                        Text("Context Size")
-//                    })
-                    // Maybe stepper?
-                    LabeledContent("Context size", value: String(BundledModel.shared.contextSize))
-                    Toggle("mlock", isOn: .constant(BundledModel.shared.shouldMlock))
-                }).disabled(true)
+                Picker("Model Type", selection: $modelType) {
+                    ForEach(ModelType.allCases) { type in
+                        Text(type.itemTitle)
+                            .tag(type)
+                    }
+                    Form(content: {
+                        LabeledContent("Prompt", value: String(JsonInput.input.prompt))
+                        Slider(value: .constant(Double(modelType.contextSize)), in: 512.0 ... 4096.0, label: {
+                            Text("Context Size")
+                        })
+                        // Maybe stepper?
+                        LabeledContent("Context size", value: String(modelType.contextSize))
+                        Toggle("mlock", isOn: .constant(modelType.shouldMlock))
+                    }).disabled(true)
+                }
             case .about:
                 Text("""
 Hey! I'm Jack. My main job is working at [nanoflick](https://www.nanoflick.com/), but I wrote this app as a hackathon project and [wrote about it on my blog](https://www.jackyoustra.com/blog/llama-ios). I hope you enjoy it! It'll probably be tended to here and there, especially regarding the embarrasing inability to function on A12 chips and earlier. Before then, I hope you enjoy it!

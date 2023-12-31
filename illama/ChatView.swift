@@ -140,7 +140,7 @@ struct ChatView: View {
                 if case .unanswered(_) = chat.conversation?.current {
                     let prompt = chat.gptPrompt!
                     print("prompt is \(prompt)")
-                    for try await string in try! await llamaClient.query(prompt) {
+                    for try await string in try! await llamaClient.query(prompt, chat.type) {
                         // TODO: Need an effective cancellation facility
 //                        try Task.checkCancellation()
                         print("string is \(string)")
@@ -192,7 +192,7 @@ struct OldChatView: View {
                 if case .unanswered(_) = chat.conversation?.current {
                     let prompt = chat.gptPrompt!
                     print("prompt is \(prompt)")
-                    for try await string in try! await llamaClient.query(prompt) {
+                    for try await string in try! await llamaClient.query(prompt, chat.modelType) {
                         // TODO: Need an effective cancellation facility
 //                        try Task.checkCancellation()
                         print("string is \(string)")

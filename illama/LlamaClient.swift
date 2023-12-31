@@ -14,7 +14,7 @@ import CombineExt
 import Algorithms
 
 struct LlamaClient {
-    var query: (String) async throws -> AsyncThrowingStream<DataString, Error>
+    var query: (String, ModelType) async throws -> AsyncThrowingStream<DataString, Error>
 }
 
 extension DependencyValues {
@@ -33,9 +33,10 @@ extension DependencyValues {
 extension LlamaClient {
     static let live: LlamaClient = {
         let decoder = JSONDecoder()
+        let queue = LlamaInferenceQueue()
         return LlamaClient(
-            query: { q in
-                try await LlamaInstance.shared.run_llama(prompt: q)
+            query: { q, type in
+                try await queue.run_llama(type: type, prompt: q)
                     .compactMap {
                         try? decoder.decode(
                             DataString.self,
@@ -47,7 +48,7 @@ extension LlamaClient {
         )
     }()
     
-    static let preview: LlamaClient = LlamaClient { str in
+    static let preview: LlamaClient = LlamaClient { str, _ in
         chain(
                 zip(
 //                markdownProvider

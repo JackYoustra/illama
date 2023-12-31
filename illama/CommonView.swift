@@ -9,44 +9,6 @@ import SwiftUI
 import DeviceKit
 import UIOnboarding
 
-final class BundledModel {
-    static let shared = BundledModel()
-    let path: String
-    let contextSize: Int
-    let shouldMlock: Bool
-    let shouldWarn: Bool
-    
-    static let isBigEnoughForBigLlama = ProcessInfo.processInfo.physicalMemory > UInt64(7.9 * 1024 * 1024 * 1024)
-
-    private init() {
-        let p = [
-            "open-llama-3b-q4_0",
-            "ggml-model-q3_k_m",
-        ].lazy.compactMap {
-            Bundle.main.path(forResource: $0, ofType: "bin")
-        }.first!
-        path = p
-        // Mlock if have more or equal to 8gb
-        shouldMlock = Self.isBigEnoughForBigLlama
-        // Context size is 512 for openllama, 2048 for normal (for now)
-        if p.contains("open") {
-            if ProcessInfo.processInfo.physicalMemory > UInt64(4.1 * 1024 * 1024 * 1024) {
-                contextSize = 1024
-            } else {
-                contextSize = 512
-            }
-        } else {
-            contextSize = 2048
-        }
-        
-        if p == "ggml-model-q3_k_m" {
-            shouldWarn = true
-        } else {
-            shouldWarn = false
-        }
-    }
-}
-
 let syncInitializationWork: () = {
     if ProcessInfo.processInfo.arguments.contains("UI-Testing") {
         UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
@@ -62,8 +24,6 @@ let vowels: [Character] = ["a","e","i","o","u"]
 struct CommonView: View {
     @State private var showWarning = false
     @State private var hasShownWarning = false
-    @State private var showMemoryWarning = false
-    @State private var hasShownMemoryWarning = false
     @AppStorage(AppStorageKey.showOnboarding.rawValue) private var showOnboarding: Bool = true
     
     var body: some View {
@@ -81,10 +41,6 @@ struct CommonView: View {
                 // old
                 showWarning = true
                 hasShownWarning = true
-            }
-            if BundledModel.shared.shouldWarn {
-                showMemoryWarning = true
-                hasShownMemoryWarning = true
             }
             #endif
         }
@@ -113,29 +69,6 @@ struct CommonView: View {
                         await UIApplication.shared.open(URL(string: pre)!, options: [:])
                     }
                 }
-            }.buttonStyle(BorderedButtonStyle())
-            .padding()
-        }
-        .fullScreenCover(isPresented: $showMemoryWarning) {
-            VStack {
-                Text("⚠️ Llama too big for Phone 🦙💪💥")
-                    .font(.largeTitle)
-                Text("Your phone doesn't have enough memory to safely run Big Llama! You can try running it anyway, in which case it will just use the storage as ram, but it's going to be really, really slow. Like, possibly one word per minute slow. I recommend checking out iLlama on the app store, and using that instead of Big Llama.")
-                Spacer()
-                Button("I'm using my disk as RAM even though it will make the app look like it's frozen. Please don't direct me to iLlama, just let me use Big Llama very very slowly 🐢 and maybe crash anyway") {
-                    showMemoryWarning = false
-                }
-                Button {
-                    Task {
-                        let pre = "https://apps.apple.com/us/app/iLlama/id6465895152"
-                        await UIApplication.shared.open(URL(string: pre)!, options: [:])
-                    }
-                } label: {
-                    Text("Get iLlama")
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity)
-                        .font(.title)
-                }.buttonStyle(.borderedProminent)
             }.buttonStyle(BorderedButtonStyle())
             .padding()
         }
